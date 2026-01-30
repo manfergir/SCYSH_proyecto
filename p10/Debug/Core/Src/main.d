@@ -48,11 +48,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_conf.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_io.h \
+ ../Core/Inc/common_def.h \
+ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
+ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
+ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
  ../Core/Inc/mqtt_priv.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h \
@@ -108,11 +109,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_conf.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_io.h:
+../Core/Inc/common_def.h:
+C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
+C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
+C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Core/Inc/mqtt_priv.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h:

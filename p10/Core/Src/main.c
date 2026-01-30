@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "common_def.h"
 #include "es_wifi.h"
 #include "wifi.h"
 #include "stm32l4xx_hal_uart.h"
@@ -63,25 +64,41 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* Definitions for WifiTask */
-//#if PROJECT_TYPE == PROJECT_TYPE_1
 osThreadId_t WifiTaskHandle;
 const osThreadAttr_t WifiTask_attributes = {
   .name = "WifiTask",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-//#endif
 /* Definitions for MQTT_Task */
-
-//#if PROJECT_TYPE == PROJECT_TYPE_2
 osThreadId_t MQTT_TaskHandle;
 const osThreadAttr_t MQTT_Task_attributes = {
   .name = "MQTT_Task",
   .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for TestGenTask */
+osThreadId_t TestGenTaskHandle;
+const osThreadAttr_t TestGenTask_attributes = {
+  .name = "TestGenTask",
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-//#endif
+/* Definitions for qMqttTx */
+osMessageQueueId_t qMqttTxHandle;
+const osMessageQueueAttr_t qMqttTx_attributes = {
+  .name = "qMqttTx"
+};
+/* Definitions for qCmdRx */
+osMessageQueueId_t qCmdRxHandle;
+const osMessageQueueAttr_t qCmdRx_attributes = {
+  .name = "qCmdRx"
+};
 /* USER CODE BEGIN PV */
+
+// Variables globales de estado
+volatile uint8_t WIFI_IS_CONNECTED = 0;
+volatile uint8_t NET_MQTT_OK = 0;
 
 #define SSID     "Manolo"
 #define PASSWORD ""
@@ -90,7 +107,7 @@ const osThreadAttr_t MQTT_Task_attributes = {
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
 #define WIFI_READ_TIMEOUT 10000
-#define SOCKET 	0
+#define SOCKET 	1
 #define pcTempTopic "SCF"
 #define LOG(a) printf a
 
@@ -116,6 +133,7 @@ static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
+void StartTestGenTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -136,8 +154,7 @@ extern ES_WIFIObject_t    EsWifiObj;
 
 static int wifi_start(void)
 {
-  uint8_t  MAC_Addr[6];
-
+	uint8_t  MAC_Addr[6];
  /*Initialize and use WIFI module */
   if(WIFI_Init() ==  WIFI_STATUS_OK)
   {
@@ -236,6 +253,18 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+	printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
+
+	// Bajar el pin de Reset (Apagar módulo)
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_Delay(500); // Esperar medio segundo apagado
+
+	// Subir el pin de Reset (Encender módulo)
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
+	HAL_Delay(1000); // Esperar 1s a que arranque su sistema interno
+
+	printf("--- [BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -253,6 +282,13 @@ int main(void)
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
+  /* Create the queue(s) */
+  /* creation of qMqttTx */
+  qMqttTxHandle = osMessageQueueNew (16, 160, &qMqttTx_attributes);
+
+  /* creation of qCmdRx */
+  qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
+
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -263,6 +299,9 @@ int main(void)
 
   /* creation of MQTT_Task */
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
+
+  /* creation of TestGenTask */
+  TestGenTaskHandle = osThreadNew(StartTestGenTask, NULL, &TestGenTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -638,7 +677,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, ARD_D10_Pin|SPBTLE_RF_RST_Pin|ARD_D9_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, ARD_D8_Pin|ISM43362_BOOT0_Pin|ISM43362_WAKEUP_Pin|LED2_Pin
+  HAL_GPIO_WritePin(GPIOB, ARD_D8_Pin|ISM43362_BOOT0_Pin|ISM43362_WAKEUP_Pin|UserLabel_Pin
                           |SPSGRF_915_SDN_Pin|ARD_D5_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -732,9 +771,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(ARD_D6_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : ARD_D8_Pin ISM43362_BOOT0_Pin ISM43362_WAKEUP_Pin LED2_Pin
+  /*Configure GPIO pins : ARD_D8_Pin ISM43362_BOOT0_Pin ISM43362_WAKEUP_Pin UserLabel_Pin
                            SPSGRF_915_SDN_Pin ARD_D5_Pin SPSGRF_915_SPI3_CSN_Pin */
-  GPIO_InitStruct.Pin = ARD_D8_Pin|ISM43362_BOOT0_Pin|ISM43362_WAKEUP_Pin|LED2_Pin
+  GPIO_InitStruct.Pin = ARD_D8_Pin|ISM43362_BOOT0_Pin|ISM43362_WAKEUP_Pin|UserLabel_Pin
                           |SPSGRF_915_SDN_Pin|ARD_D5_Pin|SPSGRF_915_SPI3_CSN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -854,12 +893,38 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void StartWifiTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  wifi_connect();
+	int ret;
+	LOG(("--- [WIFI] Tarea iniciada --- \r\n"));
 
-	/* Infinite loop */
+  /* Infinite loop */
   for(;;)
   {
-	osDelay(1);
+	  if (WIFI_IS_CONNECTED == 0)
+	  {
+		  LOG(("[WIFI] Llamando a wifi_connect()...\r\n"));
+
+		  // LLAMADA A TU FUNCIÓN (Línea 142 del main.c)
+		  // Esta función ya usa el SSID "Manolo" definido arriba.
+		  ret = wifi_connect();
+
+		  if (ret == 0)
+		  {
+			  LOG(("[WIFI] Conexion Exitosa.\r\n"));
+			  WIFI_IS_CONNECTED = 1; // Bandera global para MQTT
+		  }
+		  else
+		  {
+			  	LOG(("[WIFI] Fallo al conectar. Reintentando en 5s...\r\n"));
+			  osDelay(pdMS_TO_TICKS(5000));
+		  }
+
+	  }
+	  else
+	  {
+		 // Ya estamos conectados. Dormimos para no saturar la CPU.
+		 osDelay(pdMS_TO_TICKS(1000));
+	  }
+
   }
   /* USER CODE END 5 */
 }
@@ -874,30 +939,123 @@ void StartWifiTask(void *argument)
 void MQTT_TaskFun(void *argument)
 {
   /* USER CODE BEGIN MQTT_TaskFun */
-	const uint32_t ulMaxPublishCount = 5UL;
+
+	// -- Estructuras de la librería MQTT --
 	NetworkContext_t xNetworkContext = { 0 };
 	MQTTContext_t xMQTTContext;
 	MQTTStatus_t xMQTTStatus;
-	TransportStatus_t xNetworkStatus;
-	float ftemp;
-	char payLoad[16];
-	/* Attempt to connect to the MQTT broker.  The socket is returned in
-	 * the network context structure. */
-	xNetworkStatus = prvConnectToServer( &xNetworkContext );
-	configASSERT( xNetworkStatus == PLAINTEXT_TRANSPORT_SUCCESS );
-	//LOG(("Trying to create an MQTT connection\n"));
-	prvCreateMQTTConnectionWithBroker( &xMQTTContext, &xNetworkContext );
-	for( ; ; )
-	    {
-		/* Publicar cada 5 segundos */
-		osDelay(5000);
-		//ftemp=BSP_TSENSOR_ReadTemp();
-		sprintf(payLoad,"%s","Hola");
-        prvMQTTPublishToTopic(&xMQTTContext,pcTempTopic,payLoad);
 
+	// -- Variables Locales --
+	MqttMsg_t msg_out;
+	osStatus_t qStatus;
 
+	LOG(("--- [MQTT] Tarea Iniciada ---\r\n"));
+
+  /* Infinite loop */
+  for(;;)
+  {
+	  // 1. ESPERAR A WIFI (Polling lento cada 500ms)
+	  while (WIFI_IS_CONNECTED == 0)
+	  {
+		osDelay(pdMS_TO_TICKS(500));
+	  }
+
+	  // 2. CONECTAR AL BROKER
+	  LOG(("[MQTT] Conectando al Broker...\r\n"));
+
+	  // Conexión TCP
+	  if (prvConnectToServer(&xNetworkContext) != 0)
+	  {
+		LOG(("[MQTT] Error TCP. Reintentando en 2s...\r\n"));
+		osDelay(pdMS_TO_TICKS(2000));
+		continue;
+	  }
+
+	  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
+
+	  LOG(("[MQTT] ONLINE. Listo para transmitir.\r\n"));
+	  NET_MQTT_OK = 1;
+
+	  // 3. BUCLE DE TRANSMISIÓN
+	  while (WIFI_IS_CONNECTED == 1)
+	  {
+		// A. Miramos cola (Wait 100ms)
+		qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
+
+		if (qStatus == osOK)
+		{
+		  LOG(("[MQTT TX] T: %s | Pay: %s\r\n", msg_out.topic, msg_out.payload));
+		  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
+		}
+
+		// B. KeepAlive
+		xMQTTStatus = MQTT_ProcessLoop(&xMQTTContext);
+
+		  if (xMQTTStatus != MQTTSuccess)
+		  {
+			 LOG(("[MQTT] Error KeepAlive. Desconectando...\r\n"));
+			 break;
+		  }
+	  }
+	  // 4. LIMPIEZA
+	  NET_MQTT_OK = 0;
+	  LOG(("[MQTT] Conexión perdida. Reiniciando ciclo...\r\n"));
+	  osDelay(pdMS_TO_TICKS(1000));
+  }
   /* USER CODE END MQTT_TaskFun */
-	    }
+}
+
+/* USER CODE BEGIN Header_StartTestGenTask */
+/**
+* @brief Function implementing the TestGenTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTestGenTask */
+void StartTestGenTask(void *argument)
+{
+  /* USER CODE BEGIN StartTestGenTask */
+
+	// Variables locales
+	int contador_test = 0;
+	MqttMsg_t msg_test;
+
+	LOG(("--- [TEST GEN] Tarea Productora Iniciada ---\r\n"));
+  /* Infinite loop */
+  for(;;)
+  {
+      // CONDICIÓN DE GUARDA:
+      // Solo generamos datos si el túnel MQTT (Capa de Aplicación) está levantado.
+      if (NET_MQTT_OK == 1)
+      {
+          // 1. Crear Payload (Simulación de sensor)
+          // Usamos el topic que definiste en tu código C para pruebas
+          sprintf(msg_test.topic, "SCF/test/sim");
+          sprintf(msg_test.payload, "{\"id\": %d, \"val\": 25.5, \"status\": \"RUN\"}", contador_test++);
+
+          // 2. Inyectar en la Cola (Timeout 100ms)
+          // Si la cola está llena, osMessageQueuePut devuelve error y no bloqueamos indefinidamente
+          if (osMessageQueuePut(qMqttTxHandle, &msg_test, 0, pdMS_TO_TICKS(100)) == osOK)
+          {
+              LOG(("[TEST GEN] Dato %d encolado.\r\n", contador_test-1));
+          }
+          else
+          {
+              LOG(("[TEST GEN] WARN: Cola llena. El consumidor va lento.\r\n"));
+          }
+      }
+      else
+      {
+          // Si no hay conexión, esperamos un poco antes de volver a comprobar
+          osDelay(pdMS_TO_TICKS(1000));
+          continue;
+      }
+
+      // FRECUENCIA DE MUESTREO:
+      // Generamos un dato cada 5 segundos
+      osDelay(pdMS_TO_TICKS(5000));
+    }
+  /* USER CODE END StartTestGenTask */
 }
 
 /**

@@ -20,7 +20,7 @@ extern "C" {
 
 #define NETWORK_BUFFER_SIZE (1000U)
 #ifndef SOCKET
-#define SOCKET 0
+#define SOCKET 1
 #endif
 
 #ifndef LOG
