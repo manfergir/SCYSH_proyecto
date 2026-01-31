@@ -3,6 +3,12 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="socket_open=0"/>
+		<item value="socket_open"/>
+		<item value="mqtt_task"/>
+		<item value="hardcoded"/>
+		<item value="socket abier"/>
+		<item value="error in opening"/>
 		<item value="ES_WIFI_STATUS_REQ_DATA_STAGE"/>
 		<item value="default"/>
 		<item value="STARTDEFAUL"/>
@@ -12,11 +18,5 @@
 		<item value="printf"/>
 		<item value="StartWifiTask"/>
 		<item value="testtask"/>
-		<item value="pb"/>
-		<item value="pb14"/>
-		<item value="userlabel"/>
-		<item value="user"/>
-		<item value="userla"/>
-		<item value="qmqtt"/>
 	</list>
 </section>

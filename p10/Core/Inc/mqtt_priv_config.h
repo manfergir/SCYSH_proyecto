@@ -12,7 +12,7 @@ extern "C" {
 #define MQTT_BROKER_ENDPOINT "35.172.255.228"
 #define MQTT_BROKER_ENDPOINT_IP {35,172,255,228}
 #define MQTT_BROKER_PORT (1883)
-#define MQTTCLIENT_IDENTIFIER "BRIyOA0hGBcPJBchBiU6Bjc"
+#define MQTTCLIENT_IDENTIFIER "STM32_Ant_Final_1234"
 #define TOPIC_COUNT (1)
 #define pcTempTopic "SCF"
 #define pcTempTopic2 "SistCiberFis_antonio/SCF/LED"

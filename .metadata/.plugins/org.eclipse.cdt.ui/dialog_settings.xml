@@ -18,6 +18,8 @@
 		<item key="caseSensitive" value="false"/>
 		<item key="searchFlags" value="227191"/>
 		<list key="previousPatterns">
+			<item value="reintentando"/>
+			<item value="TOPIC_COUNT"/>
 			<item value="ES_WIFI_Status_t"/>
 			<item value="ES_WIFI_STATUS_REQ_DATA_STAGE"/>
 			<item value="testtask"/>

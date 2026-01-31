@@ -1,4 +1,4 @@
 ../Libraries/coreMQTT/source/transport_interface.c:16:9:transport_recv	1088	static
 ../Libraries/coreMQTT/source/transport_interface.c:59:9:transport_send	64	static
-../Libraries/coreMQTT/source/transport_interface.c:102:6:init_transport_from_socket	24	static
-../Libraries/coreMQTT/source/transport_interface.c:115:6:log_transport	24	static
+../Libraries/coreMQTT/source/transport_interface.c:112:6:init_transport_from_socket	24	static
+../Libraries/coreMQTT/source/transport_interface.c:125:6:log_transport	24	static

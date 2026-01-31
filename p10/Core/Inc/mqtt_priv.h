@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 TransportStatus_t prvConnectToServer( NetworkContext_t * );
-void prvCreateMQTTConnectionWithBroker( MQTTContext_t * , NetworkContext_t * );
+MQTTStatus_t prvCreateMQTTConnectionWithBroker( MQTTContext_t * , NetworkContext_t * );
 void prvMQTTPublishToTopic( MQTTContext_t *, char *,void * );
 void prvMQTTSubscribeToTopic( MQTTContext_t *, char * );
 uint32_t prvGetTimeMs(void);

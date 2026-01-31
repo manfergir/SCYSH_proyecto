@@ -29,6 +29,7 @@
 #include "stdio.h"
 #include "mqtt_priv.h"
 #include "mqtt_priv_config.h"
+//#include "transport_interface.h"
 //#include "stm32l475e_iot01.h"
 //#include "stm32l475e_iot01_tsensor.h"
 
@@ -940,70 +941,79 @@ void MQTT_TaskFun(void *argument)
 {
   /* USER CODE BEGIN MQTT_TaskFun */
 
-	// -- Estructuras de la librería MQTT --
 	NetworkContext_t xNetworkContext = { 0 };
 	MQTTContext_t xMQTTContext;
-	MQTTStatus_t xMQTTStatus;
+	MQTTStatus_t xMQTTStatus;      // Variable para el resultado MQTT
+	TransportStatus_t xTransportStatus;
 
-	// -- Variables Locales --
 	MqttMsg_t msg_out;
 	osStatus_t qStatus;
 
 	LOG(("--- [MQTT] Tarea Iniciada ---\r\n"));
 
   /* Infinite loop */
-  for(;;)
-  {
-	  // 1. ESPERAR A WIFI (Polling lento cada 500ms)
-	  while (WIFI_IS_CONNECTED == 0)
-	  {
-		osDelay(pdMS_TO_TICKS(500));
-	  }
-
-	  // 2. CONECTAR AL BROKER
-	  LOG(("[MQTT] Conectando al Broker...\r\n"));
-
-	  // Conexión TCP
-	  if (prvConnectToServer(&xNetworkContext) != 0)
-	  {
-		LOG(("[MQTT] Error TCP. Reintentando en 2s...\r\n"));
-		osDelay(pdMS_TO_TICKS(2000));
-		continue;
-	  }
-
-	  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
-
-	  LOG(("[MQTT] ONLINE. Listo para transmitir.\r\n"));
-	  NET_MQTT_OK = 1;
-
-	  // 3. BUCLE DE TRANSMISIÓN
-	  while (WIFI_IS_CONNECTED == 1)
-	  {
-		// A. Miramos cola (Wait 100ms)
-		qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
-
-		if (qStatus == osOK)
+	for(;;)
 		{
-		  LOG(("[MQTT TX] T: %s | Pay: %s\r\n", msg_out.topic, msg_out.payload));
-		  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
+			// 1. ESPERAR A WIFI
+			while (WIFI_IS_CONNECTED == 0) {
+				osDelay(pdMS_TO_TICKS(500));
+			}
+
+			// 2. CONECTAR SOCKET TCP
+			LOG(("[MQTT] Conectando al Broker...\r\n"));
+			xTransportStatus = prvConnectToServer(&xNetworkContext);
+
+			if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS) {
+				LOG(("[MQTT] Error TCP inicial. Reintentando...\r\n"));
+				osDelay(pdMS_TO_TICKS(2000));
+				continue;
+			}
+
+			// 3. CONECTAR NIVEL APLICACION (MQTT CONNECT)
+			// Ahora recogemos el valor de retorno
+			xMQTTStatus = prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
+
+			// SI FALLA, NO ENTRAMOS AL BUCLE
+			if (xMQTTStatus != MQTTSuccess) {
+				LOG(("[MQTT] Fallo en handshake MQTT. Cerrando socket y reintentando...\r\n"));
+				// Aquí sería ideal cerrar el socket si tuvieras la función expuesta,
+				// pero con volver al inicio del bucle basta por ahora.
+				WIFI_CloseClientConnection(SOCKET); // Intentamos cerrar por limpieza
+				osDelay(pdMS_TO_TICKS(2000));
+				continue; // Vuelve al inicio del for(;;)
+			}
+
+			LOG(("[MQTT] ONLINE. Loop de transmision activo.\r\n"));
+			NET_MQTT_OK = 1;
+
+			// 4. BUCLE DE TRANSMISIÓN (Solo entramos si xMQTTStatus == MQTTSuccess)
+			while (WIFI_IS_CONNECTED == 1)
+			{
+				qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
+
+				if (qStatus == osOK)
+				{
+					LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
+					prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
+				}
+
+				MQTTStatus_t xStat = MQTT_ProcessLoop(&xMQTTContext);
+
+				if (xStat != MQTTSuccess)
+				{
+					LOG(("[MQTT] Error KeepAlive (Code: %d). Desconectando...\r\n", xStat));
+					break;
+				}
+			}
+
+			// 5. LIMPIEZA
+			NET_MQTT_OK = 0;
+			LOG(("[MQTT] Reiniciando ciclo...\r\n"));
+			osDelay(pdMS_TO_TICKS(1000));
 		}
-
-		// B. KeepAlive
-		xMQTTStatus = MQTT_ProcessLoop(&xMQTTContext);
-
-		  if (xMQTTStatus != MQTTSuccess)
-		  {
-			 LOG(("[MQTT] Error KeepAlive. Desconectando...\r\n"));
-			 break;
-		  }
-	  }
-	  // 4. LIMPIEZA
-	  NET_MQTT_OK = 0;
-	  LOG(("[MQTT] Conexión perdida. Reiniciando ciclo...\r\n"));
-	  osDelay(pdMS_TO_TICKS(1000));
-  }
   /* USER CODE END MQTT_TaskFun */
 }
+
 
 /* USER CODE BEGIN Header_StartTestGenTask */
 /**

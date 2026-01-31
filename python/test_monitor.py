@@ -1,37 +1,53 @@
 import paho.mqtt.client as mqtt
 import json
+import random
 
-# --- CONFIGURACIÓN (Debe coincidir con mqtt_priv_config.h del STM32) ---
-BROKER = "test.mosquitto.org"
+# --- CONFIGURACIÓN (Coincidiendo con tu STM32) ---
+# Usamos la IP de broker.emqx.io para evitar DNS lookup, igual que en el C
+BROKER = "35.172.255.228" 
 PORT = 1883
-TOPIC_TO_LISTEN = "bridge/test/sim"  # El mismo que pusimos en el C
+
+# El topic que aparece en tu log: [MQTT TX] T: SCF/test/sim
+TOPIC_TO_LISTEN = "SCF/test/sim" 
+
+# Generamos un ID aleatorio para el PC para no chocar con el STM32
+CLIENT_ID = f"PC_Monitor_{random.randint(0, 1000)}"
 
 def on_connect(client, userdata, flags, rc):
-    print(f"--- CONECTADO AL BROKER (Código: {rc}) ---")
-    print(f"Escuchando en: {TOPIC_TO_LISTEN}")
-    client.subscribe(TOPIC_TO_LISTEN)
+    if rc == 0:
+        print(f"--- [PC] CONECTADO AL BROKER (EMQX) ---")
+        print(f"--- [PC] Escuchando en: {TOPIC_TO_LISTEN} ---")
+        client.subscribe(TOPIC_TO_LISTEN)
+    else:
+        print(f"--- [PC] Error de conexión: {rc} ---")
 
 def on_message(client, userdata, msg):
     try:
         # Decodificamos el mensaje
         payload_str = msg.payload.decode('utf-8')
         print(f"\n[RECIBIDO] Topic: {msg.topic}")
-        print(f"Datos: {payload_str}")
+        print(f"Raw Payload: {payload_str}")
         
-        # Intentamos parsear JSON para ver si está bien formado
+        # Intentamos parsear JSON
+        # Tu JSON es: {"id": 0, "val": 25.5, "status": "RUN"}
         data = json.loads(payload_str)
-        print(f"-> Contador: {data.get('cnt')}")
+        
+        id_dato = data.get('id')
+        val_dato = data.get('val')
+        print(f"-> ID: {id_dato} | Valor: {val_dato}")
         
     except Exception as e:
         print(f"Error decodificando: {e}")
 
 # Configuración del cliente
-client = mqtt.Client()
+client = mqtt.Client(client_id=CLIENT_ID)
 client.on_connect = on_connect
 client.on_message = on_message
 
 print(f"Conectando a {BROKER}...")
-client.connect(BROKER, PORT, 60)
-
-# Bucle infinito
-client.loop_forever()
+try:
+    client.connect(BROKER, PORT, 60)
+    # Bucle infinito
+    client.loop_forever()
+except Exception as e:
+    print(f"Error al conectar desde el PC: {e}")
