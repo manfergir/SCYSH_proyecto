@@ -108,8 +108,6 @@ volatile uint8_t NET_MQTT_OK = 0;
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
 #define WIFI_READ_TIMEOUT 10000
-#define SOCKET 	1
-#define pcTempTopic "SCF"
 #define LOG(a) printf a
 
 /*#define TERMINAL_USE
@@ -943,7 +941,6 @@ void MQTT_TaskFun(void *argument)
 
 	NetworkContext_t xNetworkContext = { 0 };
 	MQTTContext_t xMQTTContext;
-	MQTTStatus_t xMQTTStatus;      // Variable para el resultado MQTT
 	TransportStatus_t xTransportStatus;
 
 	MqttMsg_t msg_out;
@@ -953,64 +950,65 @@ void MQTT_TaskFun(void *argument)
 
   /* Infinite loop */
 	for(;;)
-		{
-			// 1. ESPERAR A WIFI
-			while (WIFI_IS_CONNECTED == 0) {
-				osDelay(pdMS_TO_TICKS(500));
-			}
+	  {
+		  // 1. ESPERAR A WIFI
+		  while (WIFI_IS_CONNECTED == 0) {
+			osDelay(pdMS_TO_TICKS(500));
+		  }
 
-			// 2. CONECTAR SOCKET TCP
-			LOG(("[MQTT] Conectando al Broker...\r\n"));
-			xTransportStatus = prvConnectToServer(&xNetworkContext);
+		  // 2. CONECTAR AL BROKER
+		  LOG(("[MQTT] Conectando al Broker...\r\n"));
 
-			if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS) {
-				LOG(("[MQTT] Error TCP inicial. Reintentando...\r\n"));
-				osDelay(pdMS_TO_TICKS(2000));
-				continue;
-			}
+		  // Llamada original. Devuelve TransportStatus_t
+		  xTransportStatus = prvConnectToServer(&xNetworkContext);
 
-			// 3. CONECTAR NIVEL APLICACION (MQTT CONNECT)
-			// Ahora recogemos el valor de retorno
-			xMQTTStatus = prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
+		  if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS) {
+			// NOTA: Si prvConnectToServer falla, el codigo original tiene un osDelay de 10s dentro
+			// así que tardará en volver aquí.
+			LOG(("[MQTT] Error TCP. Reintentando...\r\n"));
+			osDelay(pdMS_TO_TICKS(2000));
+			continue;
+		  }
 
-			// SI FALLA, NO ENTRAMOS AL BUCLE
-			if (xMQTTStatus != MQTTSuccess) {
-				LOG(("[MQTT] Fallo en handshake MQTT. Cerrando socket y reintentando...\r\n"));
-				// Aquí sería ideal cerrar el socket si tuvieras la función expuesta,
-				// pero con volver al inicio del bucle basta por ahora.
-				WIFI_CloseClientConnection(SOCKET); // Intentamos cerrar por limpieza
-				osDelay(pdMS_TO_TICKS(2000));
-				continue; // Vuelve al inicio del for(;;)
-			}
+		  //LOG(("[MQTT] Esperando estabilizacion del hardware...\r\n"));
+		  //HAL_Delay(50);
 
-			LOG(("[MQTT] ONLINE. Loop de transmision activo.\r\n"));
-			NET_MQTT_OK = 1;
+		  // 3. CONECTAR CAPA MQTT
+		  // ATENCION: Esta funcion devuelve VOID en la librería original.
+		  // Si falla internamente, ejecuta configASSERT() y resetea la placa.
+		  // Es el comportamiento esperado del codigo del profesor.
+		  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
 
-			// 4. BUCLE DE TRANSMISIÓN (Solo entramos si xMQTTStatus == MQTTSuccess)
-			while (WIFI_IS_CONNECTED == 1)
+		  // Si llegamos aquí, asumimos que estamos conectados
+		  LOG(("[MQTT] Loop de transmision activo.\r\n"));
+		  NET_MQTT_OK = 1;
+
+		  // 4. BUCLE DE TRANSMISIÓN
+		  while (WIFI_IS_CONNECTED == 1)
+		  {
+			qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
+
+			if (qStatus == osOK)
 			{
-				qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
-
-				if (qStatus == osOK)
-				{
-					LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
-					prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
-				}
-
-				MQTTStatus_t xStat = MQTT_ProcessLoop(&xMQTTContext);
-
-				if (xStat != MQTTSuccess)
-				{
-					LOG(("[MQTT] Error KeepAlive (Code: %d). Desconectando...\r\n", xStat));
-					break;
-				}
+			  LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
+			  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
 			}
 
-			// 5. LIMPIEZA
-			NET_MQTT_OK = 0;
-			LOG(("[MQTT] Reiniciando ciclo...\r\n"));
-			osDelay(pdMS_TO_TICKS(1000));
-		}
+			// KeepAlive
+			MQTTStatus_t xStat = MQTT_ProcessLoop(&xMQTTContext);
+
+			if (xStat != MQTTSuccess)
+			{
+				 LOG(("[MQTT] Error KeepAlive. Desconectando...\r\n"));
+				 break;
+			}
+		  }
+
+		  // 5. LIMPIEZA
+		  NET_MQTT_OK = 0;
+		  LOG(("[MQTT] Reiniciando ciclo de conexion...\r\n"));
+		  osDelay(pdMS_TO_TICKS(1000));
+	  }
   /* USER CODE END MQTT_TaskFun */
 }
 
@@ -1040,7 +1038,7 @@ void StartTestGenTask(void *argument)
       {
           // 1. Crear Payload (Simulación de sensor)
           // Usamos el topic que definiste en tu código C para pruebas
-          sprintf(msg_test.topic, "SCF/test/sim");
+          sprintf(msg_test.topic, pcTempTopic);
           sprintf(msg_test.payload, "{\"id\": %d, \"val\": 25.5, \"status\": \"RUN\"}", contador_test++);
 
           // 2. Inyectar en la Cola (Timeout 100ms)

@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="SCF/"/>
+		<item value="socket"/>
 		<item value="socket_open=0"/>
 		<item value="socket_open"/>
 		<item value="mqtt_task"/>
@@ -16,7 +18,5 @@
 		<item value="mqtt_tASKfUN"/>
 		<item value="LOG"/>
 		<item value="printf"/>
-		<item value="StartWifiTask"/>
-		<item value="testtask"/>
 	</list>
 </section>

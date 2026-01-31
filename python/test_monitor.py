@@ -1,43 +1,35 @@
 import paho.mqtt.client as mqtt
 import json
 import random
+import sys
 
-# --- CONFIGURACIÓN (Coincidiendo con tu STM32) ---
-# Usamos la IP de broker.emqx.io para evitar DNS lookup, igual que en el C
-BROKER = "35.172.255.228" 
+# --- CONFIGURACIÓN PARA MANOLO ---
+# La IP que tienes en tu .h (test.mosquitto.org)
+BROKER = "54.36.178.49" 
 PORT = 1883
 
-# El topic que aparece en tu log: [MQTT TX] T: SCF/test/sim
-TOPIC_TO_LISTEN = "SCF/test/sim" 
+# EL TOPIC EXACTO (Valor de pcTempTopic en tu .h)
+TOPIC_TO_LISTEN = "SCF" 
 
-# Generamos un ID aleatorio para el PC para no chocar con el STM32
-CLIENT_ID = f"PC_Monitor_{random.randint(0, 1000)}"
+# ID Aleatorio
+CLIENT_ID = f"PC_Manolo_Listener_{random.randint(0, 10000)}"
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print(f"--- [PC] CONECTADO AL BROKER (EMQX) ---")
-        print(f"--- [PC] Escuchando en: {TOPIC_TO_LISTEN} ---")
+        print(f"--- [PC] CONECTADO A MOSQUITTO ({BROKER}) ---")
+        print(f"--- [PC] Escuchando en el topic: '{TOPIC_TO_LISTEN}' ---")
         client.subscribe(TOPIC_TO_LISTEN)
     else:
         print(f"--- [PC] Error de conexión: {rc} ---")
 
 def on_message(client, userdata, msg):
     try:
-        # Decodificamos el mensaje
         payload_str = msg.payload.decode('utf-8')
-        print(f"\n[RECIBIDO] Topic: {msg.topic}")
-        print(f"Raw Payload: {payload_str}")
-        
-        # Intentamos parsear JSON
-        # Tu JSON es: {"id": 0, "val": 25.5, "status": "RUN"}
-        data = json.loads(payload_str)
-        
-        id_dato = data.get('id')
-        val_dato = data.get('val')
-        print(f"-> ID: {id_dato} | Valor: {val_dato}")
+        print(f"\n[RECIBIDO] 📩 Topic: {msg.topic}")
+        print(f"Payload: {payload_str}")
         
     except Exception as e:
-        print(f"Error decodificando: {e}")
+        print(f"Error procesando mensaje: {e}")
 
 # Configuración del cliente
 client = mqtt.Client(client_id=CLIENT_ID)
@@ -45,9 +37,9 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 print(f"Conectando a {BROKER}...")
+
 try:
     client.connect(BROKER, PORT, 60)
-    # Bucle infinito
     client.loop_forever()
 except Exception as e:
-    print(f"Error al conectar desde el PC: {e}")
+    print(f"Error de conexión: {e}")

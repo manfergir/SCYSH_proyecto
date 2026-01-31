@@ -20,7 +20,7 @@ extern "C" {
 
 #define NETWORK_BUFFER_SIZE (1000U)
 #ifndef SOCKET
-#define SOCKET 1
+#define SOCKET 0
 #endif
 
 #ifndef LOG
@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 TransportStatus_t prvConnectToServer( NetworkContext_t * );
-MQTTStatus_t prvCreateMQTTConnectionWithBroker( MQTTContext_t * , NetworkContext_t * );
+void prvCreateMQTTConnectionWithBroker( MQTTContext_t * , NetworkContext_t * );
 void prvMQTTPublishToTopic( MQTTContext_t *, char *,void * );
 void prvMQTTSubscribeToTopic( MQTTContext_t *, char * );
 uint32_t prvGetTimeMs(void);

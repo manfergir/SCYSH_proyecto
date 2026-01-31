@@ -60,49 +60,39 @@ int32_t transport_send( NetworkContext_t * pNetworkContext,
                         const void * pBuffer,
                         size_t bytesToSend )
 {
-    int32_t socketStatus = 1;
+    int32_t socketStatus=0;
+    int16_t datasent;
     uint8_t ret;
-    uint16_t datasent;
-    int retry_count = 0;
 
     ES_WIFI_Conn_t conn;
-    conn.Number = pNetworkContext->socket;
-    conn.RemotePort = pNetworkContext->remote_port;
-    conn.LocalPort = 0;
-    conn.Type = ES_WIFI_TCP_CONNECTION;
-    conn.RemoteIP[0] = pNetworkContext->ipaddr[0];
-    conn.RemoteIP[1] = pNetworkContext->ipaddr[1];
-    conn.RemoteIP[2] = pNetworkContext->ipaddr[2];
-    conn.RemoteIP[3] = pNetworkContext->ipaddr[3];
+
+	conn.Number = pNetworkContext->socket;
+	conn.RemotePort = pNetworkContext->remote_port;
+	conn.LocalPort = 0;
+	conn.Type = ES_WIFI_TCP_CONNECTION;
+	conn.RemoteIP[0] = pNetworkContext->ipaddr[0];
+	conn.RemoteIP[1] = pNetworkContext->ipaddr[1];
+	conn.RemoteIP[2] = pNetworkContext->ipaddr[2];
+	conn.RemoteIP[3] = pNetworkContext->ipaddr[3];
 
     if(!pNetworkContext->socket_open) {
-    	printf("ERROR: Socket no abierto en transport_send\n");
-    	return -1;
+    	ret=ES_WIFI_StartClientConnection(&EsWifiObj, &conn);
+
+		if(ret!=ES_WIFI_STATUS_OK) {
+			return 0;
+		} else {
+			pNetworkContext->socket_open=1;
+		}
     }
 
-    // --- BUCLE DE REINTENTOS (La clave del éxito) ---
-    do {
-        // Intentamos enviar
-        ret = ES_WIFI_SendData(&EsWifiObj, pNetworkContext->socket, (uint8_t*)pBuffer, bytesToSend, &datasent, 5000);
-
-        if (ret == ES_WIFI_STATUS_OK) {
-            break; // ¡Éxito! Salimos del bucle
-        }
-
-        // Si falla, esperamos un poco y reintentamos
-        retry_count++;
-        printf("WARN: Fallo envio (Error %d). Reintento %d/3...\r\n", ret, retry_count);
-        HAL_Delay(50); // Pequeña pausa para que el chip WiFi respire
-
-    } while (retry_count < 3);
-    // -----------------------------------------------
-
-	if(ret != ES_WIFI_STATUS_OK) {
-		// Si tras 3 intentos sigue fallando, reportamos error PERO NO CERRAMOS EL SOCKET
-		printf("Error in sending data tras reintentos: %d\n", ret);
-		return -1;
+	ret=ES_WIFI_SendData(&EsWifiObj,pNetworkContext->socket,pBuffer,bytesToSend,&datasent,1000);
+	//log_transport('S',pBuffer,bytesToSend);
+	if(ret!=ES_WIFI_STATUS_OK) {
+		pNetworkContext->socket_open=0;
+		printf("Error in sending data: %d\n",ret);
+		return 0;
 	} else {
-		socketStatus = datasent;
+		socketStatus=datasent;
 	}
 
     return socketStatus;
