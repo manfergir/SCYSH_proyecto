@@ -10,10 +10,10 @@ Core/Src/mqtt_priv.o: ../Core/Src/mqtt_priv.c ../Core/Inc/mqtt_priv.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
+ /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
+ /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
+ /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -46,6 +46,8 @@ Core/Src/mqtt_priv.o: ../Core/Src/mqtt_priv.c ../Core/Inc/mqtt_priv.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
@@ -57,7 +59,7 @@ Core/Src/mqtt_priv.o: ../Core/Src/mqtt_priv.c ../Core/Inc/mqtt_priv.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h \
  ../Core/Inc/mqtt_priv_config.h \
  ../Core/Src/../../Libraries/coreMQTT/source/core_mqtt.h \
- ../Core/Inc/stm32l475e_iot01.h
+ /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h
 ../Core/Inc/mqtt_priv.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -70,10 +72,10 @@ Core/Src/mqtt_priv.o: ../Core/Src/mqtt_priv.c ../Core/Inc/mqtt_priv.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
+/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
+/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
+/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:
@@ -106,6 +108,8 @@ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
@@ -117,4 +121,4 @@ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h:
 ../Core/Inc/mqtt_priv_config.h:
 ../Core/Src/../../Libraries/coreMQTT/source/core_mqtt.h:
-../Core/Inc/stm32l475e_iot01.h:
+/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:

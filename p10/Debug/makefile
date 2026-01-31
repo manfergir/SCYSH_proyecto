@@ -18,7 +18,6 @@ RM := rm -rf
 -include Drivers/BSP/src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
--include Core/Inc/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -67,8 +66,8 @@ all: main-build
 main-build: p10.elf secondary-outputs
 
 # Tool invocations
-p10.elf p10.map: $(OBJS) $(USER_OBJS) C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "p10.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+p10.elf p10.map: $(OBJS) $(USER_OBJS) /home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/STM32L475VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "p10.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/dani/data/projects/STM32/workspace-1.19/SCYSH_proyecto/p10/STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

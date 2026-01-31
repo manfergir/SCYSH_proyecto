@@ -30,8 +30,10 @@
 #include "mqtt_priv.h"
 #include "mqtt_priv_config.h"
 //#include "transport_interface.h"
-//#include "stm32l475e_iot01.h"
-//#include "stm32l475e_iot01_tsensor.h"
+#include "stm32l475e_iot01.h"
+#include "stm32l475e_iot01_tsensor.h"
+#include "stm32l475e_iot01_hsensor.h"
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -42,6 +44,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define FLAG_DATA_READY 0x00000001U
+#define FLAG_BTN_EVENT 0x00000002U
+
 //#define PROJECT_TYPE 0
 /* USER CODE END PD */
 
@@ -56,6 +61,8 @@ DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
 I2C_HandleTypeDef hi2c2;
 
 QSPI_HandleTypeDef hqspi;
+
+RTC_HandleTypeDef hrtc;
 
 SPI_HandleTypeDef hspi3;
 
@@ -78,12 +85,12 @@ const osThreadAttr_t MQTT_Task_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for TestGenTask */
-osThreadId_t TestGenTaskHandle;
-const osThreadAttr_t TestGenTask_attributes = {
-  .name = "TestGenTask",
-  .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+/* Definitions for task_envRead */
+osThreadId_t task_envReadHandle;
+const osThreadAttr_t task_envRead_attributes = {
+  .name = "task_envRead",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for qMqttTx */
 osMessageQueueId_t qMqttTxHandle;
@@ -130,9 +137,10 @@ static void MX_SPI3_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
+static void MX_RTC_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
-void StartTestGenTask(void *argument);
+void task_envReadFunc(void *argument);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -150,6 +158,38 @@ extern ES_WIFIObject_t    EsWifiObj;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void program_alarm_RTC(void)
+{
+  RTC_AlarmTypeDef sAlarm = {0};
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // Necesario para desbloquear registros
+
+  sAlarm.AlarmTime.Seconds = sTime.Seconds;
+  sAlarm.AlarmTime.Minutes = sTime.Minutes + 30; // +30 Minutos
+  sAlarm.AlarmTime.Hours = sTime.Hours;
+
+  if (sAlarm.AlarmTime.Minutes >= 60) {
+    sAlarm.AlarmTime.Minutes -= 60;
+    sAlarm.AlarmTime.Hours += 1;
+  }
+  if (sAlarm.AlarmTime.Hours >= 24) {
+    sAlarm.AlarmTime.Hours -= 24;
+  }
+
+  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY; 
+  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+  sAlarm.AlarmDateWeekDay = 1;
+  sAlarm.Alarm = RTC_ALARM_A;
+
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
+    Error_Handler();
+  }
+}
 
 static int wifi_start(void)
 {
@@ -250,6 +290,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
 	printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
@@ -283,7 +324,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (16, 160, &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (2, 160, &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
@@ -299,8 +340,8 @@ int main(void)
   /* creation of MQTT_Task */
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
-  /* creation of TestGenTask */
-  TestGenTaskHandle = osThreadNew(StartTestGenTask, NULL, &TestGenTask_attributes);
+  /* creation of task_envRead */
+  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -350,8 +391,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_LSE
+                              |RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
@@ -440,7 +483,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x00000E14;
+  hi2c2.Init.Timing = 0x10D19CE4;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -502,6 +545,89 @@ static void MX_QUADSPI_Init(void)
   /* USER CODE BEGIN QUADSPI_Init 2 */
 
   /* USER CODE END QUADSPI_Init 2 */
+
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+  RTC_AlarmTypeDef sAlarm = {0};
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN Check_RTC_BKUP */
+
+  /* USER CODE END Check_RTC_BKUP */
+
+  /** Initialize RTC and set the Time and Date
+  */
+  sTime.Hours = 0x0;
+  sTime.Minutes = 0x0;
+  sTime.Seconds = 0x0;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.Month = RTC_MONTH_JANUARY;
+  sDate.Date = 0x1;
+  sDate.Year = 0x0;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Enable the Alarm A
+  */
+  sAlarm.AlarmTime.Hours = 0x0;
+  sAlarm.AlarmTime.Minutes = 0x0;
+  sAlarm.AlarmTime.Seconds = 0x0;
+  sAlarm.AlarmTime.SubSeconds = 0x0;
+  sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+  sAlarm.AlarmDateWeekDay = 0x1;
+  sAlarm.Alarm = RTC_ALARM_A;
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
 
 }
 
@@ -707,11 +833,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BUTTON_EXTI13_Pin */
-  GPIO_InitStruct.Pin = BUTTON_EXTI13_Pin;
+  /*Configure GPIO pin : BOTON_Pin */
+  GPIO_InitStruct.Pin = BOTON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(BUTTON_EXTI13_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(BOTON_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : ARD_A5_Pin ARD_A4_Pin ARD_A3_Pin ARD_A2_Pin
                            ARD_A1_Pin ARD_A0_Pin */
@@ -873,11 +999,22 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       SPI_WIFI_ISR();
       break;
     }
+    case (BOTON_Pin):
+    {
+      osThreadFlagsSet(task_envReadHandle, FLAG_BTN_EVENT);
+      break;
+    }
     default:
     {
       break;
     }
   }
+}
+
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
+    // 1. Avisar a la tarea principal (Igual que con el botón)
+    // Usamos la misma bandera o una distinta ("FLAG_RTC_WAKEUP")
+    osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY); 
 }
 
 /* USER CODE END 4 */
@@ -1012,58 +1149,82 @@ void MQTT_TaskFun(void *argument)
   /* USER CODE END MQTT_TaskFun */
 }
 
-
-/* USER CODE BEGIN Header_StartTestGenTask */
+/* USER CODE BEGIN Header_task_envReadFunc */
 /**
-* @brief Function implementing the TestGenTask thread.
+* @brief Function implementing the task_envRead thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartTestGenTask */
-void StartTestGenTask(void *argument)
+/* USER CODE END Header_task_envReadFunc */
+void task_envReadFunc(void *argument)
 {
-  /* USER CODE BEGIN StartTestGenTask */
+  /* USER CODE BEGIN task_envReadFunc */
 
-	// Variables locales
-	int contador_test = 0;
-	MqttMsg_t msg_test;
+  uint32_t id_msg = 0;    //Id del mensaje
+  uint8_t reason;     //Motivo del mensaje
+  float temp;         //Temperatura
+  int16_t temp_int;  //Temperatura en un entero
+  uint8_t hum;         //Humedad
+  uint32_t flag;      //Bandera activada
+  MqttMsg_t msg;      //Mensaje MQTT
 
-	LOG(("--- [TEST GEN] Tarea Productora Iniciada ---\r\n"));
+  if ( BSP_TSENSOR_Init() == TSENSOR_OK )
+  {
+    printf("Sensor de temperatura inicializado correctamente.\r\n");
+  }
+  else
+  {
+    printf("Error en la inicialización del sensor de temperatura.\r\n");
+  }
+
+  if ( BSP_HSENSOR_Init() == HSENSOR_OK )
+  {
+    printf("Sensor de humedad inicializado correctamente.\r\n");
+  }
+  else
+  {
+    printf("Error en la inicialización del sensor de humedad.\r\n");
+  }
+
+  program_alarm_RTC();
+
   /* Infinite loop */
   for(;;)
   {
-      // CONDICIÓN DE GUARDA:
-      // Solo generamos datos si el túnel MQTT (Capa de Aplicación) está levantado.
-      if (NET_MQTT_OK == 1)
-      {
-          // 1. Crear Payload (Simulación de sensor)
-          // Usamos el topic que definiste en tu código C para pruebas
-          sprintf(msg_test.topic, pcTempTopic);
-          sprintf(msg_test.payload, "{\"id\": %d, \"val\": 25.5, \"status\": \"RUN\"}", contador_test++);
+    
+    flag = osThreadFlagsWait( FLAG_BTN_EVENT | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
 
-          // 2. Inyectar en la Cola (Timeout 100ms)
-          // Si la cola está llena, osMessageQueuePut devuelve error y no bloqueamos indefinidamente
-          if (osMessageQueuePut(qMqttTxHandle, &msg_test, 0, pdMS_TO_TICKS(100)) == osOK)
-          {
-              LOG(("[TEST GEN] Dato %d encolado.\r\n", contador_test-1));
-          }
-          else
-          {
-              LOG(("[TEST GEN] WARN: Cola llena. El consumidor va lento.\r\n"));
-          }
-      }
-      else
-      {
-          // Si no hay conexión, esperamos un poco antes de volver a comprobar
-          osDelay(pdMS_TO_TICKS(1000));
-          continue;
-      }
-
-      // FRECUENCIA DE MUESTREO:
-      // Generamos un dato cada 5 segundos
-      osDelay(pdMS_TO_TICKS(5000));
+    if ( flag == FLAG_DATA_READY )
+    {
+      reason = 0;   //El mensaje se envía por timeout
+      program_alarm_RTC(); //Reinicio del temporizador
     }
-  /* USER CODE END StartTestGenTask */
+    else if ( flag == FLAG_BTN_EVENT )
+    {
+      reason = 1;   //El mensaje se envía por solicitud directa (botón)
+    }
+    else
+    {
+      reason = 2;   //El mensaje no debería haberse enviado. Aquí no se debería entrar nunca
+    }
+
+    temp = BSP_TSENSOR_ReadTemp();
+    temp_int = (int16_t) (temp*10);
+    hum = (uint8_t) BSP_HSENSOR_ReadHumidity();
+
+    snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
+    snprintf(msg.payload, sizeof(msg.payload),
+                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
+                 id_msg,
+                 reason,
+                 temp_int,
+                 hum);
+    
+    osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    id_msg++;
+
+  }
+  /* USER CODE END task_envReadFunc */
 }
 
 /**
