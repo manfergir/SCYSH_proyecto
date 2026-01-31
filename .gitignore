@@ -1,1 +1,7 @@
 .metadata/
+.ide/
+*.dat
+*.xml
+*.index
+*.log
+
