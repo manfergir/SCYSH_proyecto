@@ -1,0 +1,149 @@
+/* Private functions to implement MQTT app */
+#include <mqtt_priv.h>
+#include "../../Libraries/coreMQTT/source/core_mqtt.h"
+#include "stm32l475e_iot01.h"
+
+static uint8_t ucSharedBuffer[ NETWORK_BUFFER_SIZE ];
+static MQTTFixedBuffer_t xBuffer = { ucSharedBuffer, NETWORK_BUFFER_SIZE };
+
+typedef struct topicFilterContext {
+    const char * pcTopicFilter;
+    MQTTSubAckStatus_t xSubAckStatus;
+} topicFilterContext_t;
+
+// Topic dummy para compilacion
+static topicFilterContext_t xTopicFilterContext[ TOPIC_COUNT ] = {
+    { "SCF/dummy", MQTTSubAckFailure }
+};
+
+static uint16_t usSubscribePacketIdentifier;
+static uint32_t ulGlobalEntryTimeMs;
+
+TransportStatus_t prvConnectToServer( NetworkContext_t * pxNetworkContext )
+{
+   TransportStatus_t xNetworkStatus = (TransportStatus_t) -1;
+   uint8_t ret;
+
+   // --- HARDCODING IP: EMQX (35.172.255.228) ---
+   // Ignoramos el .h para asegurar que usamos esta IP
+   uint8_t ipaddr[4] = {35, 172, 255, 228};
+
+    LOG(("--- [DEBUG] Iniciando Conexion TCP a 35.172.255.228... ---\r\n"));
+
+    do {
+        // Usamos puerto 1883 directo
+        ret = WIFI_OpenClientConnection(SOCKET, WIFI_TCP_PROTOCOL, "mqtt", ipaddr , 1883, 0);
+
+        // Aceptamos 0 (OK) y 1 (REQ_DATA)
+        if((ret != WIFI_STATUS_OK) && (ret != ES_WIFI_STATUS_REQ_DATA_STAGE)) {
+			LOG(("Error TCP: %d. Reintentando en 5s...\n", ret));
+            xNetworkStatus = (TransportStatus_t) -1;
+			osDelay(pdMS_TO_TICKS(5000));
+		} else {
+            LOG(("--- [EXITO] SOCKET ABIERTO (Codigo: %d) ---\r\n", ret));
+	        pxNetworkContext->socket = SOCKET;
+	        pxNetworkContext->socket_open = 1;
+	        memcpy(pxNetworkContext->ipaddr, ipaddr, 4*sizeof(uint8_t));
+	        pxNetworkContext->remote_port = 1883;
+	        xNetworkStatus = PLAINTEXT_TRANSPORT_SUCCESS;
+		}
+    } while( ( xNetworkStatus != PLAINTEXT_TRANSPORT_SUCCESS ) );
+
+    return PLAINTEXT_TRANSPORT_SUCCESS;
+}
+
+// CAMBIO 1: Ahora devuelve MQTTStatus_t en vez de void
+MQTTStatus_t prvCreateMQTTConnectionWithBroker( MQTTContext_t * pxMQTTContext, NetworkContext_t * pxNetworkContext )
+{
+    MQTTStatus_t xResult;
+    MQTTConnectInfo_t xConnectInfo;
+    bool xSessionPresent;
+    TransportInterface_t xTransport;
+
+    // --- CORRECCIÓN FINAL: DELAY "RICITOS DE ORO" ---
+    // 0ms es muy poco (Error 5 Busy).
+    // 2000ms es mucho (Error 5 Timeout).
+    // 500ms es perfecto para estabilizar el socket.
+    LOG(("--- [DEBUG] Esperando 500ms para estabilizar socket... ---\r\n"));
+    HAL_Delay(500);
+
+    init_transport_from_socket( pxNetworkContext->socket, 1, pxNetworkContext, &xTransport );
+
+    xResult = MQTT_Init( pxMQTTContext, &xTransport, prvGetTimeMs, prvEventCallback, &xBuffer );
+    configASSERT( xResult == MQTTSuccess );
+
+    ( void ) memset( ( void * ) &xConnectInfo, 0x00, sizeof( xConnectInfo ) );
+    xConnectInfo.cleanSession = true;
+
+    // ID Hardcoded (Asegúrate de que sigue ahí)
+    const char * my_id = "STM32_Final_Hardcoded_998877";
+
+    xConnectInfo.pClientIdentifier = my_id;
+    xConnectInfo.clientIdentifierLength = ( uint16_t ) strlen( my_id );
+    xConnectInfo.pUserName = NULL;
+    xConnectInfo.userNameLength = 0;
+    xConnectInfo.pPassword = NULL;
+    xConnectInfo.passwordLength = 0;
+    xConnectInfo.keepAliveSeconds = 60U;
+
+    LOG(("--- [MQTT] Enviando Packet CONNECT... ---\r\n"));
+
+    xResult = MQTT_Connect( pxMQTTContext,
+                            &xConnectInfo,
+                            NULL,
+                            5000U,
+                            &xSessionPresent );
+
+    if(xResult == MQTTSuccess) {
+         LOG(("--- [EXITO TOTAL] MQTT CONECTADO ---\r\n"));
+    } else {
+         LOG(("--- [ERROR] MQTT Connect Fallo. Codigo: %d ---\r\n", xResult));
+    }
+
+    return xResult;
+}
+
+// RESTO DE FUNCIONES (Tal cual las tenias)
+void prvMQTTPublishToTopic( MQTTContext_t * pxMQTTContext, char * topic, void * payload ) {
+    MQTTPublishInfo_t xMQTTPublishInfo;
+    ( void ) memset( ( void * ) &xMQTTPublishInfo, 0x00, sizeof( xMQTTPublishInfo ) );
+    xMQTTPublishInfo.qos = MQTTQoS0;
+    xMQTTPublishInfo.retain = false;
+    xMQTTPublishInfo.pTopicName = topic;
+    xMQTTPublishInfo.topicNameLength = ( uint16_t ) strlen( topic );
+    xMQTTPublishInfo.pPayload = payload;
+    xMQTTPublishInfo.payloadLength = strlen( payload );
+    MQTT_Publish( pxMQTTContext, &xMQTTPublishInfo, 0U );
+}
+
+void prvMQTTSubscribeToTopic( MQTTContext_t * pxMQTTContext, char * topic ) {
+     MQTTSubscribeInfo_t xMQTTSubscription[ 1 ];
+     usSubscribePacketIdentifier = MQTT_GetPacketId( pxMQTTContext );
+     xMQTTSubscription[ 0 ].qos = MQTTQoS0;
+     xMQTTSubscription[ 0 ].pTopicFilter = topic;
+     xMQTTSubscription[ 0 ].topicFilterLength = strlen( topic );
+     MQTT_Subscribe( pxMQTTContext, xMQTTSubscription, 1, usSubscribePacketIdentifier );
+}
+
+uint32_t prvGetTimeMs( void ) {
+    return ( uint32_t ) xTaskGetTickCount() * ( 1000 / configTICK_RATE_HZ ) - ulGlobalEntryTimeMs;
+}
+
+void prvEventCallback( MQTTContext_t * pxMQTTContext, MQTTPacketInfo_t * pxPacketInfo, MQTTDeserializedInfo_t * pxDeserializedInfo ) {
+    ( void ) pxMQTTContext;
+    if( ( pxPacketInfo->type & 0xF0U ) == MQTT_PACKET_TYPE_PUBLISH ) {
+      prvMQTTProcessIncomingPublish( pxDeserializedInfo->pPublishInfo );
+    }
+}
+
+void prvMQTTProcessIncomingPublish( MQTTPublishInfo_t *pxPublishInfo ) {
+	char buffer1[128];
+	char buffer2[128];
+	memcpy(buffer1,pxPublishInfo->pPayload,min(127,pxPublishInfo->payloadLength));
+	buffer1[min(1023,pxPublishInfo->payloadLength)]='\0';
+	memcpy(buffer2,pxPublishInfo->pTopicName,min(127,pxPublishInfo->topicNameLength));
+	buffer2[min(1023,pxPublishInfo->topicNameLength)]='\0';
+	LOG(("Topic \"%s\": publicado \"%s\"\n",buffer2,buffer1));
+	if(buffer1[0]=='1') BSP_LED_On(LED2);
+	if(buffer1[0]=='0') BSP_LED_Off(LED2);
+}
