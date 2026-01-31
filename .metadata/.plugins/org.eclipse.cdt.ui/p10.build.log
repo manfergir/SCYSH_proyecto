@@ -1,79 +1,27 @@
-13:22:44 **** Incremental Build of configuration Debug for project p10 ****
+14:40:17 **** Incremental Build of configuration Debug for project p10 ****
 make -j20 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc "../Core/Src/mqtt_priv.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mqtt_priv.d" -MT"Core/Src/mqtt_priv.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mqtt_priv.o"
-../Core/Src/mqtt_priv.c: In function 'prvCreateMQTTConnectionWithBroker':
-../Core/Src/mqtt_priv.c:106:33: warning: argument 1 null where non-null expected [-Wnonnull]
-  106 |     xConnectInfo.userNameLength=strlen(mqttUserName);
-      |                                 ^~~~~~
-In file included from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:28,
-                 from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:26,
-                 from ../Core/Inc/mqtt_priv.h:13,
-                 from ../Core/Src/mqtt_priv.c:4:
-C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
-   41 | size_t   strlen (const char *);
-      |          ^~~~~~
-../Core/Src/mqtt_priv.c:108:33: warning: argument 1 null where non-null expected [-Wnonnull]
-  108 |     xConnectInfo.passwordLength=strlen(mqttPass);
-      |                                 ^~~~~~
-C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
-   41 | size_t   strlen (const char *);
-      |          ^~~~~~
-../Core/Src/main.c: In function 'MQTT_TaskFun':
-../Core/Src/mqtt_priv.c: In function 'prvMQTTPublishToTopic':
-../Core/Src/main.c:882:15: warning: unused variable 'ftemp' [-Wunused-variable]
-  882 |         float ftemp;
-      |               ^~~~~
-../Core/Src/main.c:880:22: warning: unused variable 'xMQTTStatus' [-Wunused-variable]
-  880 |         MQTTStatus_t xMQTTStatus;
-      |                      ^~~~~~~~~~~
-../Core/Src/main.c:877:24: warning: unused variable 'ulMaxPublishCount' [-Wunused-variable]
-  877 |         const uint32_t ulMaxPublishCount = 5UL;
-      |                        ^~~~~~~~~~~~~~~~~
-../Core/Src/mqtt_priv.c:148:35: warning: format '%s' expects argument of type 'char *', but argument 3 has type 'void *' [-Wformat=]
-  148 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~       ~~~~~~~
-      |                                                                       |
-      |                                                                       void *
-../Core/Inc/mqtt_priv.h:29:23: note: in definition of macro 'LOG'
-   29 | #define LOG(a) printf a
-      |                       ^
-In file included from ../Core/Src/main.c:29:
-../Core/Inc/mqtt_priv.h: At top level:
-../Core/Src/mqtt_priv.c:148:60: note: format string is defined here
-  148 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
-      |                                                           ~^
-      |                                                            |
-      |                                                            char *
-      |                                                           %p
+In file included from ../Core/Src/main.c:30:
 ../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
    45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
       |             ^~~~~~~~~~~~~~~~~~~~~~
-../Core/Src/mqtt_priv.c: In function 'prvMQTTProcessIncomingPublish':
-../Core/Src/mqtt_priv.c:219:18: warning: unused variable 'pTopicName' [-Wunused-variable]
-  219 |     const char * pTopicName;
-      |                  ^~~~~~~~~~
-../Core/Src/main.c:129:17: warning: 'LedState' defined but not used [-Wunused-variable]
-  129 | static  int     LedState = 0;
+../Core/Src/main.c:146:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  146 | static  int     LedState = 0;
       |                 ^~~~~~~~
-../Core/Src/main.c:127:17: warning: 'http' defined but not used [-Wunused-variable]
-  127 | static  uint8_t http[1024];
+../Core/Src/main.c:144:17: warning: 'http' defined but not used [-Wunused-variable]
+  144 | static  uint8_t http[1024];
       |                 ^~~~
-../Core/Src/mqtt_priv.c: At top level:
-../Core/Src/mqtt_priv.c:275:13: warning: 'prvMQTTProcessResponse' defined but not used [-Wunused-function]
-  275 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
-      |             ^~~~~~~~~~~~~~~~~~~~~~
 arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: p10.elf
  
 arm-none-eabi-size  p10.elf 
 arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
    text	   data	    bss	    dec	    hex	filename
-  69164	    120	  15256	  84540	  14a3c	p10.elf
+  75132	    120	  26272	 101524	  18c94	p10.elf
 Finished building: default.size.stdout
  
 Finished building: p10.list
  
 
-13:22:45 Build Finished. 0 errors, 11 warnings. (took 785ms)
+14:40:18 Build Finished. 0 errors, 3 warnings. (took 790ms)
 

@@ -1,0 +1,98 @@
+2026-01-31 00:17:04,464 [INFO] EditThreadDialog:704 - RAM SIZE (in KB): 128
+2026-01-31 00:17:04,473 [INFO] EditThreadDialog:706 - RAM SIZE (in words): 32768
+2026-01-31 00:17:36,747 [INFO] TasksAndQueuesTab:757 - Dynamic
+2026-01-31 00:17:36,748 [WARN] TasksAndQueuesTab:763 - 512 128
+2026-01-31 00:17:36,748 [WARN] TasksAndQueuesTab:775 - max value is: 4000.0
+2026-01-31 00:17:36,748 [INFO] TasksAndQueuesTab:757 - Dynamic
+2026-01-31 00:17:36,749 [WARN] TasksAndQueuesTab:763 - 512 128
+2026-01-31 00:17:36,749 [WARN] TasksAndQueuesTab:775 - max value is: 4000.0
+2026-01-31 00:17:36,749 [INFO] TasksAndQueuesTab:757 - Dynamic
+2026-01-31 00:17:36,749 [WARN] TasksAndQueuesTab:763 - 256 128
+2026-01-31 00:17:36,749 [WARN] TasksAndQueuesTab:775 - max value is: 4000.0
+2026-01-31 00:17:40,644 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 795797512 Bytes (1073741824)
+2026-01-31 00:17:42,037 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 819914760 Bytes (1073741824)
+2026-01-31 00:17:43,394 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 864858592 Bytes (1073741824)
+2026-01-31 00:17:43,645 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SPI
+2026-01-31 00:17:43,645 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: FREERTOS
+2026-01-31 00:17:43,645 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DFSDM
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: I2C
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USB_OTG_FS
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2026-01-31 00:17:43,646 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: QUADSPI
+2026-01-31 00:17:43,647 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2026-01-31 00:17:43,802 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\license.tmp_save
+2026-01-31 00:17:43,922 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\license.tmp
+2026-01-31 00:17:44,048 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\gpio.tmp_save
+2026-01-31 00:17:44,114 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\gpio.tmp
+2026-01-31 00:17:45,164 [WARN] IPConfigManager:3238 - Warning: the RefConfig PWREx_EnableUSBVoltageDetector is not available in your config.xml file
+2026-01-31 00:17:45,178 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2026-01-31 00:17:45,183 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_inc.tmp_save
+2026-01-31 00:17:45,233 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_inc.tmp
+2026-01-31 00:17:45,237 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelInit.tmp_save
+2026-01-31 00:17:45,268 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelInit.tmp
+2026-01-31 00:17:45,270 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelStart.tmp_save
+2026-01-31 00:17:45,300 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelStart.tmp
+2026-01-31 00:17:45,303 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_typedefs.tmp_save
+2026-01-31 00:17:45,329 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_typedefs.tmp
+2026-01-31 00:17:45,331 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_vars.tmp_save
+2026-01-31 00:17:45,361 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_vars.tmp
+2026-01-31 00:17:45,364 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_pfp.tmp_save
+2026-01-31 00:17:45,391 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_pfp.tmp
+2026-01-31 00:17:45,394 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_obj_creat.tmp_save
+2026-01-31 00:17:45,421 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_obj_creat.tmp
+2026-01-31 00:17:45,424 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_default_thread.tmp_save
+2026-01-31 00:17:45,451 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_default_thread.tmp
+2026-01-31 00:17:45,453 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_threads.tmp_save
+2026-01-31 00:17:45,480 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_threads.tmp
+2026-01-31 00:17:45,490 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2026-01-31 00:17:45,495 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_inc.tmp_save
+2026-01-31 00:17:45,521 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_inc.tmp
+2026-01-31 00:17:45,525 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelInit.tmp_save
+2026-01-31 00:17:45,552 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelInit.tmp
+2026-01-31 00:17:45,556 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelStart.tmp_save
+2026-01-31 00:17:45,582 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_kernelStart.tmp
+2026-01-31 00:17:45,586 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_typedefs.tmp_save
+2026-01-31 00:17:45,619 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_typedefs.tmp
+2026-01-31 00:17:45,622 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_vars.tmp_save
+2026-01-31 00:17:45,651 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_vars.tmp
+2026-01-31 00:17:45,654 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_pfp.tmp_save
+2026-01-31 00:17:45,682 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_pfp.tmp
+2026-01-31 00:17:45,686 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_obj_creat.tmp_save
+2026-01-31 00:17:45,715 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_obj_creat.tmp
+2026-01-31 00:17:45,719 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_default_thread.tmp_save
+2026-01-31 00:17:45,748 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_default_thread.tmp
+2026-01-31 00:17:45,752 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_threads.tmp_save
+2026-01-31 00:17:45,784 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\rtos_threads.tmp
+2026-01-31 00:17:45,789 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\FreeRTOSConfig.h_save
+2026-01-31 00:17:45,827 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\FreeRTOSConfig.h
+2026-01-31 00:17:45,830 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\freertos.c_save
+2026-01-31 00:17:45,860 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\freertos.c
+2026-01-31 00:17:45,872 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_it.c_save
+2026-01-31 00:17:45,964 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_it.c
+2026-01-31 00:17:45,967 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\stm32l4xx_it.h_save
+2026-01-31 00:17:45,995 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\stm32l4xx_it.h
+2026-01-31 00:17:46,004 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_hal_msp.c_save
+2026-01-31 00:17:46,063 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_hal_msp.c
+2026-01-31 00:17:46,066 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\system.tmp_save
+2026-01-31 00:17:46,091 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\MXTmpFiles\system.tmp
+2026-01-31 00:17:46,094 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_hal_timebase_tim.c_save
+2026-01-31 00:17:46,123 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\stm32l4xx_hal_timebase_tim.c
+2026-01-31 00:17:46,130 [INFO] CodeEngine:321 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\stm32l4xx_hal_conf.h_save
+2026-01-31 00:17:46,159 [INFO] CodeEngine:345 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\stm32l4xx_hal_conf.h
+2026-01-31 00:17:46,185 [WARN] IPConfigManager:3811 - IP not found : USB_OTG
+2026-01-31 00:17:46,186 [WARN] CodeGenerator:4259 - IP not found : null
+2026-01-31 00:17:46,191 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\main.h_save
+2026-01-31 00:17:46,233 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Inc\main.h
+2026-01-31 00:17:46,237 [INFO] CodeEngine:265 - oldGeneratedFile, C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\main.c_save
+2026-01-31 00:17:46,310 [INFO] CodeEngine:289 - Generated code: C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\Core\Src\main.c
+2026-01-31 00:17:46,559 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 154mS.
+2026-01-31 00:17:46,562 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2026-01-31 00:17:46,596 [INFO] ConfigFileManager:1595 - The Die is : DIE415
+2026-01-31 00:17:47,086 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 524mS.
+2026-01-31 00:17:47,086 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2026-01-31 00:17:47,090 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.

@@ -1,4 +1,22 @@
-!SESSION 2026-01-31 01:08:50.593 -----------------------------------------------
+!SESSION 2026-01-27 21:10:18.161 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-27 21:10:39.252
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-27 21:10:39.253
+!MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-27 21:10:51.061
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-27 21:11:03.988
+!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 2.97 sec: 22,156 declarations; 129,121 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.11%)
+!SESSION 2026-01-29 19:17:00.219 -----------------------------------------------
 eclipse.buildId=Version 1.19.0
 java.version=21.0.3
 java.vendor=Eclipse Adoptium
@@ -6,21 +24,21 @@ BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
 Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
 Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 01:08:55.622
+!ENTRY org.eclipse.core.resources 2 10035 2026-01-29 19:17:03.796
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-29 19:17:05.958
 !MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 01:08:55.623
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-29 19:17:05.959
 !MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
 
-!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 01:08:57.691
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-29 19:17:18.731
 !MESSAGE Started RMI Server, listening on port 41337
 
-!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 01:09:01.963
-!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 3.06 sec: 22,150 declarations; 125,164 references; 7 unresolved inclusions; 1,686 syntax errors; 2,494 unresolved names (1.7%)
-
-!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 01:09:25.443
-!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
-!SESSION 2026-01-31 13:20:59.064 -----------------------------------------------
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-29 19:17:21.684
+!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 2.69 sec: 22,156 declarations; 129,121 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.11%)
+!SESSION 2026-01-30 20:39:57.439 -----------------------------------------------
 eclipse.buildId=Version 1.19.0
 java.version=21.0.3
 java.vendor=Eclipse Adoptium
@@ -28,20 +46,198 @@ BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
 Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
 Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 13:21:03.599
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-30 20:40:02.047
 !MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 13:21:03.600
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-30 20:40:02.048
 !MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
 
-!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 13:21:06.941
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-30 20:40:15.229
 !MESSAGE Started RMI Server, listening on port 41337
 
-!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 13:21:09.972
-!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 2.75 sec: 22,156 declarations; 129,121 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.11%)
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-30 20:40:18.078
+!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 2.58 sec: 22,156 declarations; 129,121 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.11%)
 
-!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:21:21.430
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-30 21:07:20.789
 !MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
 
-!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:22:52.899
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-30 21:11:13.533
+!MESSAGE Indexed 'p10' (54 sources, 215 headers) in 2.16 sec: 26,670 declarations; 138,453 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.1%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-30 23:32:58.758
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:21:57.532
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:23:02.485
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:24:40.032
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:30:38.375
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:33:42.484
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:41:23.884
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:44:59.093
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:46:21.561
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:48:46.441
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 00:57:38.717
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 01:03:19.972
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+!SESSION 2026-01-31 01:11:31.792 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 01:11:36.259
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 01:11:36.260
+!MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 01:11:38.397
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 01:11:43.120
+!MESSAGE Indexed 'p10' (54 sources, 215 headers) in 3.53 sec: 26,686 declarations; 138,622 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.1%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 01:29:05.435
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+!SESSION 2026-01-31 11:46:37.605 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 11:46:43.651
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 11:46:43.652
+!MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 11:46:47.018
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 11:46:50.148
+!MESSAGE Indexed 'p10' (53 sources, 175 headers) in 2.86 sec: 22,186 declarations; 129,297 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.11%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 11:55:52.175
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 11:57:28.281
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 11:59:27.586
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2026-01-31 11:59:27.627
+!MESSAGE Error in final launch sequence:
+
+Could not start SWV
+!STACK 1
+org.eclipse.core.runtime.CoreException: Could not start SWV
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:252)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:109)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:97)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.launch(DSFDelegate.java:336)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:805)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1054)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1257)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 com.st.stm32cube.ide.mcu.toolchain 4 0 2026-01-31 11:59:27.627
+!MESSAGE Could not start SWV
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 11:59:44.610
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:03:48.311
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:13:41.088
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:27:26.230
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:33:09.039
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:37:26.718
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:42:07.247
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:47:42.484
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 12:57:22.074
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:05:08.309
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:14:51.675
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:19:06.551
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+!SESSION 2026-01-31 13:27:29.967 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 13:27:36.114
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 13:27:36.115
+!MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 13:27:38.295
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 13:27:43.067
+!MESSAGE Indexed 'p10' (54 sources, 215 headers) in 3.54 sec: 26,678 declarations; 138,547 references; 3 unresolved inclusions; 156 syntax errors; 172 unresolved names (0.1%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:28:33.743
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 13:56:50.044
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 14:10:47.813
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 14:18:41.803
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 14:26:42.969
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 14:40:25.682
 !MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40

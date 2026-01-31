@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;p10/Core/Inc/config_def&apos; to &apos;config_def.h&apos;" description="Rename resource &apos;config_def&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/config_def" name="config_def.h" stamp="1769802092220" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;p10/Core/Inc/config_def.h&apos; to &apos;common_def.h&apos;" description="Rename resource &apos;config_def.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/config_def.h" name="common_def.h" stamp="1769802454048" updateReferences="true"/>
+</session>

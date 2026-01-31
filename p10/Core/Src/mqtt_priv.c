@@ -48,9 +48,9 @@ TransportStatus_t prvConnectToServer( NetworkContext_t * pxNetworkContext )
                    MQTT_BROKER_ENDPOINT,
                    MQTT_BROKER_PORT ) );
         ret=WIFI_OpenClientConnection(SOCKET, WIFI_TCP_PROTOCOL, "mqtt", ipaddr , MQTT_BROKER_PORT, 0);
-		if(ret!=WIFI_STATUS_OK) {
-			LOG(("Error in opening MQTT connection: %d\n",ret));
-			osDelay(pdMS_TO_TICKS(10000));
+        if((ret != WIFI_STATUS_OK) && (ret != 1)) {
+            LOG(("Error in opening MQTT connection: %d\n",ret));
+            osDelay(pdMS_TO_TICKS(10000));
 		} else {
 	        pxNetworkContext->socket = SOCKET;
 	        pxNetworkContext->socket_open=1;
@@ -72,6 +72,7 @@ void prvCreateMQTTConnectionWithBroker( MQTTContext_t * pxMQTTContext,
     MQTTConnectInfo_t xConnectInfo;
     bool xSessionPresent;
     TransportInterface_t xTransport;
+    HAL_Delay(50);
 
     /* Fill in Transport Interface send and receive function pointers. */
     init_transport_from_socket( pxNetworkContext->socket, 1,
