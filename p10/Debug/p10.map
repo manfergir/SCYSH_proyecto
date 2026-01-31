@@ -10156,51 +10156,51 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x000327a2      0x94b ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
  .debug_line    0x000330ed      0x9ae ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
-.debug_str      0x00000000   0x11222e
- .debug_str     0x00000000   0x11222e ./Core/Inc/stm32l475e_iot01.o
+.debug_str      0x00000000   0x112232
+ .debug_str     0x00000000   0x112232 ./Core/Inc/stm32l475e_iot01.o
                               0xf4820 (size before relaxing)
- .debug_str     0x0011222e    0xff748 ./Core/Src/main.o
- .debug_str     0x0011222e    0xfce11 ./Core/Src/mqtt_priv.o
- .debug_str     0x0011222e    0xf55aa ./Core/Src/stm32l4xx_hal_msp.o
- .debug_str     0x0011222e    0xf33a7 ./Core/Src/stm32l4xx_hal_timebase_tim.o
- .debug_str     0x0011222e    0xf40b3 ./Core/Src/stm32l4xx_it.o
- .debug_str     0x0011222e     0x99dc ./Core/Src/syscalls.o
- .debug_str     0x0011222e     0x777a ./Core/Src/sysmem.o
- .debug_str     0x0011222e    0xf28ee ./Core/Src/system_stm32l4xx.o
- .debug_str     0x0011222e       0x7c ./Core/Startup/startup_stm32l475vgtx.o
- .debug_str     0x0011222e     0x8bda ./Drivers/BSP/src/es_wifi.o
- .debug_str     0x0011222e    0xf71a4 ./Drivers/BSP/src/es_wifi_io.o
- .debug_str     0x0011222e    0xf70e2 ./Drivers/BSP/src/wifi.o
- .debug_str     0x0011222e    0xf348d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_str     0x0011222e    0xf315e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_str     0x0011222e    0xf380c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
- .debug_str     0x0011222e    0xf2b6a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
- .debug_str     0x0011222e    0xf2a79 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_str     0x0011222e    0xf3aef ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_str     0x0011222e    0xf2dfb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_str     0x0011222e    0xf336f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
- .debug_str     0x0011222e    0xf2d3d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
- .debug_str     0x0011222e    0xf2c59 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
- .debug_str     0x0011222e    0xf2e0e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_str     0x0011222e    0xf3229 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
- .debug_str     0x0011222e    0xf2f34 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_str     0x0011222e    0xf30bf ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_str     0x0011222e    0xf3109 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
- .debug_str     0x0011222e    0xf3c40 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
- .debug_str     0x0011222e    0xf3554 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_str     0x0011222e    0xf3646 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
- .debug_str     0x0011222e    0xf3029 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
- .debug_str     0x0011222e     0x901f ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_str     0x0011222e     0x8872 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- .debug_str     0x0011222e     0x84c1 ./Libraries/coreMQTT/source/core_mqtt_state.o
- .debug_str     0x0011222e    0xf6bdd ./Libraries/coreMQTT/source/transport_interface.o
- .debug_str     0x0011222e    0xfd86f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_str     0x0011222e     0xac2b ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_str     0x0011222e     0xc76b ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_str     0x0011222e     0xd570 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_str     0x0011222e     0xcfbc ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_str     0x0011222e     0xb969 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_str     0x0011222e     0xb56d ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_str     0x00112232    0xff74c ./Core/Src/main.o
+ .debug_str     0x00112232    0xfce15 ./Core/Src/mqtt_priv.o
+ .debug_str     0x00112232    0xf55aa ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_str     0x00112232    0xf33a7 ./Core/Src/stm32l4xx_hal_timebase_tim.o
+ .debug_str     0x00112232    0xf40b3 ./Core/Src/stm32l4xx_it.o
+ .debug_str     0x00112232     0x99dc ./Core/Src/syscalls.o
+ .debug_str     0x00112232     0x777a ./Core/Src/sysmem.o
+ .debug_str     0x00112232    0xf28ee ./Core/Src/system_stm32l4xx.o
+ .debug_str     0x00112232       0x7c ./Core/Startup/startup_stm32l475vgtx.o
+ .debug_str     0x00112232     0x8bda ./Drivers/BSP/src/es_wifi.o
+ .debug_str     0x00112232    0xf71a4 ./Drivers/BSP/src/es_wifi_io.o
+ .debug_str     0x00112232    0xf70e2 ./Drivers/BSP/src/wifi.o
+ .debug_str     0x00112232    0xf348d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_str     0x00112232    0xf315e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_str     0x00112232    0xf380c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
+ .debug_str     0x00112232    0xf2b6a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
+ .debug_str     0x00112232    0xf2a79 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_str     0x00112232    0xf3aef ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_str     0x00112232    0xf2dfb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_str     0x00112232    0xf336f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
+ .debug_str     0x00112232    0xf2d3d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
+ .debug_str     0x00112232    0xf2c59 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
+ .debug_str     0x00112232    0xf2e0e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_str     0x00112232    0xf3229 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
+ .debug_str     0x00112232    0xf2f34 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_str     0x00112232    0xf30bf ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_str     0x00112232    0xf3109 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
+ .debug_str     0x00112232    0xf3c40 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
+ .debug_str     0x00112232    0xf3554 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
+ .debug_str     0x00112232    0xf3646 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_str     0x00112232    0xf3029 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
+ .debug_str     0x00112232     0x901f ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_str     0x00112232     0x8872 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ .debug_str     0x00112232     0x84c1 ./Libraries/coreMQTT/source/core_mqtt_state.o
+ .debug_str     0x00112232    0xf6bdd ./Libraries/coreMQTT/source/transport_interface.o
+ .debug_str     0x00112232    0xfd86f ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_str     0x00112232     0xac2b ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_str     0x00112232     0xc76b ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_str     0x00112232     0xd570 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_str     0x00112232     0xcfbc ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_str     0x00112232     0xb969 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_str     0x00112232     0xb56d ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Inc/stm32l475e_iot01.o
