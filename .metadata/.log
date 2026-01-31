@@ -1,0 +1,22 @@
+!SESSION 2026-01-31 01:08:50.593 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-31 01:08:55.622
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-31 01:08:55.623
+!MESSAGE Log4j2 initialized with config file C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-31 01:08:57.691
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-31 01:09:01.963
+!MESSAGE Indexed 'p10' (53 sources, 174 headers) in 3.06 sec: 22,150 declarations; 125,164 references; 7 unresolved inclusions; 1,686 syntax errors; 2,494 unresolved names (1.7%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2026-01-31 01:09:25.443
+!MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 80000000; div: 40
