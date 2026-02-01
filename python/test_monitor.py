@@ -1,45 +1,43 @@
 import paho.mqtt.client as mqtt
-import json
-import random
-import sys
 
-# --- CONFIGURACIÓN PARA MANOLO ---
-# La IP que tienes en tu .h (test.mosquitto.org)
-BROKER = "54.36.178.49" 
+# --- CONFIGURACIÓN ---
+BROKER = "test.mosquitto.org"
 PORT = 1883
+TOPIC = "SCF"
 
-# EL TOPIC EXACTO (Valor de pcTempTopic en tu .h)
-TOPIC_TO_LISTEN = "SCF" 
+# --- FUNCIONES CALLBACK ---
 
-# ID Aleatorio
-CLIENT_ID = f"PC_Manolo_Listener_{random.randint(0, 10000)}"
-
-def on_connect(client, userdata, flags, rc):
+# 1. Qué hacer cuando nos conectamos
+def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
-        print(f"--- [PC] CONECTADO A MOSQUITTO ({BROKER}) ---")
-        print(f"--- [PC] Escuchando en el topic: '{TOPIC_TO_LISTEN}' ---")
-        client.subscribe(TOPIC_TO_LISTEN)
+        print(f"✅ Conectado al Broker. Escuchando en: {TOPIC}")
+        # IMPORTANTE: Nos suscribimos DENTRO de on_connect.
+        # Si la conexión se cae y vuelve, esto nos resuscribe automáticamente.
+        client.subscribe(TOPIC)
     else:
-        print(f"--- [PC] Error de conexión: {rc} ---")
+        print(f"❌ Error de conexión: {rc}")
 
+# 2. Qué hacer cuando llega un mensaje
 def on_message(client, userdata, msg):
-    try:
-        payload_str = msg.payload.decode('utf-8')
-        print(f"\n[RECIBIDO] 📩 Topic: {msg.topic}")
-        print(f"Payload: {payload_str}")
-        
-    except Exception as e:
-        print(f"Error procesando mensaje: {e}")
+    # El mensaje viene en bytes, hay que decodificarlo a texto
+    mensaje = msg.payload.decode()
+    topic = msg.topic
+    print(f"📩 DATO RECIBIDO -> Tema: {topic} | Valor: {mensaje}")
 
-# Configuración del cliente
-client = mqtt.Client(client_id=CLIENT_ID)
+# --- CONFIGURACIÓN DEL CLIENTE ---
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_message = on_message
 
-print(f"Conectando a {BROKER}...")
+# --- ARRANQUE ---
+print("Conectando al servidor...")
+client.connect(BROKER, PORT, 60)
 
+# Usamos loop_forever() para un script que SOLO recibe datos.
+# Bloquea el programa aquí y mantiene la conexión viva para siempre
+# (hasta que pulses Ctrl + C)
 try:
-    client.connect(BROKER, PORT, 60)
     client.loop_forever()
-except Exception as e:
-    print(f"Error de conexión: {e}")
+except KeyboardInterrupt:
+    print("\nDesconectando...")
+    client.disconnect()

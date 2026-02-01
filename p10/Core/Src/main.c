@@ -108,9 +108,9 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 volatile uint8_t WIFI_IS_CONNECTED = 0;
 volatile uint8_t NET_MQTT_OK = 0;
 
-#define SSID     "Manolo"
-#define PASSWORD ""
-#define WIFISECURITY WIFI_ECN_OPEN
+#define SSID     "dani"
+#define PASSWORD "12345678"
+#define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
@@ -169,7 +169,7 @@ void program_alarm_RTC(void)
   HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // Necesario para desbloquear registros
 
   sAlarm.AlarmTime.Seconds = sTime.Seconds;
-  sAlarm.AlarmTime.Minutes = sTime.Minutes + 30; // +30 Minutos
+  sAlarm.AlarmTime.Minutes = sTime.Minutes + 1; // +1 Minutos
   sAlarm.AlarmTime.Hours = sTime.Hours;
 
   if (sAlarm.AlarmTime.Minutes >= 60) {
