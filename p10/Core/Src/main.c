@@ -1146,14 +1146,6 @@ void MQTT_TaskFun(void *argument)
 		  while (WIFI_IS_CONNECTED == 1)
 		  {
 
-			qStatus = osMessageQueueGet(qAlertTxHandle, &msg_out, NULL, 0);
-
-			if (qStatus == osOK)
-			{
-			  LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
-			  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
-			}
-
 			qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
 
 			if (qStatus == osOK)
@@ -1252,7 +1244,7 @@ void task_envReadFunc(void *argument)
     	snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
     	len = snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
     	HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
-    	osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
     if( (temp_int < 200) && (Alert_Flag == 1) )
@@ -1261,12 +1253,12 @@ void task_envReadFunc(void *argument)
         snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
         len = snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
         HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
-        osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+        osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
     snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
     len = snprintf(msg.payload, sizeof(msg.payload),
-                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld, \"timesamp\": %s}",
+                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld, \"timestamp\": %s}",
                  id_msg,
                  reason,
                  temp_int,

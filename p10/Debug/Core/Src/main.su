@@ -20,6 +20,6 @@
 ../Core/Src/main.c:1036:6:HAL_RTC_AlarmAEventCallback	16	static
 ../Core/Src/main.c:1051:6:StartWifiTask	24	static
 ../Core/Src/main.c:1097:6:MQTT_TaskFun	416	static
-../Core/Src/main.c:1190:6:task_envReadFunc	376	static
-../Core/Src/main.c:1292:6:HAL_TIM_PeriodElapsedCallback	16	static
-../Core/Src/main.c:1310:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:1182:6:task_envReadFunc	376	static
+../Core/Src/main.c:1284:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:1302:6:Error_Handler	4	static,ignoring_inline_asm

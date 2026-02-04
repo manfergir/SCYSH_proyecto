@@ -19,7 +19,7 @@
 ../Core/Src/main.c:1015:6:HAL_GPIO_EXTI_Callback	3
 ../Core/Src/main.c:1036:6:HAL_RTC_AlarmAEventCallback	1
 ../Core/Src/main.c:1051:6:StartWifiTask	3
-../Core/Src/main.c:1097:6:MQTT_TaskFun	7
-../Core/Src/main.c:1190:6:task_envReadFunc	9
-../Core/Src/main.c:1292:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:1310:6:Error_Handler	1
+../Core/Src/main.c:1097:6:MQTT_TaskFun	6
+../Core/Src/main.c:1182:6:task_envReadFunc	9
+../Core/Src/main.c:1284:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:1302:6:Error_Handler	1
