@@ -1,40 +1,10 @@
-17:27:41 **** Incremental Build of configuration Debug for project p10 ****
+20:20:41 **** Incremental Build of configuration Debug for project p10 ****
 make -j20 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'task_envReadFunc':
-../Core/Src/main.c:1252:84: warning: format '%ld' expects argument of type 'long int', but argument 7 has type 'int' [-Wformat=]
- 1252 |                  "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
-      |                                                                                  ~~^
-      |                                                                                    |
-      |                                                                                    long int
-      |                                                                                  %d
-......
- 1256 |                  hum);
-      |                  ~~~                                                                
-      |                  |
-      |                  int
-In file included from ../Core/Src/main.c:30:
-../Core/Inc/mqtt_priv.h: At top level:
-../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
-   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
-      |             ^~~~~~~~~~~~~~~~~~~~~~
-../Core/Src/main.c:161:17: warning: 'LedState' defined but not used [-Wunused-variable]
-  161 | static  int     LedState = 0;
-      |                 ^~~~~~~~
-../Core/Src/main.c:159:17: warning: 'http' defined but not used [-Wunused-variable]
-  159 | static  uint8_t http[1024];
-      |                 ^~~~
-arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: p10.elf
- 
 arm-none-eabi-size  p10.elf 
-arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
    text	   data	    bss	    dec	    hex	filename
-  84688	    148	  26404	 111240	  1b288	p10.elf
+  84556	    148	  26396	 111100	  1b1fc	p10.elf
 Finished building: default.size.stdout
  
-Finished building: p10.list
- 
 
-17:27:42 Build Finished. 0 errors, 4 warnings. (took 833ms)
+20:20:41 Build Finished. 0 errors, 0 warnings. (took 230ms)
 
