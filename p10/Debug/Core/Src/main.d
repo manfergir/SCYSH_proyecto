@@ -48,16 +48,27 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_conf.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h \
- C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_io.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
  ../Core/Inc/mqtt_priv.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h \
- ../Core/Inc/mqtt_priv_config.h
+ ../Core/Inc/mqtt_priv_config.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01_tsensor.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/hts221.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/../Common/hsensor.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/../Common/tsensor.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01_accelero.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/lsm6dsl.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/../Common/accelero.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/../Common/gyro.h \
+ ../Core/Inc/common_def.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -108,13 +119,24 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_conf.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi.h:
-C:/Users/GIE-23/Documents/Master/SistCiberYSegHW/practicas/p10/Drivers/BSP/inc/es_wifi_io.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Core/Inc/mqtt_priv.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h:
 ../Core/Inc/mqtt_priv_config.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01_tsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/hts221.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/../Common/hsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/hts221/../Common/tsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/stm32l475e_iot01_accelero.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/lsm6dsl.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/../Common/accelero.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01/../Components/lsm6dsl/../Common/gyro.h:
+../Core/Inc/common_def.h:

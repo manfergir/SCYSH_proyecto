@@ -22,11 +22,13 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-Core/Inc \
 Core/Src \
 Core/Startup \
 Drivers/BSP/src \
 Drivers/STM32L4xx_HAL_Driver/Src \
+L4_IOT_Sensors/Drivers/BSP/B-L475E-IOT01 \
+L4_IOT_Sensors/Drivers/BSP/Components/hts221 \
+L4_IOT_Sensors/Drivers/BSP/Components/lsm6dsl \
 Libraries/coreMQTT/source \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
 Middlewares/Third_Party/FreeRTOS/Source \

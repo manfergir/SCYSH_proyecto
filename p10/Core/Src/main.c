@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+ /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -28,11 +28,11 @@
 #include "stdio.h"
 #include "mqtt_priv.h"
 #include "mqtt_priv_config.h"
-//#include "stm32l475e_iot01.h"
-//#include "stm32l475e_iot01_tsensor.h"
-
+#include "stm32l475e_iot01.h"
+#include "stm32l475e_iot01_tsensor.h"
+#include "stm32l475e_iot01_accelero.h"
 /* USER CODE END Includes */
-
+#include "common_def.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -63,43 +63,56 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* Definitions for WifiTask */
-//#if PROJECT_TYPE == PROJECT_TYPE_1
 osThreadId_t WifiTaskHandle;
 const osThreadAttr_t WifiTask_attributes = {
   .name = "WifiTask",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-//#endif
 /* Definitions for MQTT_Task */
-
-//#if PROJECT_TYPE == PROJECT_TYPE_2
 osThreadId_t MQTT_TaskHandle;
 const osThreadAttr_t MQTT_Task_attributes = {
   .name = "MQTT_Task",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-//#endif
+/* Definitions for Accel_Task */
+osThreadId_t Accel_TaskHandle;
+const osThreadAttr_t Accel_Task_attributes = {
+  .name = "Accel_Task",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+/* Definitions for qMqttTx */
+osMessageQueueId_t qMqttTxHandle;
+const osMessageQueueAttr_t qMqttTx_attributes = {
+  .name = "qMqttTx"
+};
+/* Definitions for qCmdRx */
+osMessageQueueId_t qCmdRxHandle;
+const osMessageQueueAttr_t qCmdRx_attributes = {
+  .name = "qCmdRx"
+};
 /* USER CODE BEGIN PV */
 
-#define SSID     "Manolo"
-#define PASSWORD ""
-#define WIFISECURITY WIFI_ECN_OPEN
+#define WIFI_SSID_STR      "Nuria"
+#define WIFI_PASS_STR "12345678"
+#define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
 #define WIFI_READ_TIMEOUT 10000
-#define SOCKET 	0
-#define pcTempTopic "SCF"
-#define LOG(a) printf a
+
+#ifdef DEBUG
+	#define LOG(a) printf a
+#endif
 
 /*#define TERMINAL_USE
 #ifdef  TERMINAL_USE
 #else
 #define LOG(a)
 #endif*/
-
 
 
 /* USER CODE END PV */
@@ -116,6 +129,10 @@ static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
+void Accel_Task_Func(void *argument);
+
+volatile uint8_t WIFI_IS_CONNECTED = 1;
+volatile uint8_t NET_MQTT_OK = 1;
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -129,10 +146,49 @@ static  uint8_t  IP_Addr[4];
 static  int     LedState = 0;
 extern ES_WIFIObject_t    EsWifiObj;
 
+#define ACC_FS_HZ            52U
+#define ACC_BLOCK_SAMPLES    64U
+#define ACC_CONT_SAMPLES     1024U
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static void send_mqtt_msg(const char *topic, const char *payload)
+{
+  MqttMsg_t m;
+  memset(&m, 0, sizeof(m));
+  strncpy(m.topic, topic, MSG_TOPIC_SIZE - 1);
+  strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
+  (void)osMessageQueuePut(qMqttTxHandle, &m, 0, 0);
+}
+
+static void build_payload_block(char *dst, size_t dst_sz,
+                                uint32_t t0_ms, uint16_t fs_hz,
+                                uint16_t seq, uint16_t total,
+                                const int16_t *z, uint16_t n)
+{
+  // JSON compacto y fragmentado:
+  // {"t0":123,"fs":52,"s":0,"n":16,"z":[...]}
+  size_t off = 0;
+  off += (size_t)snprintf(dst + off, dst_sz - off,
+                          "{\"t0\":%lu,\"fs\":%u,\"s\":%u,\"n\":%u,\"z\":[",
+                          (unsigned long)t0_ms, fs_hz, seq, total);
+
+  for (uint16_t i = 0; i < n && off < dst_sz; i++)
+  {
+    off += (size_t)snprintf(dst + off, dst_sz - off,
+                            (i == 0) ? "%d" : ",%d", (int)z[i]);
+  }
+
+  (void)snprintf(dst + off, (off < dst_sz) ? (dst_sz - off) : 0, "]}");
+}
+
+/* Timestamp simple (ms desde arranque) */
+static uint32_t now_ms(void)
+{
+  return (uint32_t)HAL_GetTick();
+}
+
 
 static int wifi_start(void)
 {
@@ -142,9 +198,10 @@ static int wifi_start(void)
   if(WIFI_Init() ==  WIFI_STATUS_OK)
   {
     LOG(("ES-WIFI Initialized.\r\n"));
+
     if(WIFI_GetMAC_Address(MAC_Addr) == WIFI_STATUS_OK)
     {
-      LOG(("> eS-WiFi module MAC Address : %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+    		LOG(("> eS-WiFi module MAC Address : %02X:%02X:%02X:%02X:%02X:%02X\r\n",
                MAC_Addr[0],
                MAC_Addr[1],
                MAC_Addr[2],
@@ -154,7 +211,8 @@ static int wifi_start(void)
     }
     else
     {
-      LOG(("> ERROR : CANNOT get MAC address\r\n"));
+
+    	LOG(("> ERROR : CANNOT get MAC address\r\n"));
       return -1;
     }
   }
@@ -172,8 +230,8 @@ int wifi_connect(void)
 
   wifi_start();
 
-  LOG(("\nConnecting to %s, %s\r\n",SSID,PASSWORD));
-  if( WIFI_Connect(SSID, PASSWORD, WIFISECURITY) == WIFI_STATUS_OK)
+  LOG(("\nConnecting to %s, %s\r\n",WIFI_SSID_STR,WIFI_PASS_STR));
+  if( WIFI_Connect(WIFI_SSID_STR, WIFI_PASS_STR, WIFISECURITY) == WIFI_STATUS_OK)
   {
     if(WIFI_GetIP_Address(IP_Addr) == WIFI_STATUS_OK)
     {
@@ -235,7 +293,17 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+	printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
 
+	// Bajar el pin de Reset (Apagar módulo)
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_Delay(500); // Esperar medio segundo apagado
+
+	// Subir el pin de Reset (Encender módulo)
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
+	HAL_Delay(1000); // Esperar 1s a que arranque su sistema interno
+
+	printf("--- [BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -255,14 +323,22 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  /* creation of qMqttTx */
+   qMqttTxHandle = osMessageQueueNew (16,  sizeof(MqttMsg_t), &qMqttTx_attributes);
+
+   /* creation of qCmdRx */
+   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of WifiTask */
-  WifiTaskHandle = osThreadNew(StartWifiTask, NULL, &WifiTask_attributes);
+//  WifiTaskHandle = osThreadNew(StartWifiTask, NULL, &WifiTask_attributes);
+//
+//  /* creation of MQTT_Task */
+//  MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
-  /* creation of MQTT_Task */
-  MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
+  /* creation of Accel_Task */
+  Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -835,6 +911,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       SPI_WIFI_ISR();
       break;
     }
+
+    case LSM6DSL_INT1_EXTI11_Pin:
+    {
+    	printf("[ACC][ISR] DRDY\r\n");  // Debug temporal
+    	osThreadFlagsSet(Accel_TaskHandle, NOTE_ACCEL_FIFO);
+        break;
+    }
+    case BUTTON_EXTI13_Pin: // Botón (forzar lectura / wakeup)
+    {
+      printf("[ACC][ISR] Button \r\n");
+      osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      break;
+    }
     default:
     {
       break;
@@ -900,6 +989,128 @@ void MQTT_TaskFun(void *argument)
 	    }
 }
 
+/* USER CODE BEGIN Header_Accel_Task_Func */
+/**
+* @brief Function implementing the Accel_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Accel_Task_Func */
+void Accel_Task_Func(void *argument)
+{
+  printf("[ACC] Task start (FIFO)\r\n");
+
+  if (BSP_ACCELERO_Init() != ACCELERO_OK)
+  {
+    printf("[ACC] Init FAIL\r\n");
+    for(;;) osDelay(1000);
+  }
+  printf("[ACC] After Init\r\n");
+
+  uint8_t continuous = 0;
+
+  for (;;)
+  {
+    uint32_t flags = osThreadFlagsWait(NOTE_RTC_WAKEUP | NOTE_CMD_RX,
+                                       osFlagsWaitAny,
+                                       osWaitForever);
+
+    if (flags & NOTE_CMD_RX)
+    {
+      uint8_t cmd;
+      while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
+      {
+        if (cmd == CMD_START_CONTINUOUS) continuous = 1;
+        if (cmd == CMD_STOP_CONTINUOUS)  continuous = 0;
+        if (cmd == CMD_FORCE_READ) osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      }
+    }
+
+    if (!(flags & NOTE_RTC_WAKEUP))
+      continue;
+
+    const uint16_t target       = continuous ? ACC_CONT_SAMPLES : ACC_BLOCK_SAMPLES; // 1024 o 64
+    const uint16_t total_chunks = (uint16_t)(target / ACC_BLOCK_SAMPLES);            // 16 o 1
+    const uint16_t watermark_samples = ACC_BLOCK_SAMPLES;                            // 64
+    const uint16_t watermark_words   = watermark_samples * 3;                        // 192 words
+
+    printf("[ACC] Capture start FIFO mode=%s target=%u\r\n",
+           continuous ? "CONT" : "NORMAL", target);
+
+    // Reconfig FIFO
+    LSM6DSL_FifoReset();
+    LSM6DSL_FifoConfig(watermark_samples);
+
+    // Limpia flag viejo por si hubo un INT justo al configurar
+    (void)osThreadFlagsClear(NOTE_ACCEL_FIFO);
+
+    const uint32_t t0_ms = now_ms();
+
+    int16_t z_block_mg[ACC_BLOCK_SAMPLES];
+    uint16_t block_fill = 0;
+    uint16_t collected  = 0;
+    uint16_t seq        = 0;
+
+    while (collected < target)
+    {
+      // Espera evento FIFO… pero con fallback si se perdió el flanco
+      uint32_t r = osThreadFlagsWait(NOTE_ACCEL_FIFO, osFlagsWaitAny, 1500);
+
+      // Lee nivel actual de FIFO
+      uint16_t level_words = LSM6DSL_FifoGetLevelWords();
+
+      // Si no llegó interrupción, pero ya hay >= watermark, seguimos igual
+      if (r == (uint32_t)osErrorTimeout)
+      {
+        if (level_words < watermark_words)
+        {
+          printf("[ACC] TIMEOUT FIFO event, level_words=%u (<%u)\r\n",
+                 (unsigned)level_words, (unsigned)watermark_words);
+          continue; // seguimos esperando (sin polling agresivo)
+        }
+        // si >= watermark: procesamos aunque no entró ISR
+        printf("[ACC] Missed INT? level_words=%u (>= watermark)\r\n",
+               (unsigned)level_words);
+      }
+
+      // Consumimos FIFO mientras haya al menos 1 muestra (3 words)
+      while (level_words >= 3 && collected < target)
+      {
+        int16_t x_raw, y_raw, z_raw;
+        LSM6DSL_FifoReadXYZRaw(&x_raw, &y_raw, &z_raw);
+        level_words -= 3;
+
+        // FS=2G en tu FifoConfig -> mg = raw * 0.061
+        int16_t z_mg = (int16_t)((float)z_raw * LSM6DSL_ACC_SENSITIVITY_2G);
+
+        z_block_mg[block_fill++] = z_mg;
+        collected++;
+
+        if (block_fill == ACC_BLOCK_SAMPLES)
+        {
+          char payload[MSG_PAYLOAD_SIZE];
+
+          build_payload_block(payload, sizeof(payload),
+                              t0_ms, ACC_FS_HZ,
+                              seq, total_chunks,
+                              z_block_mg, ACC_BLOCK_SAMPLES);
+
+          printf("[ACC][JSON] %s\r\n", payload);
+
+          // send_mqtt_msg(TOPIC_PUB_ACCEL_PREFIX, payload);
+
+          seq++;
+          block_fill = 0;
+        }
+      }
+    }
+
+    LSM6DSL_FifoReset();
+    printf("[ACC] Done FIFO. collected=%u chunks=%u\r\n",
+           (unsigned)collected, (unsigned)seq);
+  }
+}
+
 /**
   * @brief  Period elapsed callback in non blocking mode
   * @note   This function is called  when TIM6 interrupt took place, inside
@@ -936,6 +1147,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
+
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
