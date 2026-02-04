@@ -19,7 +19,7 @@
 // Tamaño máximo de la carga útil (JSON).
 // Calculado para que quepa un bloque de 64 muestras int16 (128 bytes)
 // o un JSON de temperatura/humedad extenso.
-#define MSG_PAYLOAD_SIZE  128
+#define MSG_PAYLOAD_SIZE  256
 
 // Tamaño total del elemento de la cola (Debe coincidir con "Item Size" en el .ioc)
 // 32 + 128 = 160 bytes.

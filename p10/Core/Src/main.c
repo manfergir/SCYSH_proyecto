@@ -198,6 +198,18 @@ void program_alarm_RTC(void)
   }
 }
 
+void get_timestamp(char *buffer)
+{
+	RTC_TimeTypeDef sTime = {0};
+	RTC_DateTypeDef sDate = {0};
+
+	HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+
+	sprintf(buffer, "20%02d/%02d/%02d-%02d:%02d:%02d", sDate.Year, sDate.Month, sDate.Date,
+            sTime.Hours, sTime.Minutes, sTime.Seconds);
+}
+
 static int wifi_start(void)
 {
 	uint8_t  MAC_Addr[6];
@@ -1185,7 +1197,9 @@ void task_envReadFunc(void *argument)
   int16_t temp_int;  //Temperatura en un entero
   uint8_t hum;         //Humedad
   uint32_t flag;      //Bandera activada
+  uint8_t len;		 //Longitud de la cadena a enviar
   MqttMsg_t msg;      //Mensaje MQTT
+  char ts[25];		//Timestamp
 
   if ( BSP_TSENSOR_Init() == TSENSOR_OK )
   {
@@ -1230,12 +1244,14 @@ void task_envReadFunc(void *argument)
     temp = BSP_TSENSOR_ReadTemp();
     temp_int = (int16_t) (temp*10);
     hum = (uint8_t) BSP_HSENSOR_ReadHumidity();
+    get_timestamp(ts);
 
     if( (temp_int >= 200) && (Alert_Flag == 0) )
     {
     	Alert_Flag = 1;
     	snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
-    	snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
+    	len = snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
+    	HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
     	osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
@@ -1243,18 +1259,21 @@ void task_envReadFunc(void *argument)
     {
     	Alert_Flag = 0;
         snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
-        snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
+        len = snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
+        HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
         osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
     snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
-    snprintf(msg.payload, sizeof(msg.payload),
-                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
+    len = snprintf(msg.payload, sizeof(msg.payload),
+                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld, \"timesamp\": %s}",
                  id_msg,
                  reason,
                  temp_int,
-                 hum);
+                 hum,
+				 ts);
     
+    HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len, pdMS_TO_TICKS(1000));
     osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     id_msg++;
 
