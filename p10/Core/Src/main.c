@@ -83,7 +83,7 @@ osThreadId_t MQTT_TaskHandle;
 const osThreadAttr_t MQTT_Task_attributes = {
   .name = "MQTT_Task",
   .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for task_envRead */
 osThreadId_t task_envReadHandle;
@@ -102,6 +102,11 @@ osMessageQueueId_t qCmdRxHandle;
 const osMessageQueueAttr_t qCmdRx_attributes = {
   .name = "qCmdRx"
 };
+/* Definitions for qAlertTx */
+osMessageQueueId_t qAlertTxHandle;
+const osMessageQueueAttr_t qAlertTx_attributes = {
+  .name = "qAlertTx"
+};
 /* USER CODE BEGIN PV */
 
 // Variables globales de estado
@@ -116,6 +121,8 @@ volatile uint8_t NET_MQTT_OK = 0;
 #define WIFI_WRITE_TIMEOUT 10000
 #define WIFI_READ_TIMEOUT 10000
 #define LOG(a) printf a
+
+uint8_t Alert_Flag = 0;
 
 /*#define TERMINAL_USE
 #ifdef  TERMINAL_USE
@@ -328,6 +335,9 @@ int main(void)
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
+
+  /* creation of qAlertTx */
+  qAlertTxHandle = osMessageQueueNew (1, 160, &qAlertTx_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -1123,6 +1133,15 @@ void MQTT_TaskFun(void *argument)
 		  // 4. BUCLE DE TRANSMISIÓN
 		  while (WIFI_IS_CONNECTED == 1)
 		  {
+
+			qStatus = osMessageQueueGet(qAlertTxHandle, &msg_out, NULL, 0);
+
+			if (qStatus == osOK)
+			{
+			  LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
+			  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
+			}
+
 			qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
 
 			if (qStatus == osOK)
@@ -1211,6 +1230,22 @@ void task_envReadFunc(void *argument)
     temp = BSP_TSENSOR_ReadTemp();
     temp_int = (int16_t) (temp*10);
     hum = (uint8_t) BSP_HSENSOR_ReadHumidity();
+
+    if( (temp_int >= 200) && (Alert_Flag == 0) )
+    {
+    	Alert_Flag = 1;
+    	snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
+    	snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
+    	osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    }
+
+    if( (temp_int < 200) && (Alert_Flag == 1) )
+    {
+    	Alert_Flag = 0;
+        snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
+        snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
+        osMessageQueuePut(qAlertTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    }
 
     snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
     snprintf(msg.payload, sizeof(msg.payload),

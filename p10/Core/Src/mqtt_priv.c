@@ -113,14 +113,14 @@ void prvCreateMQTTConnectionWithBroker( MQTTContext_t * pxMQTTContext,
      * to ensure that the interval between Control Packets being sent does not
      * exceed the Keep Alive value.  In the absence of sending any other
      * Control Packets, the Client MUST send a PINGREQ Packet. */
-    xConnectInfo.keepAliveSeconds = 60U;;
+    xConnectInfo.keepAliveSeconds = 60U;
 
     /* Send MQTT CONNECT packet to broker. LWT is not used in this demo, so it
      * is passed as NULL. */
     xResult = MQTT_Connect( pxMQTTContext,
                             &xConnectInfo,
                             NULL,
-                            1000U,
+                            10000U,
                             &xSessionPresent );
     configASSERT( xResult == MQTTSuccess );
     LOG(("MQTT connected to broker\n"));
