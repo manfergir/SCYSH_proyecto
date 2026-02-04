@@ -33,6 +33,8 @@
 #include "stm32l475e_iot01.h"
 #include "stm32l475e_iot01_tsensor.h"
 #include "stm32l475e_iot01_hsensor.h"
+#include "lsm6dsl.h"
+#include"stm32l475e_iot01_accelero.h"
 #include <string.h>
 
 /* USER CODE END Includes */
@@ -86,9 +88,18 @@ const osThreadAttr_t MQTT_Task_attributes = {
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for task_envRead */
+/*
 osThreadId_t task_envReadHandle;
 const osThreadAttr_t task_envRead_attributes = {
   .name = "task_envRead",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+*/
+/* Definitions for Accel_Task */
+osThreadId_t Accel_TaskHandle;
+const osThreadAttr_t Accel_Task_attributes = {
+  .name = "Accel_Task",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -142,7 +153,8 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_RTC_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
-void task_envReadFunc(void *argument);
+//void task_envReadFunc(void *argument);
+void Accel_Task_Func(void *argument);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -326,7 +338,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (2, 160, &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (16, sizeof(MqttMsg_t), &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
@@ -343,7 +355,10 @@ int main(void)
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
   /* creation of task_envRead */
-  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
+  //task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
+
+  /* creation of Accel_Task */
+  Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -1003,7 +1018,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
     case (BOTON_Pin):
     {
-      osThreadFlagsSet(task_envReadHandle, FLAG_BTN_EVENT);
+      osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
       break;
     }
     default:
@@ -1013,11 +1028,55 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
+/*
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
     // 1. Avisar a la tarea principal (Igual que con el botón)
     // Usamos la misma bandera o una distinta ("FLAG_RTC_WAKEUP")
     osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY); 
 }
+*/
+
+
+/* Timestamp simple (ms desde arranque) */
+static uint32_t now_ms(void)
+{
+  return (uint32_t)HAL_GetTick();
+}
+
+static void send_mqtt_msg(const char *topic, const char *payload)
+{
+  MqttMsg_t m;
+  memset(&m, 0, sizeof(m));
+  strncpy(m.topic, topic, MSG_TOPIC_SIZE - 1);
+  m.topic[MSG_TOPIC_SIZE - 1] = '\0';
+
+  strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
+  m.payload[MSG_PAYLOAD_SIZE - 1] = '\0';
+  (void)osMessageQueuePut(qMqttTxHandle, &m, 0, 0);
+}
+
+static void build_payload_block(char *dst, size_t dst_sz,
+                                uint32_t t0_ms, uint16_t fs_hz,
+                                uint16_t seq, uint16_t total,
+                                const int16_t *z, uint16_t n)
+{
+  // JSON compacto y fragmentado:
+  // {"t0":123,"fs":52,"s":0,"n":16,"z":[...]}
+  size_t off = 0;
+  off += (size_t)snprintf(dst + off, dst_sz - off,
+                          "{\"t0\":%lu,\"fs\":%u,\"s\":%u,\"n\":%u,\"z\":[",
+                          (unsigned long)t0_ms, fs_hz, seq, total);
+
+  for (uint16_t i = 0; i < n && off < dst_sz; i++)
+  {
+    off += (size_t)snprintf(dst + off, dst_sz - off,
+                            (i == 0) ? "%d" : ",%d", (int)z[i]);
+  }
+
+  (void)snprintf(dst + off, (off < dst_sz) ? (dst_sz - off) : 0, "]}");
+}
+
+
 
 /* USER CODE END 4 */
 
@@ -1158,10 +1217,11 @@ void MQTT_TaskFun(void *argument)
 * @retval None
 */
 /* USER CODE END Header_task_envReadFunc */
+/*
 void task_envReadFunc(void *argument)
 {
   /* USER CODE BEGIN task_envReadFunc */
-
+/*
   uint32_t id_msg = 0;    //Id del mensaje
   uint8_t reason;     //Motivo del mensaje
   float temp;         //Temperatura
@@ -1189,8 +1249,9 @@ void task_envReadFunc(void *argument)
   }
 
   program_alarm_RTC();
-
+*/
   /* Infinite loop */
+/*
   for(;;)
   {
     
@@ -1242,7 +1303,133 @@ void task_envReadFunc(void *argument)
     id_msg++;
 
   }
+  */
   /* USER CODE END task_envReadFunc */
+//}
+
+/* USER CODE BEGIN Header_Accel_Task_Func */
+/**
+* @brief Function implementing the Accel_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Accel_Task_Func */
+void Accel_Task_Func(void *argument)
+{
+  /* USER CODE BEGIN Accel_Task_Func */
+  printf("[ACC] Task start (FIFO)\r\n");
+
+  if (BSP_ACCELERO_Init() != ACCELERO_OK)
+  {
+    printf("[ACC] Init FAIL\r\n");
+    for(;;) osDelay(1000);
+  }
+  printf("[ACC] After Init\r\n");
+
+  uint8_t continuous = 0;
+
+  /* Infinite loop */
+  for (;;)
+  {
+    uint32_t flags = osThreadFlagsWait(NOTE_RTC_WAKEUP | NOTE_CMD_RX,
+                                       osFlagsWaitAny,
+                                       osWaitForever);
+
+    if (flags & NOTE_CMD_RX)
+    {
+      uint8_t cmd;
+      while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
+      {
+        if (cmd == CMD_START_CONTINUOUS) continuous = 1;
+        if (cmd == CMD_STOP_CONTINUOUS)  continuous = 0;
+        if (cmd == CMD_FORCE_READ) osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      }
+    }
+
+    if (!(flags & NOTE_RTC_WAKEUP))
+      continue;
+
+    const uint16_t target       = continuous ? ACC_CONT_SAMPLES : ACC_BLOCK_SAMPLES; // 1024 o 64
+    const uint16_t total_chunks = (uint16_t)(target / ACC_BLOCK_SAMPLES);            // 16 o 1
+    const uint16_t watermark_samples = ACC_BLOCK_SAMPLES;                            // 64
+    const uint16_t watermark_words   = watermark_samples * 3;                        // 192 words
+
+    printf("[ACC] Capture start FIFO mode=%s target=%u\r\n",
+           continuous ? "CONT" : "NORMAL", target);
+
+    // Reconfig FIFO
+    LSM6DSL_FifoReset();
+    LSM6DSL_FifoConfig(watermark_samples);
+
+    // Limpia flag viejo por si hubo un INT justo al configurar
+    (void)osThreadFlagsClear(NOTE_ACCEL_FIFO);
+
+    const uint32_t t0_ms = now_ms();
+
+    int16_t z_block_mg[ACC_BLOCK_SAMPLES];
+    uint16_t block_fill = 0;
+    uint16_t collected  = 0;
+    uint16_t seq        = 0;
+
+    while (collected < target)
+    {
+      // Espera evento FIFO… pero con fallback si se perdió el flanco
+      uint32_t r = osThreadFlagsWait(NOTE_ACCEL_FIFO, osFlagsWaitAny, 1500);
+
+      // Lee nivel actual de FIFO
+      uint16_t level_words = LSM6DSL_FifoGetLevelWords();
+
+      // Si no llegó interrupción, pero ya hay >= watermark, seguimos igual
+      if (r == (uint32_t)osErrorTimeout)
+      {
+        if (level_words < watermark_words)
+        {
+          printf("[ACC] TIMEOUT FIFO event, level_words=%u (<%u)\r\n",
+                 (unsigned)level_words, (unsigned)watermark_words);
+          continue; // seguimos esperando (sin polling agresivo)
+        }
+        // si >= watermark: procesamos aunque no entró ISR
+        printf("[ACC] Missed INT? level_words=%u (>= watermark)\r\n",
+               (unsigned)level_words);
+      }
+
+      // Consumimos FIFO mientras haya al menos 1 muestra (3 words)
+      while (level_words >= 3 && collected < target)
+      {
+        int16_t x_raw, y_raw, z_raw;
+        LSM6DSL_FifoReadXYZRaw(&x_raw, &y_raw, &z_raw);
+        level_words -= 3;
+
+        // FS=2G en tu FifoConfig -> mg = raw * 0.061
+        int16_t z_mg = (int16_t)((float)z_raw * LSM6DSL_ACC_SENSITIVITY_2G);
+
+        z_block_mg[block_fill++] = z_mg;
+        collected++;
+
+        if (block_fill == ACC_BLOCK_SAMPLES)
+        {
+          char payload[MSG_PAYLOAD_SIZE];
+
+          build_payload_block(payload, sizeof(payload),
+                              t0_ms, ACC_FS_HZ,
+                              seq, total_chunks,
+                              z_block_mg, ACC_BLOCK_SAMPLES);
+
+          printf("[ACC][JSON] %s\r\n", payload);
+
+          send_mqtt_msg(TOPIC_PUB_ACCEL_PREFIX, payload);
+
+          seq++;
+          block_fill = 0;
+        }
+      }
+    }
+
+    LSM6DSL_FifoReset();
+    printf("[ACC] Done FIFO. collected=%u chunks=%u\r\n",
+           (unsigned)collected, (unsigned)seq);
+  }
+  /* USER CODE END Accel_Task_Func */
 }
 
 /**

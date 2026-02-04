@@ -3,6 +3,13 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="boton_pin"/>
+		<item value="qmqtttx"/>
+		<item value="main"/>
+		<item value="MQTT_ProcessLoop"/>
+		<item value="task_envReadFunc"/>
+		<item value="Accel_Task_Func"/>
+		<item value="qAlert"/>
 		<item value="SCF/"/>
 		<item value="socket"/>
 		<item value="socket_open=0"/>
@@ -11,12 +18,5 @@
 		<item value="hardcoded"/>
 		<item value="socket abier"/>
 		<item value="error in opening"/>
-		<item value="ES_WIFI_STATUS_REQ_DATA_STAGE"/>
-		<item value="default"/>
-		<item value="STARTDEFAUL"/>
-		<item value="STARTDEFAULR"/>
-		<item value="mqtt_tASKfUN"/>
-		<item value="LOG"/>
-		<item value="printf"/>
 	</list>
 </section>
