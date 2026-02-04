@@ -102,11 +102,6 @@ osMessageQueueId_t qCmdRxHandle;
 const osMessageQueueAttr_t qCmdRx_attributes = {
   .name = "qCmdRx"
 };
-/* Definitions for qAlertTx */
-osMessageQueueId_t qAlertTxHandle;
-const osMessageQueueAttr_t qAlertTx_attributes = {
-  .name = "qAlertTx"
-};
 /* USER CODE BEGIN PV */
 
 // Variables globales de estado
@@ -122,7 +117,7 @@ volatile uint8_t NET_MQTT_OK = 0;
 #define WIFI_READ_TIMEOUT 10000
 #define LOG(a) printf a
 
-uint8_t Alert_Flag = 0;
+uint8_t Alert_Flag = 0x00;
 
 /*#define TERMINAL_USE
 #ifdef  TERMINAL_USE
@@ -347,9 +342,6 @@ int main(void)
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
-
-  /* creation of qAlertTx */
-  qAlertTxHandle = osMessageQueueNew (1, 160, &qAlertTx_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -1138,6 +1130,10 @@ void MQTT_TaskFun(void *argument)
 		  // Es el comportamiento esperado del codigo del profesor.
 		  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
 
+		  // Nos suscribimos al topic de control
+		  prvMQTTSubscribeToTopic(&xMQTTContext, pcAlertTopic);
+		  LOG(("[MQTT] Suscritos al tópico %s", pcAlertTopic));
+
 		  // Si llegamos aquí, asumimos que estamos conectados
 		  LOG(("[MQTT] Loop de transmision activo.\r\n"));
 		  NET_MQTT_OK = 1;
@@ -1238,21 +1234,21 @@ void task_envReadFunc(void *argument)
     hum = (uint8_t) BSP_HSENSOR_ReadHumidity();
     get_timestamp(ts);
 
-    if( (temp_int >= 200) && (Alert_Flag == 0) )
+    if( (temp_int >= 200) && ((Alert_Flag & 0x01) == 0) )
     {
-    	Alert_Flag = 1;
+    	Alert_Flag |= (1 << 0);
     	snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
     	len = snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
-    	HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
+    	HAL_UART_Transmit(&huart1, (uint8_t *) msg.payload, len, pdMS_TO_TICKS(100));
     	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
-    if( (temp_int < 200) && (Alert_Flag == 1) )
+    if( (temp_int < 200) && ((Alert_Flag & 0x01) == 1) )
     {
-    	Alert_Flag = 0;
+    	Alert_Flag &= ~(1 << 0);
         snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
         len = snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
-        HAL_UART_Transmit(&huart1, (uint8_t *) strcat(msg.payload, "\r\n"), len+2, pdMS_TO_TICKS(1000));
+        HAL_UART_Transmit(&huart1, (uint8_t *) msg.payload, len, pdMS_TO_TICKS(100));
         osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     }
 
