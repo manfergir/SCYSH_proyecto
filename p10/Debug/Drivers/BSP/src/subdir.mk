@@ -8,7 +8,9 @@ C_SRCS += \
 ../Drivers/BSP/src/es_wifi.c \
 ../Drivers/BSP/src/es_wifi_io.c \
 ../Drivers/BSP/src/hts221.c \
+../Drivers/BSP/src/lsm6dsl.c \
 ../Drivers/BSP/src/stm32l475e_iot01.c \
+../Drivers/BSP/src/stm32l475e_iot01_accelero.c \
 ../Drivers/BSP/src/stm32l475e_iot01_hsensor.c \
 ../Drivers/BSP/src/stm32l475e_iot01_tsensor.c \
 ../Drivers/BSP/src/wifi.c 
@@ -17,7 +19,9 @@ OBJS += \
 ./Drivers/BSP/src/es_wifi.o \
 ./Drivers/BSP/src/es_wifi_io.o \
 ./Drivers/BSP/src/hts221.o \
+./Drivers/BSP/src/lsm6dsl.o \
 ./Drivers/BSP/src/stm32l475e_iot01.o \
+./Drivers/BSP/src/stm32l475e_iot01_accelero.o \
 ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o \
 ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o \
 ./Drivers/BSP/src/wifi.o 
@@ -26,7 +30,9 @@ C_DEPS += \
 ./Drivers/BSP/src/es_wifi.d \
 ./Drivers/BSP/src/es_wifi_io.d \
 ./Drivers/BSP/src/hts221.d \
+./Drivers/BSP/src/lsm6dsl.d \
 ./Drivers/BSP/src/stm32l475e_iot01.d \
+./Drivers/BSP/src/stm32l475e_iot01_accelero.d \
 ./Drivers/BSP/src/stm32l475e_iot01_hsensor.d \
 ./Drivers/BSP/src/stm32l475e_iot01_tsensor.d \
 ./Drivers/BSP/src/wifi.d 
@@ -39,7 +45,7 @@ Drivers/BSP/src/%.o Drivers/BSP/src/%.su Drivers/BSP/src/%.cyclo: ../Drivers/BSP
 clean: clean-Drivers-2f-BSP-2f-src
 
 clean-Drivers-2f-BSP-2f-src:
-	-$(RM) ./Drivers/BSP/src/es_wifi.cyclo ./Drivers/BSP/src/es_wifi.d ./Drivers/BSP/src/es_wifi.o ./Drivers/BSP/src/es_wifi.su ./Drivers/BSP/src/es_wifi_io.cyclo ./Drivers/BSP/src/es_wifi_io.d ./Drivers/BSP/src/es_wifi_io.o ./Drivers/BSP/src/es_wifi_io.su ./Drivers/BSP/src/hts221.cyclo ./Drivers/BSP/src/hts221.d ./Drivers/BSP/src/hts221.o ./Drivers/BSP/src/hts221.su ./Drivers/BSP/src/stm32l475e_iot01.cyclo ./Drivers/BSP/src/stm32l475e_iot01.d ./Drivers/BSP/src/stm32l475e_iot01.o ./Drivers/BSP/src/stm32l475e_iot01.su ./Drivers/BSP/src/stm32l475e_iot01_hsensor.cyclo ./Drivers/BSP/src/stm32l475e_iot01_hsensor.d ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o ./Drivers/BSP/src/stm32l475e_iot01_hsensor.su ./Drivers/BSP/src/stm32l475e_iot01_tsensor.cyclo ./Drivers/BSP/src/stm32l475e_iot01_tsensor.d ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o ./Drivers/BSP/src/stm32l475e_iot01_tsensor.su ./Drivers/BSP/src/wifi.cyclo ./Drivers/BSP/src/wifi.d ./Drivers/BSP/src/wifi.o ./Drivers/BSP/src/wifi.su
+	-$(RM) ./Drivers/BSP/src/es_wifi.cyclo ./Drivers/BSP/src/es_wifi.d ./Drivers/BSP/src/es_wifi.o ./Drivers/BSP/src/es_wifi.su ./Drivers/BSP/src/es_wifi_io.cyclo ./Drivers/BSP/src/es_wifi_io.d ./Drivers/BSP/src/es_wifi_io.o ./Drivers/BSP/src/es_wifi_io.su ./Drivers/BSP/src/hts221.cyclo ./Drivers/BSP/src/hts221.d ./Drivers/BSP/src/hts221.o ./Drivers/BSP/src/hts221.su ./Drivers/BSP/src/lsm6dsl.cyclo ./Drivers/BSP/src/lsm6dsl.d ./Drivers/BSP/src/lsm6dsl.o ./Drivers/BSP/src/lsm6dsl.su ./Drivers/BSP/src/stm32l475e_iot01.cyclo ./Drivers/BSP/src/stm32l475e_iot01.d ./Drivers/BSP/src/stm32l475e_iot01.o ./Drivers/BSP/src/stm32l475e_iot01.su ./Drivers/BSP/src/stm32l475e_iot01_accelero.cyclo ./Drivers/BSP/src/stm32l475e_iot01_accelero.d ./Drivers/BSP/src/stm32l475e_iot01_accelero.o ./Drivers/BSP/src/stm32l475e_iot01_accelero.su ./Drivers/BSP/src/stm32l475e_iot01_hsensor.cyclo ./Drivers/BSP/src/stm32l475e_iot01_hsensor.d ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o ./Drivers/BSP/src/stm32l475e_iot01_hsensor.su ./Drivers/BSP/src/stm32l475e_iot01_tsensor.cyclo ./Drivers/BSP/src/stm32l475e_iot01_tsensor.d ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o ./Drivers/BSP/src/stm32l475e_iot01_tsensor.su ./Drivers/BSP/src/wifi.cyclo ./Drivers/BSP/src/wifi.d ./Drivers/BSP/src/wifi.o ./Drivers/BSP/src/wifi.su
 
 .PHONY: clean-Drivers-2f-BSP-2f-src
 

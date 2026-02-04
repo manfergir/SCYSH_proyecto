@@ -1,14 +1,16 @@
 /*
  * common_def.h
  *
- * DEFINICIONES COMUNES PARA EL SISTEMA DISTRIBUIDO (PROYECTO FINAL)
- * Este archivo debe ser idéntico en el Nodo 1 (Acelerómetro) y Nodo 2 (Ambiente).
+ *  Created on: Feb 1, 2026
+ *      Author: Nuria
  */
 
 #ifndef INC_COMMON_DEF_H_
 #define INC_COMMON_DEF_H_
 
+
 #include <stdint.h>
+
 
 /* ==============================================================================
  * 1. DEFINICIONES DE TAMAÑOS Y LÍMITES
@@ -19,11 +21,16 @@
 // Tamaño máximo de la carga útil (JSON).
 // Calculado para que quepa un bloque de 64 muestras int16 (128 bytes)
 // o un JSON de temperatura/humedad extenso.
-#define MSG_PAYLOAD_SIZE  128
+#define MSG_PAYLOAD_SIZE  1024
 
 // Tamaño total del elemento de la cola (Debe coincidir con "Item Size" en el .ioc)
 // 32 + 128 = 160 bytes.
 #define QUEUE_TX_ITEM_SIZE 160
+
+// Número de muestras
+#define ACC_FS_HZ            52U
+#define ACC_BLOCK_SAMPLES    64U
+#define ACC_CONT_SAMPLES     1024U
 
 
 /* ==============================================================================
@@ -47,12 +54,14 @@ typedef struct {
  * hacia las tareas de control de sensores.
  */
 typedef enum {
-    CMD_NOP = 0,            // No operation
-    CMD_START_CONTINUOUS,   // Orden para activar modo ráfaga (Solo Nodo 1)
-    CMD_STOP_CONTINUOUS,    // Orden para volver a modo normal (Solo Nodo 1)
-    CMD_FORCE_READ          // Forzar lectura inmediata (Debug / Botón)
-} SystemCommand_t;
+    CMD_NOP = 0,
+    CMD_START_CONTINUOUS,
+    CMD_STOP_CONTINUOUS,
+    CMD_FORCE_READ,
 
+    CMD_SET_WIFI,   // nuevo: configurar ssid/pass
+    CMD_SET_RTC     // nuevo: configurar fecha/hora rtc
+} SystemCommand_t;
 
 /* ==============================================================================
  * 4. NOTIFICACIONES DE TAREAS (BIT FLAGS)
@@ -61,7 +70,7 @@ typedef enum {
 // Sustituyen a los semáforos binarios por eficiencia.
 
 #define NOTE_RTC_WAKEUP  (1 << 0)  // (0x01) Salta alarma RTC (cada 30 min)
-#define NOTE_FIFO_FULL   (1 << 1)  // (0x02) Interrupción del Sensor (FIFO llena / Data Ready)
+#define NOTE_ACCEL_FIFO  (1 << 1)  // (0x02) Interrupción del Sensor (FIFO llena / Data Ready)
 #define NOTE_CMD_RX      (1 << 2)  // (0x04) Ha llegado una orden por la cola qCmdRx
 #define NOTE_BUTTON_IRQ  (1 << 3)  // (0x08) Pulsación del botón de usuario
 
@@ -91,5 +100,8 @@ extern volatile uint8_t WIFI_IS_CONNECTED;
 // Estado del servicio MQTT (0: No listo, 1: Listo para enviar)
 // Si es 0, las tareas de sensor no deberían intentar escribir en la cola.
 extern volatile uint8_t NET_MQTT_OK;
+
+#define DEBUG 1
+
 
 #endif /* INC_COMMON_DEF_H_ */
