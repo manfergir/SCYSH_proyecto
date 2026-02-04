@@ -25,7 +25,7 @@
 
 // Tamaño total del elemento de la cola (Debe coincidir con "Item Size" en el .ioc)
 // 32 + 128 = 160 bytes.
-#define QUEUE_TX_ITEM_SIZE 160
+//#define QUEUE_TX_ITEM_SIZE 160
 
 // Número de muestras
 #define ACC_FS_HZ            52U
@@ -79,8 +79,8 @@ typedef enum {
  * 5. DEFINICIÓN DE TOPICS MQTT (JERARQUÍA)
  * ============================================================================== */
 // Identificadores de los Nodos
-#define NODE_ID_ACCEL  "1"
-#define NODE_ID_ENV    "2"
+#define NODE_ID_ACCEL  1
+#define NODE_ID_ENV    2
 
 // Prefijos para construir los topics
 // Uso: sprintf(msg.topic, "%s%s", TOPIC_PUB_ACCEL_PREFIX, NODE_ID_ACCEL);

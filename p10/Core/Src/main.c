@@ -47,6 +47,7 @@
 /* USER CODE BEGIN PD */
 #define FLAG_DATA_READY 0x00000001U
 #define FLAG_BTN_EVENT 0x00000002U
+#define NODE 1
 
 //#define PROJECT_TYPE 0
 /* USER CODE END PD */
@@ -150,7 +151,7 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_RTC_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
-void task_envReadFunc(void *argument);
+//void task_envReadFunc(void *argument);
 void Accel_task_fun(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -373,7 +374,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (16, 160, &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (2, 1056, &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
@@ -390,7 +391,7 @@ int main(void)
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
   /* creation of task_envRead */
-  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
+  //task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
 
   /* creation of Accel_Task */
   Accel_TaskHandle = osThreadNew(Accel_task_fun, NULL, &Accel_Task_attributes);
@@ -1077,11 +1078,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
+#if NODE==NODE_ID_ENV
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
     // 1. Avisar a la tarea principal (Igual que con el botón)
     // Usamos la misma bandera o una distinta ("FLAG_RTC_WAKEUP")
     osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY); 
 }
+#endif
 
 /* USER CODE END 4 */
 
@@ -1222,6 +1225,7 @@ void MQTT_TaskFun(void *argument)
 * @retval None
 */
 /* USER CODE END Header_task_envReadFunc */
+#if NODE==NODE_ID_ENV
 void task_envReadFunc(void *argument)
 {
   /* USER CODE BEGIN task_envReadFunc */
@@ -1308,14 +1312,14 @@ void task_envReadFunc(void *argument)
   }
   /* USER CODE END task_envReadFunc */
 }
-
+#endif
 /* USER CODE BEGIN Header_Accel_task_fun */
 /**
-* @brief Function implementing the Accel_task thread.
+* @brief Function implementing the Accel_Task thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_Accel_Task_Func */
+/* USER CODE END Header_Accel_task_fun */
 void Accel_task_fun(void *argument)
 {
   printf("[ACC] Task start (FIFO)\r\n");
