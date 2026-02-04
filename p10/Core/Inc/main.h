@@ -58,8 +58,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define BUTTON_EXTI13_Pin GPIO_PIN_13
-#define BUTTON_EXTI13_GPIO_Port GPIOC
 #define M24SR64_Y_RF_DISABLE_Pin GPIO_PIN_2
 #define M24SR64_Y_RF_DISABLE_GPIO_Port GPIOE
 #define USB_OTG_FS_OVRCR_EXTI3_Pin GPIO_PIN_3
@@ -226,8 +224,6 @@ void Error_Handler(void);
 #define ISM43362_DRDY_EXTI1_Pin GPIO_PIN_1
 #define ISM43362_DRDY_EXTI1_GPIO_Port GPIOE
 #define ISM43362_DRDY_EXTI1_EXTI_IRQn EXTI1_IRQn
-
-
 
 /* USER CODE BEGIN Private defines */
 

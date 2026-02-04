@@ -97,7 +97,7 @@ const osThreadAttr_t task_envRead_attributes = {
 osThreadId_t Accel_TaskHandle;
 const osThreadAttr_t Accel_Task_attributes = {
   .name = "Accel_Task",
-  .stack_size = 512*4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for qMqttTx */
@@ -110,13 +110,6 @@ osMessageQueueId_t qCmdRxHandle;
 const osMessageQueueAttr_t qCmdRx_attributes = {
   .name = "qCmdRx"
 };
-
-/* Definitions for qAlertTx
-osMessageQueueId_t qAlertTxHandle;
-const osMessageQueueAttr_t qAlertTx_attributes = {
-  .name = "qAlertTx"
-};
-*/
 /* USER CODE BEGIN PV */
 
 // Variables globales de estado
@@ -158,7 +151,7 @@ static void MX_RTC_Init(void);
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
 void task_envReadFunc(void *argument);
-void Accel_Task_Func(void *argument);
+void Accel_task_fun(void *argument);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -380,13 +373,10 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (2, 160, &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (16, 160, &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
-
-  /* creation of qAlertTx */
-  //qAlertTxHandle = osMessageQueueNew (1, 160, &qAlertTx_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -403,7 +393,7 @@ int main(void)
   task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
 
   /* creation of Accel_Task */
-  Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
+  Accel_TaskHandle = osThreadNew(Accel_task_fun, NULL, &Accel_Task_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -1019,12 +1009,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BUTTON_EXTI13_Pin */
-  GPIO_InitStruct.Pin = BUTTON_EXTI13_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(BUTTON_EXTI13_GPIO_Port, &GPIO_InitStruct);
-
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
@@ -1076,13 +1060,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     */
     case LSM6DSL_INT1_EXTI11_Pin:
 	{
-		printf("[ACC][ISR] DRDY\r\n");  // Debug temporal
+		//printf("[ACC][ISR] DRDY\r\n");  // Debug temporal
 		osThreadFlagsSet(Accel_TaskHandle, NOTE_ACCEL_FIFO);
 	break;
 	}
-	case BUTTON_EXTI13_Pin: // Botón (forzar lectura / wakeup)
+	case (BOTON_Pin): // Botón (forzar lectura / wakeup)
 	{
-	  printf("[ACC][ISR] Button \r\n");
+	  //printf("[ACC][ISR] Button \r\n");
 	  osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
 	  break;
 	}
@@ -1325,15 +1309,14 @@ void task_envReadFunc(void *argument)
   /* USER CODE END task_envReadFunc */
 }
 
-/* USER CODE BEGIN Accel_Task_Func */
+/* USER CODE BEGIN Header_Accel_task_fun */
 /**
-* @brief Function implementing the task_envRead thread.
+* @brief Function implementing the Accel_task thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_task_envReadFunc */
 /* USER CODE END Header_Accel_Task_Func */
-void Accel_Task_Func(void *argument)
+void Accel_task_fun(void *argument)
 {
   printf("[ACC] Task start (FIFO)\r\n");
 
