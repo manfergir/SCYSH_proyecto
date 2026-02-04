@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  000091e2  00000000  00000000  0005c43b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00035f07  00000000  00000000  0006561d  2**0
+ 17 .debug_line   00038268  00000000  00000000  0006561d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00119393  00000000  00000000  0009b524  2**0
+ 18 .debug_str    00119394  00000000  00000000  0009d885  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  001b48b7  2**0
+ 19 .comment      00000043  00000000  00000000  001b6c19  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000dbec  00000000  00000000  001b48fc  2**2
+ 20 .debug_frame  0000dbec  00000000  00000000  001b6c5c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000062  00000000  00000000  001c24e8  2**0
+ 21 .debug_line_str 00000060  00000000  00000000  001c4848  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -154,8 +154,8 @@ Disassembly of section .text:
  8000286:	bf08      	it	eq
  8000288:	2800      	cmpeq	r0, #0
  800028a:	bf1c      	itt	ne
- 800028c:	f04f 31ff 	movne.w	r1, #4294967295	@ 0xffffffff
- 8000290:	f04f 30ff 	movne.w	r0, #4294967295	@ 0xffffffff
+ 800028c:	f04f 31ff 	movne.w	r1, #4294967295
+ 8000290:	f04f 30ff 	movne.w	r0, #4294967295
  8000294:	f000 b988 	b.w	80005a8 <__aeabi_idiv0>
  8000298:	f1ad 0c08 	sub.w	ip, sp, #8
  800029c:	e96d ce04 	strd	ip, lr, [sp, #-16]!
@@ -194,7 +194,7 @@ Disassembly of section .text:
  80002fa:	429a      	cmp	r2, r3
  80002fc:	d909      	bls.n	8000312 <__udivmoddi4+0x62>
  80002fe:	18fb      	adds	r3, r7, r3
- 8000300:	f101 30ff 	add.w	r0, r1, #4294967295	@ 0xffffffff
+ 8000300:	f101 30ff 	add.w	r0, r1, #4294967295
  8000304:	f080 80ea 	bcs.w	80004dc <__udivmoddi4+0x22c>
  8000308:	429a      	cmp	r2, r3
  800030a:	f240 80e7 	bls.w	80004dc <__udivmoddi4+0x22c>
@@ -209,7 +209,7 @@ Disassembly of section .text:
  8000326:	459c      	cmp	ip, r3
  8000328:	d909      	bls.n	800033e <__udivmoddi4+0x8e>
  800032a:	18fb      	adds	r3, r7, r3
- 800032c:	f100 32ff 	add.w	r2, r0, #4294967295	@ 0xffffffff
+ 800032c:	f100 32ff 	add.w	r2, r0, #4294967295
  8000330:	f080 80d6 	bcs.w	80004e0 <__udivmoddi4+0x230>
  8000334:	459c      	cmp	ip, r3
  8000336:	f240 80d3 	bls.w	80004e0 <__udivmoddi4+0x230>
@@ -263,7 +263,7 @@ Disassembly of section .text:
  80003ba:	429a      	cmp	r2, r3
  80003bc:	d907      	bls.n	80003ce <__udivmoddi4+0x11e>
  80003be:	18fb      	adds	r3, r7, r3
- 80003c0:	f10c 38ff 	add.w	r8, ip, #4294967295	@ 0xffffffff
+ 80003c0:	f10c 38ff 	add.w	r8, ip, #4294967295
  80003c4:	d202      	bcs.n	80003cc <__udivmoddi4+0x11c>
  80003c6:	429a      	cmp	r2, r3
  80003c8:	f200 80e0 	bhi.w	800058c <__udivmoddi4+0x2dc>
@@ -276,7 +276,7 @@ Disassembly of section .text:
  80003e0:	429c      	cmp	r4, r3
  80003e2:	d907      	bls.n	80003f4 <__udivmoddi4+0x144>
  80003e4:	18fb      	adds	r3, r7, r3
- 80003e6:	f102 30ff 	add.w	r0, r2, #4294967295	@ 0xffffffff
+ 80003e6:	f102 30ff 	add.w	r0, r2, #4294967295
  80003ea:	d202      	bcs.n	80003f2 <__udivmoddi4+0x142>
  80003ec:	429c      	cmp	r4, r3
  80003ee:	f200 80ca 	bhi.w	8000586 <__udivmoddi4+0x2d6>
@@ -304,7 +304,7 @@ Disassembly of section .text:
  8000436:	fa02 f201 	lsl.w	r2, r2, r1
  800043a:	d909      	bls.n	8000450 <__udivmoddi4+0x1a0>
  800043c:	193c      	adds	r4, r7, r4
- 800043e:	f100 3aff 	add.w	sl, r0, #4294967295	@ 0xffffffff
+ 800043e:	f100 3aff 	add.w	sl, r0, #4294967295
  8000442:	f080 809c 	bcs.w	800057e <__udivmoddi4+0x2ce>
  8000446:	45a6      	cmp	lr, r4
  8000448:	f240 8099 	bls.w	800057e <__udivmoddi4+0x2ce>
@@ -319,7 +319,7 @@ Disassembly of section .text:
  8000468:	45a4      	cmp	ip, r4
  800046a:	d908      	bls.n	800047e <__udivmoddi4+0x1ce>
  800046c:	193c      	adds	r4, r7, r4
- 800046e:	f103 3eff 	add.w	lr, r3, #4294967295	@ 0xffffffff
+ 800046e:	f103 3eff 	add.w	lr, r3, #4294967295
  8000472:	f080 8082 	bcs.w	800057a <__udivmoddi4+0x2ca>
  8000476:	45a4      	cmp	ip, r4
  8000478:	d97f      	bls.n	800057a <__udivmoddi4+0x2ca>
@@ -381,7 +381,7 @@ Disassembly of section .text:
  8000516:	b280      	uxth	r0, r0
  8000518:	d93e      	bls.n	8000598 <__udivmoddi4+0x2e8>
  800051a:	1879      	adds	r1, r7, r1
- 800051c:	f108 3cff 	add.w	ip, r8, #4294967295	@ 0xffffffff
+ 800051c:	f108 3cff 	add.w	ip, r8, #4294967295
  8000520:	d201      	bcs.n	8000526 <__udivmoddi4+0x276>
  8000522:	4589      	cmp	r9, r1
  8000524:	d81f      	bhi.n	8000566 <__udivmoddi4+0x2b6>
@@ -394,7 +394,7 @@ Disassembly of section .text:
  800053c:	4542      	cmp	r2, r8
  800053e:	d229      	bcs.n	8000594 <__udivmoddi4+0x2e4>
  8000540:	18ba      	adds	r2, r7, r2
- 8000542:	f109 31ff 	add.w	r1, r9, #4294967295	@ 0xffffffff
+ 8000542:	f109 31ff 	add.w	r1, r9, #4294967295
  8000546:	d2c4      	bcs.n	80004d2 <__udivmoddi4+0x222>
  8000548:	4542      	cmp	r2, r8
  800054a:	d2c2      	bcs.n	80004d2 <__udivmoddi4+0x222>
@@ -660,10 +660,10 @@ static int wifi_start(void)
  80006fc:	4807      	ldr	r0, [pc, #28]	@ (800071c <wifi_start+0x6c>)
  80006fe:	f011 fa7d 	bl	8011bfc <puts>
       return -1;
- 8000702:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8000702:	f04f 33ff 	mov.w	r3, #4294967295
  8000706:	e001      	b.n	800070c <wifi_start+0x5c>
     return -1;
- 8000708:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8000708:	f04f 33ff 	mov.w	r3, #4294967295
 }
  800070c:	4618      	mov	r0, r3
  800070e:	3708      	adds	r7, #8
@@ -735,13 +735,13 @@ int wifi_connect(void)
  8000774:	480b      	ldr	r0, [pc, #44]	@ (80007a4 <wifi_connect+0x84>)
  8000776:	f011 fa41 	bl	8011bfc <puts>
       return -1;
- 800077a:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800077a:	f04f 33ff 	mov.w	r3, #4294967295
  800077e:	e004      	b.n	800078a <wifi_connect+0x6a>
 		 LOG(("ERROR : es-wifi module NOT connected\r\n"));
  8000780:	4809      	ldr	r0, [pc, #36]	@ (80007a8 <wifi_connect+0x88>)
  8000782:	f011 fa3b 	bl	8011bfc <puts>
      return -1;
- 8000786:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8000786:	f04f 33ff 	mov.w	r3, #4294967295
 }
  800078a:	4618      	mov	r0, r3
  800078c:	46bd      	mov	sp, r7
@@ -2860,7 +2860,7 @@ void task_envReadFunc(void *argument)
   {
     
     flag = osThreadFlagsWait( FLAG_BTN_EVENT | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
- 80013aa:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 80013aa:	f04f 32ff 	mov.w	r2, #4294967295
  80013ae:	2100      	movs	r1, #0
  80013b0:	2003      	movs	r0, #3
  80013b2:	f00d f97b 	bl	800e6ac <osThreadFlagsWait>
@@ -5118,7 +5118,7 @@ int _kill(int pid, int sig)
  80020e8:	2216      	movs	r2, #22
  80020ea:	601a      	str	r2, [r3, #0]
   return -1;
- 80020ec:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 80020ec:	f04f 33ff 	mov.w	r3, #4294967295
 }
  80020f0:	4618      	mov	r0, r3
  80020f2:	3708      	adds	r7, #8
@@ -5134,7 +5134,7 @@ void _exit (int status)
  80020fc:	af00      	add	r7, sp, #0
  80020fe:	6078      	str	r0, [r7, #4]
   _kill(status, -1);
- 8002100:	f04f 31ff 	mov.w	r1, #4294967295	@ 0xffffffff
+ 8002100:	f04f 31ff 	mov.w	r1, #4294967295
  8002104:	6878      	ldr	r0, [r7, #4]
  8002106:	f7ff ffe7 	bl	80020d8 <_kill>
   while (1) {}    /* Make sure we hang here */
@@ -5199,7 +5199,7 @@ int _close(int file)
  800214e:	6078      	str	r0, [r7, #4]
   (void)file;
   return -1;
- 8002150:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8002150:	f04f 33ff 	mov.w	r3, #4294967295
 }
  8002154:	4618      	mov	r0, r3
  8002156:	370c      	adds	r7, #12
@@ -5324,7 +5324,7 @@ void *_sbrk(ptrdiff_t incr)
  80021e6:	220c      	movs	r2, #12
  80021e8:	601a      	str	r2, [r3, #0]
     return (void *)-1;
- 80021ea:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 80021ea:	f04f 33ff 	mov.w	r3, #4294967295
  80021ee:	e009      	b.n	8002204 <_sbrk+0x54>
   }
 
@@ -8148,7 +8148,7 @@ int8_t SPI_WIFI_Init(uint16_t mode)
  8003372:	d002      	beq.n	800337a <SPI_WIFI_Init+0x7a>
     {
       return -1;
- 8003374:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003374:	f04f 33ff 	mov.w	r3, #4294967295
  8003378:	e018      	b.n	80033ac <SPI_WIFI_Init+0xac>
     }
 
@@ -8269,7 +8269,7 @@ int8_t SPI_WIFI_ResetModule(void)
  800343a:	4816      	ldr	r0, [pc, #88]	@ (8003494 <SPI_WIFI_ResetModule+0xd8>)
  800343c:	f001 fbd4 	bl	8004be8 <HAL_GPIO_WritePin>
       return -1;
- 8003440:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003440:	f04f 33ff 	mov.w	r3, #4294967295
  8003444:	e021      	b.n	800348a <SPI_WIFI_ResetModule+0xce>
   while (WIFI_IS_CMDDATA_READY())
  8003446:	2102      	movs	r1, #2
@@ -8310,7 +8310,7 @@ int8_t SPI_WIFI_ResetModule(void)
  8003480:	d002      	beq.n	8003488 <SPI_WIFI_ResetModule+0xcc>
   {
     return -1;
- 8003482:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003482:	f04f 33ff 	mov.w	r3, #4294967295
  8003486:	e000      	b.n	800348a <SPI_WIFI_ResetModule+0xce>
   }    
   return 0;
@@ -8376,7 +8376,7 @@ int wait_cmddata_rdy_high(int timeout)
  80034d0:	d902      	bls.n	80034d8 <wait_cmddata_rdy_high+0x28>
     {
       return -1;
- 80034d2:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 80034d2:	f04f 33ff 	mov.w	r3, #4294967295
  80034d6:	e007      	b.n	80034e8 <wait_cmddata_rdy_high+0x38>
   while (WIFI_IS_CMDDATA_READY()==0)
  80034d8:	2102      	movs	r1, #2
@@ -8426,7 +8426,7 @@ int wait_cmddata_rdy_rising_event(int timeout)
  8003514:	d902      	bls.n	800351c <wait_cmddata_rdy_rising_event+0x28>
     {
       return -1;
- 8003516:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003516:	f04f 33ff 	mov.w	r3, #4294967295
  800351a:	e004      	b.n	8003526 <wait_cmddata_rdy_rising_event+0x32>
   while (cmddata_rdy_rising_event==1)
  800351c:	4b04      	ldr	r3, [pc, #16]	@ (8003530 <wait_cmddata_rdy_rising_event+0x3c>)
@@ -8474,7 +8474,7 @@ int wait_spi_rx_event(int timeout)
  8003554:	d902      	bls.n	800355c <wait_spi_rx_event+0x28>
     {
       return -1;
- 8003556:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003556:	f04f 33ff 	mov.w	r3, #4294967295
  800355a:	e004      	b.n	8003566 <wait_spi_rx_event+0x32>
   while (spi_rx_event==1)
  800355c:	4b04      	ldr	r3, [pc, #16]	@ (8003570 <wait_spi_rx_event+0x3c>)
@@ -8522,7 +8522,7 @@ int wait_spi_tx_event(int timeout)
  8003594:	d902      	bls.n	800359c <wait_spi_tx_event+0x28>
     {
       return -1;
- 8003596:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003596:	f04f 33ff 	mov.w	r3, #4294967295
  800359a:	e004      	b.n	80035a6 <wait_spi_tx_event+0x32>
   while (spi_tx_event==1)
  800359c:	4b04      	ldr	r3, [pc, #16]	@ (80035b0 <wait_spi_tx_event+0x3c>)
@@ -8625,7 +8625,7 @@ int16_t SPI_WIFI_ReceiveData(uint8_t *pData, uint16_t len, uint32_t timeout)
  800362c:	f001 fadc 	bl	8004be8 <HAL_GPIO_WritePin>
         UNLOCK_SPI();
         return ES_WIFI_ERROR_SPI_FAILED;
- 8003630:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003630:	f04f 33ff 	mov.w	r3, #4294967295
  8003634:	e02e      	b.n	8003694 <SPI_WIFI_ReceiveData+0xe0>
       }
   
@@ -8722,7 +8722,7 @@ int16_t SPI_WIFI_SendData( uint8_t *pdata,  uint16_t len, uint32_t timeout)
  80036c2:	da02      	bge.n	80036ca <SPI_WIFI_SendData+0x22>
   {
     return ES_WIFI_ERROR_SPI_FAILED;
- 80036c4:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 80036c4:	f04f 33ff 	mov.w	r3, #4294967295
  80036c8:	e04f      	b.n	800376a <SPI_WIFI_SendData+0xc2>
   }
     
@@ -8768,7 +8768,7 @@ int16_t SPI_WIFI_SendData( uint8_t *pdata,  uint16_t len, uint32_t timeout)
  8003708:	f001 fa6e 	bl	8004be8 <HAL_GPIO_WritePin>
       UNLOCK_SPI();
       return ES_WIFI_ERROR_SPI_FAILED;
- 800370c:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800370c:	f04f 33ff 	mov.w	r3, #4294967295
  8003710:	e02b      	b.n	800376a <SPI_WIFI_SendData+0xc2>
     }
     wait_spi_tx_event(timeout);
@@ -8815,7 +8815,7 @@ int16_t SPI_WIFI_SendData( uint8_t *pdata,  uint16_t len, uint32_t timeout)
  8003754:	f001 fa48 	bl	8004be8 <HAL_GPIO_WritePin>
       UNLOCK_SPI();
       return ES_WIFI_ERROR_SPI_FAILED;
- 8003758:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8003758:	f04f 33ff 	mov.w	r3, #4294967295
  800375c:	e005      	b.n	800376a <SPI_WIFI_SendData+0xc2>
     }  
     wait_spi_tx_event(timeout);
@@ -10562,7 +10562,7 @@ __weak void HAL_Delay(uint32_t Delay)
   /* Add a period to guaranty minimum wait */
   if (wait < HAL_MAX_DELAY)
  8004182:	68fb      	ldr	r3, [r7, #12]
- 8004184:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8004184:	f1b3 3fff 	cmp.w	r3, #4294967295
  8004188:	d005      	beq.n	8004196 <HAL_Delay+0x26>
   {
     wait += (uint32_t)uwTickFreq;
@@ -10795,7 +10795,7 @@ __STATIC_FORCEINLINE void __DSB(void)
  8004324:	2300      	movs	r3, #0
  8004326:	617b      	str	r3, [r7, #20]
            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits) |
- 8004328:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 8004328:	f04f 32ff 	mov.w	r2, #4294967295
  800432c:	69bb      	ldr	r3, [r7, #24]
  800432e:	fa02 f303 	lsl.w	r3, r2, r3
  8004332:	43da      	mvns	r2, r3
@@ -10804,7 +10804,7 @@ __STATIC_FORCEINLINE void __DSB(void)
  8004338:	697b      	ldr	r3, [r7, #20]
  800433a:	409a      	lsls	r2, r3
            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
- 800433c:	f04f 31ff 	mov.w	r1, #4294967295	@ 0xffffffff
+ 800433c:	f04f 31ff 	mov.w	r1, #4294967295
  8004340:	697b      	ldr	r3, [r7, #20]
  8004342:	fa01 f303 	lsl.w	r3, r1, r3
  8004346:	43d9      	mvns	r1, r3
@@ -13752,7 +13752,7 @@ static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uin
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
  80053f6:	683b      	ldr	r3, [r7, #0]
- 80053f8:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80053f8:	f1b3 3fff 	cmp.w	r3, #4294967295
  80053fc:	d02d      	beq.n	800545a <I2C_WaitOnFlagUntilTimeout+0x8a>
     {
       if (((HAL_GetTick() - Tickstart) > Timeout) || (Timeout == 0U))
@@ -13869,7 +13869,7 @@ static HAL_StatusTypeDef I2C_WaitOnTXISFlagUntilTimeout(I2C_HandleTypeDef *hi2c,
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
  80054a4:	68bb      	ldr	r3, [r7, #8]
- 80054a6:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80054a6:	f1b3 3fff 	cmp.w	r3, #4294967295
  80054aa:	d025      	beq.n	80054f8 <I2C_WaitOnTXISFlagUntilTimeout+0x76>
     {
       if (((HAL_GetTick() - Tickstart) > Timeout) || (Timeout == 0U))
@@ -14081,7 +14081,7 @@ static HAL_StatusTypeDef I2C_IsErrorOccurred(I2C_HandleTypeDef *hi2c, uint32_t T
       /* Check for the Timeout */
       if (Timeout != HAL_MAX_DELAY)
  80055ce:	68bb      	ldr	r3, [r7, #8]
- 80055d0:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80055d0:	f1b3 3fff 	cmp.w	r3, #4294967295
  80055d4:	d045      	beq.n	8005662 <I2C_IsErrorOccurred+0xca>
       {
         if (((HAL_GetTick() - tickstart) > Timeout) || (Timeout == 0U))
@@ -15442,7 +15442,7 @@ static HAL_StatusTypeDef QSPI_WaitFlagStateUntilTimeout(QSPI_HandleTypeDef *hqsp
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
  8005d72:	69bb      	ldr	r3, [r7, #24]
- 8005d74:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8005d74:	f1b3 3fff 	cmp.w	r3, #4294967295
  8005d78:	d016      	beq.n	8005da8 <QSPI_WaitFlagStateUntilTimeout+0x48>
     {
       if(((HAL_GetTick() - Tickstart) > Timeout) || (Timeout == 0U))
@@ -21069,7 +21069,7 @@ HAL_StatusTypeDef RTC_EnterInitMode(RTC_HandleTypeDef *hrtc)
     hrtc->Instance->ISR = (uint32_t)RTC_INIT_MASK;
  8007bde:	687b      	ldr	r3, [r7, #4]
  8007be0:	681b      	ldr	r3, [r3, #0]
- 8007be2:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 8007be2:	f04f 32ff 	mov.w	r2, #4294967295
  8007be6:	60da      	str	r2, [r3, #12]
 
     tickstart = HAL_GetTick();
@@ -21904,7 +21904,7 @@ HAL_StatusTypeDef HAL_SPI_Receive(SPI_HandleTypeDef *hspi, uint8_t *pData, uint1
  800804e:	429a      	cmp	r2, r3
  8008050:	d803      	bhi.n	800805a <HAL_SPI_Receive+0x194>
  8008052:	683b      	ldr	r3, [r7, #0]
- 8008054:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8008054:	f1b3 3fff 	cmp.w	r3, #4294967295
  8008058:	d102      	bne.n	8008060 <HAL_SPI_Receive+0x19a>
  800805a:	683b      	ldr	r3, [r7, #0]
  800805c:	2b00      	cmp	r3, #0
@@ -21977,7 +21977,7 @@ HAL_StatusTypeDef HAL_SPI_Receive(SPI_HandleTypeDef *hspi, uint8_t *pData, uint1
  80080c8:	429a      	cmp	r2, r3
  80080ca:	d803      	bhi.n	80080d4 <HAL_SPI_Receive+0x20e>
  80080cc:	683b      	ldr	r3, [r7, #0]
- 80080ce:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80080ce:	f1b3 3fff 	cmp.w	r3, #4294967295
  80080d2:	d102      	bne.n	80080da <HAL_SPI_Receive+0x214>
  80080d4:	683b      	ldr	r3, [r7, #0]
  80080d6:	2b00      	cmp	r3, #0
@@ -22406,7 +22406,7 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, const uint8_t
  8008328:	429a      	cmp	r2, r3
  800832a:	d80d      	bhi.n	8008348 <HAL_SPI_TransmitReceive+0x212>
  800832c:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
- 800832e:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800832e:	f1b3 3fff 	cmp.w	r3, #4294967295
  8008332:	d009      	beq.n	8008348 <HAL_SPI_TransmitReceive+0x212>
       {
         hspi->State = HAL_SPI_STATE_READY;
@@ -22690,7 +22690,7 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, const uint8_t
  80084ec:	429a      	cmp	r2, r3
  80084ee:	d803      	bhi.n	80084f8 <HAL_SPI_TransmitReceive+0x3c2>
  80084f0:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
- 80084f2:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80084f2:	f1b3 3fff 	cmp.w	r3, #4294967295
  80084f6:	d102      	bne.n	80084fe <HAL_SPI_TransmitReceive+0x3c8>
  80084f8:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  80084fa:	2b00      	cmp	r3, #0
@@ -24510,7 +24510,7 @@ static HAL_StatusTypeDef SPI_WaitFlagStateUntilTimeout(SPI_HandleTypeDef *hspi, 
   {
     if (Timeout != HAL_MAX_DELAY)
  8008ef4:	683b      	ldr	r3, [r7, #0]
- 8008ef6:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8008ef6:	f1b3 3fff 	cmp.w	r3, #4294967295
  8008efa:	d051      	beq.n	8008fa0 <SPI_WaitFlagStateUntilTimeout+0xe4>
     {
       if (((HAL_GetTick() - tmp_tickstart) >= tmp_timeout) || (tmp_timeout == 0U))
@@ -24729,7 +24729,7 @@ static HAL_StatusTypeDef SPI_WaitFifoStateUntilTimeout(SPI_HandleTypeDef *hspi, 
 
     if (Timeout != HAL_MAX_DELAY)
  800902e:	683b      	ldr	r3, [r7, #0]
- 8009030:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8009030:	f1b3 3fff 	cmp.w	r3, #4294967295
  8009034:	d051      	beq.n	80090da <SPI_WaitFifoStateUntilTimeout+0x10e>
     {
       if (((HAL_GetTick() - tmp_tickstart) >= tmp_timeout) || (tmp_timeout == 0U))
@@ -27717,7 +27717,7 @@ HAL_StatusTypeDef UART_WaitOnFlagUntilTimeout(UART_HandleTypeDef *huart, uint32_
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
  800a1c6:	69bb      	ldr	r3, [r7, #24]
- 800a1c8:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800a1c8:	f1b3 3fff 	cmp.w	r3, #4294967295
  800a1cc:	d04b      	beq.n	800a266 <UART_WaitOnFlagUntilTimeout+0xb2>
     {
       if (((HAL_GetTick() - Tickstart) > Timeout) || (Timeout == 0U))
@@ -39950,7 +39950,7 @@ osStatus_t osKernelInitialize (void) {
  800e484:	e002      	b.n	800e48c <osKernelInitialize+0x34>
     } else {
       stat = osError;
- 800e486:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800e486:	f04f 33ff 	mov.w	r3, #4294967295
  800e48a:	607b      	str	r3, [r7, #4]
     }
   }
@@ -40014,7 +40014,7 @@ osStatus_t osKernelStart (void) {
  800e4d4:	e002      	b.n	800e4dc <osKernelStart+0x3c>
     } else {
       stat = osError;
- 800e4d6:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800e4d6:	f04f 33ff 	mov.w	r3, #4294967295
  800e4da:	607b      	str	r3, [r7, #4]
     }
   }
@@ -40073,7 +40073,7 @@ osThreadId_t osThreadNew (osThreadFunc_t func, void *argument, const osThreadAtt
  800e516:	2300      	movs	r3, #0
  800e518:	627b      	str	r3, [r7, #36]	@ 0x24
     mem  = -1;
- 800e51a:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800e51a:	f04f 33ff 	mov.w	r3, #4294967295
  800e51e:	61bb      	str	r3, [r7, #24]
 
     if (attr != NULL) {
@@ -40278,7 +40278,7 @@ uint32_t osThreadFlagsSet (osThreadId_t thread_id, uint32_t flags) {
   }
   else {
     rflags = (uint32_t)osError;
- 800e632:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800e632:	f04f 33ff 	mov.w	r3, #4294967295
  800e636:	60fb      	str	r3, [r7, #12]
   __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
  800e638:	f3ef 8305 	mrs	r3, IPSR
@@ -40630,7 +40630,7 @@ osMessageQueueId_t osMessageQueueNew (uint32_t msg_count, uint32_t msg_size, con
  800e808:	2b00      	cmp	r3, #0
  800e80a:	d059      	beq.n	800e8c0 <osMessageQueueNew+0xdc>
     mem = -1;
- 800e80c:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800e80c:	f04f 33ff 	mov.w	r3, #4294967295
  800e810:	61bb      	str	r3, [r7, #24]
 
     if (attr != NULL) {
@@ -41126,7 +41126,7 @@ void vListInitialise( List_t * const pxList )
 	ensure it remains at the end of the list. */
 	pxList->xListEnd.xItemValue = portMAX_DELAY;
  800eac2:	687b      	ldr	r3, [r7, #4]
- 800eac4:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 800eac4:	f04f 32ff 	mov.w	r2, #4294967295
  800eac8:	609a      	str	r2, [r3, #8]
 
 	/* The list end next and previous pointers point to itself so we know
@@ -41267,7 +41267,7 @@ const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
 	first, and the algorithm slightly modified if necessary. */
 	if( xValueOfInsertion == portMAX_DELAY )
  800eb62:	68bb      	ldr	r3, [r7, #8]
- 800eb64:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800eb64:	f1b3 3fff 	cmp.w	r3, #4294967295
  800eb68:	d103      	bne.n	800eb72 <vListInsert+0x20>
 	{
 		pxIterator = pxList->xListEnd.pxPrevious;
@@ -42139,7 +42139,7 @@ Queue_t * const pxQueue = xQueue;
  800f002:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  800f004:	f893 3044 	ldrb.w	r3, [r3, #68]	@ 0x44
  800f008:	b25b      	sxtb	r3, r3
- 800f00a:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f00a:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f00e:	d103      	bne.n	800f018 <xQueueGenericSend+0x174>
  800f010:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  800f012:	2200      	movs	r2, #0
@@ -42147,7 +42147,7 @@ Queue_t * const pxQueue = xQueue;
  800f018:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  800f01a:	f893 3045 	ldrb.w	r3, [r3, #69]	@ 0x45
  800f01e:	b25b      	sxtb	r3, r3
- 800f020:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f020:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f024:	d103      	bne.n	800f02e <xQueueGenericSend+0x18a>
  800f026:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  800f028:	2200      	movs	r2, #0
@@ -42387,7 +42387,7 @@ uint32_t ulOriginalBASEPRI, ulNewBASEPRI;
 			be done when the queue is unlocked later. */
 			if( cTxLock == queueUNLOCKED )
  800f184:	f997 3033 	ldrsb.w	r3, [r7, #51]	@ 0x33
- 800f188:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f188:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f18c:	d112      	bne.n	800f1b4 <xQueueGenericSendFromISR+0x10c>
 						}
 					}
@@ -42678,7 +42678,7 @@ Queue_t * const pxQueue = xQueue;
  800f2f6:	6abb      	ldr	r3, [r7, #40]	@ 0x28
  800f2f8:	f893 3044 	ldrb.w	r3, [r3, #68]	@ 0x44
  800f2fc:	b25b      	sxtb	r3, r3
- 800f2fe:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f2fe:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f302:	d103      	bne.n	800f30c <xQueueReceive+0x128>
  800f304:	6abb      	ldr	r3, [r7, #40]	@ 0x28
  800f306:	2200      	movs	r2, #0
@@ -42686,7 +42686,7 @@ Queue_t * const pxQueue = xQueue;
  800f30c:	6abb      	ldr	r3, [r7, #40]	@ 0x28
  800f30e:	f893 3045 	ldrb.w	r3, [r3, #69]	@ 0x45
  800f312:	b25b      	sxtb	r3, r3
- 800f314:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f314:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f318:	d103      	bne.n	800f322 <xQueueReceive+0x13e>
  800f31a:	6abb      	ldr	r3, [r7, #40]	@ 0x28
  800f31c:	2200      	movs	r2, #0
@@ -42892,7 +42892,7 @@ Queue_t * const pxQueue = xQueue;
 			locked. */
 			if( cRxLock == queueUNLOCKED )
  800f44c:	f997 3027 	ldrsb.w	r3, [r7, #39]	@ 0x27
- 800f450:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f450:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f454:	d112      	bne.n	800f47c <xQueueReceiveFromISR+0xd4>
 			{
 				if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
@@ -43519,7 +43519,7 @@ BaseType_t xReturn;
  800f734:	697b      	ldr	r3, [r7, #20]
  800f736:	f893 3044 	ldrb.w	r3, [r3, #68]	@ 0x44
  800f73a:	b25b      	sxtb	r3, r3
- 800f73c:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f73c:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f740:	d103      	bne.n	800f74a <vQueueWaitForMessageRestricted+0x2a>
  800f742:	697b      	ldr	r3, [r7, #20]
  800f744:	2200      	movs	r2, #0
@@ -43527,7 +43527,7 @@ BaseType_t xReturn;
  800f74a:	697b      	ldr	r3, [r7, #20]
  800f74c:	f893 3045 	ldrb.w	r3, [r3, #69]	@ 0x45
  800f750:	b25b      	sxtb	r3, r3
- 800f752:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800f752:	f1b3 3fff 	cmp.w	r3, #4294967295
  800f756:	d103      	bne.n	800f760 <vQueueWaitForMessageRestricted+0x40>
  800f758:	697b      	ldr	r3, [r7, #20]
  800f75a:	2200      	movs	r2, #0
@@ -43807,7 +43807,7 @@ BaseType_t xReturn;
 		else
 		{
 			xReturn = errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
- 800f8c2:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 800f8c2:	f04f 33ff 	mov.w	r3, #4294967295
  800f8c6:	61bb      	str	r3, [r7, #24]
 		}
 
@@ -44449,7 +44449,7 @@ BaseType_t xReturn;
 
 		xNextTaskUnblockTime = portMAX_DELAY;
  800fbee:	4b15      	ldr	r3, [pc, #84]	@ (800fc44 <vTaskStartScheduler+0xd4>)
- 800fbf0:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 800fbf0:	f04f 32ff 	mov.w	r2, #4294967295
  800fbf4:	601a      	str	r2, [r3, #0]
 		xSchedulerRunning = pdTRUE;
  800fbf6:	4b14      	ldr	r3, [pc, #80]	@ (800fc48 <vTaskStartScheduler+0xd8>)
@@ -44475,7 +44475,7 @@ BaseType_t xReturn;
  800fc06:	e00f      	b.n	800fc28 <vTaskStartScheduler+0xb8>
 		configASSERT( xReturn != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY );
  800fc08:	697b      	ldr	r3, [r7, #20]
- 800fc0a:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 800fc0a:	f1b3 3fff 	cmp.w	r3, #4294967295
  800fc0e:	d10b      	bne.n	800fc28 <vTaskStartScheduler+0xb8>
 	__asm volatile
  800fc10:	f04f 0350 	mov.w	r3, #80	@ 0x50
@@ -44904,7 +44904,7 @@ BaseType_t xSwitchRequired = pdFALSE;
 					next time through. */
 					xNextTaskUnblockTime = portMAX_DELAY; /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
  800fe48:	4b36      	ldr	r3, [pc, #216]	@ (800ff24 <xTaskIncrementTick+0x15c>)
- 800fe4a:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 800fe4a:	f04f 32ff 	mov.w	r2, #4294967295
  800fe4e:	601a      	str	r2, [r3, #0]
 					break;
  800fe50:	e03f      	b.n	800fed2 <xTaskIncrementTick+0x10a>
@@ -45298,7 +45298,7 @@ void vTaskPlaceOnEventList( List_t * const pxEventList, const TickType_t xTicksT
  8010090:	d002      	beq.n	8010098 <vTaskPlaceOnEventListRestricted+0x44>
 		{
 			xTicksToWait = portMAX_DELAY;
- 8010092:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8010092:	f04f 33ff 	mov.w	r3, #4294967295
  8010096:	60bb      	str	r3, [r7, #8]
 		}
 
@@ -45543,7 +45543,7 @@ BaseType_t xReturn;
 			if( *pxTicksToWait == portMAX_DELAY )
  80101fa:	683b      	ldr	r3, [r7, #0]
  80101fc:	681b      	ldr	r3, [r3, #0]
- 80101fe:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80101fe:	f1b3 3fff 	cmp.w	r3, #4294967295
  8010202:	d102      	bne.n	801020a <xTaskCheckForTimeOut+0x6a>
 			{
 				/* If INCLUDE_vTaskSuspend is set to 1 and the block time
@@ -45945,7 +45945,7 @@ TCB_t *pxTCB;
 		there is an item in the delayed list. */
 		xNextTaskUnblockTime = portMAX_DELAY;
  8010408:	4b0a      	ldr	r3, [pc, #40]	@ (8010434 <prvResetNextTaskUnblockTime+0x3c>)
- 801040a:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 801040a:	f04f 32ff 	mov.w	r2, #4294967295
  801040e:	601a      	str	r2, [r3, #0]
 		which the task at the head of the delayed list should be removed
 		from the Blocked state. */
@@ -46474,7 +46474,7 @@ TCB_t *pxTCB;
 					configASSERT( pxTCB->ulNotifiedValue == ~0UL );
  80106d2:	6a3b      	ldr	r3, [r7, #32]
  80106d4:	f8d3 30a0 	ldr.w	r3, [r3, #160]	@ 0xa0
- 80106d8:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 80106d8:	f1b3 3fff 	cmp.w	r3, #4294967295
  80106dc:	d00d      	beq.n	80106fa <xTaskGenericNotify+0xe6>
 	__asm volatile
  80106de:	f04f 0350 	mov.w	r3, #80	@ 0x50
@@ -46743,7 +46743,7 @@ TCB_t *pxTCB;
 					configASSERT( pxTCB->ulNotifiedValue == ~0UL );
  8010874:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  8010876:	f8d3 30a0 	ldr.w	r3, [r3, #160]	@ 0xa0
- 801087a:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 801087a:	f1b3 3fff 	cmp.w	r3, #4294967295
  801087e:	d00d      	beq.n	801089c <xTaskGenericNotifyFromISR+0x104>
 	__asm volatile
  8010880:	f04f 0350 	mov.w	r3, #80	@ 0x50
@@ -46926,7 +46926,7 @@ const TickType_t xConstTickCount = xTickCount;
 	{
 		if( ( xTicksToWait == portMAX_DELAY ) && ( xCanBlockIndefinitely != pdFALSE ) )
  8010980:	687b      	ldr	r3, [r7, #4]
- 8010982:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8010982:	f1b3 3fff 	cmp.w	r3, #4294967295
  8010986:	d10a      	bne.n	801099e <prvAddCurrentTaskToDelayedList+0x3a>
  8010988:	683b      	ldr	r3, [r7, #0]
  801098a:	2b00      	cmp	r3, #0
@@ -48318,7 +48318,7 @@ volatile uint32_t ulDummy = 0;
 	configASSERT( uxCriticalNesting == ~0UL );
  8011132:	4b13      	ldr	r3, [pc, #76]	@ (8011180 <prvTaskExitError+0x58>)
  8011134:	681b      	ldr	r3, [r3, #0]
- 8011136:	f1b3 3fff 	cmp.w	r3, #4294967295	@ 0xffffffff
+ 8011136:	f1b3 3fff 	cmp.w	r3, #4294967295
  801113a:	d00b      	beq.n	8011154 <prvTaskExitError+0x2c>
 	__asm volatile
  801113c:	f04f 0350 	mov.w	r3, #80	@ 0x50
@@ -49984,7 +49984,7 @@ uint8_t *puc;
  8011b80:	4628      	mov	r0, r5
  8011b82:	f000 f91d 	bl	8011dc0 <__swsetup_r>
  8011b86:	b380      	cbz	r0, 8011bea <_puts_r+0x9a>
- 8011b88:	f04f 35ff 	mov.w	r5, #4294967295	@ 0xffffffff
+ 8011b88:	f04f 35ff 	mov.w	r5, #4294967295
  8011b8c:	6e63      	ldr	r3, [r4, #100]	@ 0x64
  8011b8e:	07da      	lsls	r2, r3, #31
  8011b90:	d405      	bmi.n	8011b9e <_puts_r+0x4e>
@@ -50056,7 +50056,7 @@ uint8_t *puc;
  8011c18:	da08      	bge.n	8011c2c <sniprintf+0x20>
  8011c1a:	238b      	movs	r3, #139	@ 0x8b
  8011c1c:	602b      	str	r3, [r5, #0]
- 8011c1e:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8011c1e:	f04f 30ff 	mov.w	r0, #4294967295
  8011c22:	b01d      	add	sp, #116	@ 0x74
  8011c24:	e8bd 4030 	ldmia.w	sp!, {r4, r5, lr}
  8011c28:	b002      	add	sp, #8
@@ -50066,7 +50066,7 @@ uint8_t *puc;
  8011c34:	f04f 0300 	mov.w	r3, #0
  8011c38:	931b      	str	r3, [sp, #108]	@ 0x6c
  8011c3a:	bf14      	ite	ne
- 8011c3c:	f104 33ff 	addne.w	r3, r4, #4294967295	@ 0xffffffff
+ 8011c3c:	f104 33ff 	addne.w	r3, r4, #4294967295
  8011c40:	4623      	moveq	r3, r4
  8011c42:	9304      	str	r3, [sp, #16]
  8011c44:	9307      	str	r3, [sp, #28]
@@ -50201,7 +50201,7 @@ uint8_t *puc;
  8011d64:	4628      	mov	r0, r5
  8011d66:	f000 f82b 	bl	8011dc0 <__swsetup_r>
  8011d6a:	b118      	cbz	r0, 8011d74 <__swbuf_r+0x32>
- 8011d6c:	f04f 37ff 	mov.w	r7, #4294967295	@ 0xffffffff
+ 8011d6c:	f04f 37ff 	mov.w	r7, #4294967295
  8011d70:	4638      	mov	r0, r7
  8011d72:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
  8011d74:	6823      	ldr	r3, [r4, #0]
@@ -50260,7 +50260,7 @@ uint8_t *puc;
  8011de2:	602a      	str	r2, [r5, #0]
  8011de4:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
  8011de8:	81a3      	strh	r3, [r4, #12]
- 8011dea:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8011dea:	f04f 30ff 	mov.w	r0, #4294967295
  8011dee:	e033      	b.n	8011e58 <__swsetup_r+0x98>
  8011df0:	0758      	lsls	r0, r3, #29
  8011df2:	d512      	bpl.n	8011e1a <__swsetup_r+0x5a>
@@ -50682,7 +50682,7 @@ uint8_t *puc;
 0801217e <memcpy>:
  801217e:	440a      	add	r2, r1
  8012180:	4291      	cmp	r1, r2
- 8012182:	f100 33ff 	add.w	r3, r0, #4294967295	@ 0xffffffff
+ 8012182:	f100 33ff 	add.w	r3, r0, #4294967295
  8012186:	d100      	bne.n	801218a <memcpy+0xc>
  8012188:	4770      	bx	lr
  801218a:	b510      	push	{r4, lr}
@@ -50792,7 +50792,7 @@ uint8_t *puc;
  8012262:	f000 fe3b 	bl	8012edc <_sbrk_r>
  8012266:	1c43      	adds	r3, r0, #1
  8012268:	d103      	bne.n	8012272 <sbrk_aligned+0x26>
- 801226a:	f04f 34ff 	mov.w	r4, #4294967295	@ 0xffffffff
+ 801226a:	f04f 34ff 	mov.w	r4, #4294967295
  801226e:	4620      	mov	r0, r4
  8012270:	bd70      	pop	{r4, r5, r6, pc}
  8012272:	1cc4      	adds	r4, r0, #3
@@ -51002,7 +51002,7 @@ uint8_t *puc;
  8012450:	89a3      	ldrh	r3, [r4, #12]
  8012452:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
  8012456:	81a3      	strh	r3, [r4, #12]
- 8012458:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012458:	f04f 30ff 	mov.w	r0, #4294967295
  801245c:	e7e9      	b.n	8012432 <__ssputs_r+0x8a>
 	...
 
@@ -51025,7 +51025,7 @@ uint8_t *puc;
  8012482:	b930      	cbnz	r0, 8012492 <_svfiprintf_r+0x32>
  8012484:	230c      	movs	r3, #12
  8012486:	603b      	str	r3, [r7, #0]
- 8012488:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012488:	f04f 30ff 	mov.w	r0, #4294967295
  801248c:	b01d      	add	sp, #116	@ 0x74
  801248e:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
  8012492:	2340      	movs	r3, #64	@ 0x40
@@ -51061,7 +51061,7 @@ uint8_t *puc;
  80124e2:	2b00      	cmp	r3, #0
  80124e4:	f000 809f 	beq.w	8012626 <_svfiprintf_r+0x1c6>
  80124e8:	2300      	movs	r3, #0
- 80124ea:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 80124ea:	f04f 32ff 	mov.w	r2, #4294967295
  80124ee:	e9cd 2305 	strd	r2, r3, [sp, #20]
  80124f2:	f10a 0a01 	add.w	sl, sl, #1
  80124f6:	9304      	str	r3, [sp, #16]
@@ -51283,7 +51283,7 @@ uint8_t *puc;
  80126ea:	6e6b      	ldr	r3, [r5, #100]	@ 0x64
  80126ec:	07dc      	lsls	r4, r3, #31
  80126ee:	d504      	bpl.n	80126fa <_vfiprintf_r+0x4e>
- 80126f0:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 80126f0:	f04f 30ff 	mov.w	r0, #4294967295
  80126f4:	b01d      	add	sp, #116	@ 0x74
  80126f6:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
  80126fa:	89ab      	ldrh	r3, [r5, #12]
@@ -51323,7 +51323,7 @@ uint8_t *puc;
  8012754:	2b00      	cmp	r3, #0
  8012756:	f000 809f 	beq.w	8012898 <_vfiprintf_r+0x1ec>
  801275a:	2300      	movs	r3, #0
- 801275c:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 801275c:	f04f 32ff 	mov.w	r2, #4294967295
  8012760:	e9cd 2305 	strd	r2, r3, [sp, #20]
  8012764:	f10a 0a01 	add.w	sl, sl, #1
  8012768:	9304      	str	r3, [sp, #16]
@@ -51555,7 +51555,7 @@ uint8_t *puc;
  801297a:	47c8      	blx	r9
  801297c:	3001      	adds	r0, #1
  801297e:	d103      	bne.n	8012988 <_printf_common+0xac>
- 8012980:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012980:	f04f 30ff 	mov.w	r0, #4294967295
  8012984:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
  8012988:	3501      	adds	r5, #1
  801298a:	e7c6      	b.n	801291a <_printf_common+0x3e>
@@ -51698,7 +51698,7 @@ uint8_t *puc;
  8012aee:	bfde      	ittt	le
  8012af0:	2330      	movle	r3, #48	@ 0x30
  8012af2:	f806 3c01 	strble.w	r3, [r6, #-1]
- 8012af6:	f106 36ff 	addle.w	r6, r6, #4294967295	@ 0xffffffff
+ 8012af6:	f106 36ff 	addle.w	r6, r6, #4294967295
  8012afa:	1b92      	subs	r2, r2, r6
  8012afc:	6122      	str	r2, [r4, #16]
  8012afe:	f8cd a000 	str.w	sl, [sp]
@@ -51709,7 +51709,7 @@ uint8_t *puc;
  8012b0a:	f7ff fee7 	bl	80128dc <_printf_common>
  8012b0e:	3001      	adds	r0, #1
  8012b10:	d14a      	bne.n	8012ba8 <_printf_i+0x1f0>
- 8012b12:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012b12:	f04f 30ff 	mov.w	r0, #4294967295
  8012b16:	b004      	add	sp, #16
  8012b18:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
  8012b1c:	6823      	ldr	r3, [r4, #0]
@@ -51924,7 +51924,7 @@ uint8_t *puc;
  8012cde:	f9b4 300c 	ldrsh.w	r3, [r4, #12]
  8012ce2:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
  8012ce6:	81a3      	strh	r3, [r4, #12]
- 8012ce8:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012ce8:	f04f 30ff 	mov.w	r0, #4294967295
  8012cec:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
  8012cf0:	4407      	add	r7, r0
  8012cf2:	eba8 0800 	sub.w	r8, r8, r0
@@ -52058,7 +52058,7 @@ uint8_t *puc;
  8012e18:	d904      	bls.n	8012e24 <_raise_r+0x14>
  8012e1a:	2316      	movs	r3, #22
  8012e1c:	6003      	str	r3, [r0, #0]
- 8012e1e:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+ 8012e1e:	f04f 30ff 	mov.w	r0, #4294967295
  8012e22:	bd38      	pop	{r3, r4, r5, pc}
  8012e24:	6bc2      	ldr	r2, [r0, #60]	@ 0x3c
  8012e26:	b112      	cbz	r2, 8012e2e <_raise_r+0x1e>

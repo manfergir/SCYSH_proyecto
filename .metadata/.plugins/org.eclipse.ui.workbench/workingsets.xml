@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workingSetManager>
-<<<<<<< HEAD
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1769818135609_0" label="Window Working Set" name="Aggregate for window 1769818135609"/>
-=======
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1769544639240_0" label="Window Working Set" name="Aggregate for window 1769544639240"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1769710627586_1" label="Window Working Set" name="Aggregate for window 1769710627586"/>
->>>>>>> origin/manolo_branch
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1770221722099_0" label="Window Working Set" name="Aggregate for window 1770221722099"/>
 </workingSetManager>

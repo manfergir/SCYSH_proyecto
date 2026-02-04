@@ -113,8 +113,8 @@ const osMessageQueueAttr_t qAlertTx_attributes = {
 volatile uint8_t WIFI_IS_CONNECTED = 0;
 volatile uint8_t NET_MQTT_OK = 0;
 
-#define SSID     "dani"
-#define PASSWORD "12345678"
+#define SSID     "manolo"
+#define PASSWORD "123456789"
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 #define PORT 	80
