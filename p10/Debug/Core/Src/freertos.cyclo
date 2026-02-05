@@ -1,0 +1,6 @@
+../Core/Src/freertos.c:114:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:175:6:StartWifiTask	1
+../Core/Src/freertos.c:193:6:MQTT_TaskFun	1
+../Core/Src/freertos.c:211:6:task_envReadFunc	1
+../Core/Src/freertos.c:229:6:Accel_Task_fun	1
+../Core/Src/freertos.c:247:6:Uart_Task_Fun	1

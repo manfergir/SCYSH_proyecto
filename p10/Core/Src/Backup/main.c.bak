@@ -1,0 +1,623 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+#include "main.h"
+#include "cmsis_os.h"
+
+/* USER CODE BEGIN Includes */
+#include "common_def.h"
+#include "es_wifi.h"
+#include "wifi.h"
+#include "stm32l4xx_hal_uart.h"
+#include "stdio.h"
+#include "mqtt_priv.h"
+#include "mqtt_priv_config.h"
+#include "stm32l475e_iot01.h"
+#include "stm32l475e_iot01_tsensor.h"
+#include "stm32l475e_iot01_hsensor.h"
+#include "stm32l475e_iot01_accelero.h"
+#include <string.h>
+/* USER CODE END Includes */
+
+/* Private variables ---------------------------------------------------------*/
+DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
+I2C_HandleTypeDef hi2c2;
+QSPI_HandleTypeDef hqspi;
+RTC_HandleTypeDef hrtc;
+SPI_HandleTypeDef hspi3;
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart3;
+PCD_HandleTypeDef hpcd_USB_OTG_FS;
+
+/* RTOS objects */
+osThreadId_t WifiTaskHandle;
+osThreadId_t MQTT_TaskHandle;
+osThreadId_t task_envReadHandle;
+osThreadId_t Accel_TaskHandle;
+osThreadId_t Uart_TaskHandle;
+
+osMessageQueueId_t qMqttTxHandle;
+osMessageQueueId_t qCmdRxHandle;
+
+/* USER CODE BEGIN PV */
+
+/* --------- Estado global --------- */
+volatile uint8_t WIFI_IS_CONNECTED = 0;
+volatile uint8_t NET_MQTT_OK = 0;
+
+#define SSID        "manolo"
+#define PASSWORD    "123456789"
+#define WIFISECURITY WIFI_ECN_WPA2_PSK
+
+#define LOG(a) printf a
+
+static uint8_t IP_Addr[4];
+uint8_t Alert_Flag = 0;
+
+/* --------- UART (RX por IT, doble buffer + flag) --------- */
+#define UART_LINE_MAX 64
+
+static uint8_t uart_rx_ch;
+
+static char uart_line_build[UART_LINE_MAX];
+static volatile uint16_t uart_line_len = 0;
+
+static char uart_line_ready[UART_LINE_MAX];
+static volatile uint8_t uart_has_line = 0;
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_DFSDM1_Init(void);
+static void MX_I2C2_Init(void);
+static void MX_QUADSPI_Init(void);
+static void MX_SPI3_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_USART3_UART_Init(void);
+static void MX_USB_OTG_FS_PCD_Init(void);
+static void MX_RTC_Init(void);
+
+void StartWifiTask(void *argument);
+void MQTT_TaskFun(void *argument);
+void task_envReadFunc(void *argument);
+void Accel_Task_fun(void *argument);
+void Uart_Task_Fun(void *argument);
+
+/* USER CODE BEGIN PFP */
+extern SPI_HandleTypeDef hspi;
+extern ES_WIFIObject_t EsWifiObj;
+
+static void program_alarm_RTC(void);
+static int  wifi_start(void);
+static int  wifi_connect(void);
+
+static uint32_t now_ms(void);
+
+static void uart_send_str(const char *s);
+static void push_cmd(SystemCommand_t cmd);
+
+static void build_payload_block(char *dst, size_t dst_sz,
+                                uint32_t t0_ms, uint16_t fs_hz,
+                                uint16_t seq, uint16_t total,
+                                const int16_t *z, uint16_t n);
+/* USER CODE END PFP */
+
+/* USER CODE BEGIN 0 */
+
+static uint32_t now_ms(void)
+{
+  return (uint32_t)HAL_GetTick();
+}
+
+static void uart_send_str(const char *s)
+{
+  HAL_UART_Transmit(&huart3, (uint8_t*)s, (uint16_t)strlen(s), 200);
+}
+
+static void push_cmd(SystemCommand_t cmd)
+{
+  (void)osMessageQueuePut(qCmdRxHandle, &cmd, 0, 0);
+  (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX);
+}
+
+static void build_payload_block(char *dst, size_t dst_sz,
+                                uint32_t t0_ms, uint16_t fs_hz,
+                                uint16_t seq, uint16_t total,
+                                const int16_t *z, uint16_t n)
+{
+  size_t off = 0;
+  off += (size_t)snprintf(dst + off, dst_sz - off,
+                          "{\"t0\":%lu,\"fs\":%u,\"s\":%u,\"n\":%u,\"z\":[",
+                          (unsigned long)t0_ms, fs_hz, seq, total);
+
+  for (uint16_t i = 0; i < n && off < dst_sz; i++)
+  {
+    off += (size_t)snprintf(dst + off, dst_sz - off,
+                            (i == 0) ? "%d" : ",%d", (int)z[i]);
+  }
+
+  (void)snprintf(dst + off, (off < dst_sz) ? (dst_sz - off) : 0, "]}");
+}
+
+static void program_alarm_RTC(void)
+{
+  RTC_AlarmTypeDef sAlarm = {0};
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+
+  sAlarm.AlarmTime.Seconds = sTime.Seconds;
+  sAlarm.AlarmTime.Minutes = sTime.Minutes + 1;
+  sAlarm.AlarmTime.Hours   = sTime.Hours;
+
+  if (sAlarm.AlarmTime.Minutes >= 60)
+  {
+    sAlarm.AlarmTime.Minutes -= 60;
+    sAlarm.AlarmTime.Hours += 1;
+  }
+  if (sAlarm.AlarmTime.Hours >= 24)
+  {
+    sAlarm.AlarmTime.Hours -= 24;
+  }
+
+  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
+  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+  sAlarm.AlarmDateWeekDay = 1;
+  sAlarm.Alarm = RTC_ALARM_A;
+
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+static int wifi_start(void)
+{
+  uint8_t MAC_Addr[6];
+
+  if (WIFI_Init() == WIFI_STATUS_OK)
+  {
+    LOG(("ES-WIFI Initialized.\r\n"));
+    if (WIFI_GetMAC_Address(MAC_Addr) == WIFI_STATUS_OK)
+    {
+      LOG(("> MAC: %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+           MAC_Addr[0], MAC_Addr[1], MAC_Addr[2],
+           MAC_Addr[3], MAC_Addr[4], MAC_Addr[5]));
+      return 0;
+    }
+    LOG(("> ERROR : CANNOT get MAC address\r\n"));
+    return -1;
+  }
+
+  LOG(("> ERROR : WIFI_Init failed\r\n"));
+  return -1;
+}
+
+static int wifi_connect(void)
+{
+  if (wifi_start() != 0) return -1;
+
+  LOG(("\nConnecting to %s, %s\r\n", SSID, PASSWORD));
+  if (WIFI_Connect(SSID, PASSWORD, WIFISECURITY) == WIFI_STATUS_OK)
+  {
+    if (WIFI_GetIP_Address(IP_Addr) == WIFI_STATUS_OK)
+    {
+      LOG(("> IP: %d.%d.%d.%d\r\n",
+           IP_Addr[0], IP_Addr[1], IP_Addr[2], IP_Addr[3]));
+      return 0;
+    }
+    LOG((" ERROR : CANNOT get IP address\r\n"));
+    return -1;
+  }
+
+  LOG(("ERROR : NOT connected\r\n"));
+  return -1;
+}
+
+/* USER CODE END 0 */
+
+int main(void)
+{
+  HAL_Init();
+  SystemClock_Config();
+
+  MX_GPIO_Init();
+  MX_DFSDM1_Init();
+  MX_I2C2_Init();
+  MX_QUADSPI_Init();
+  MX_SPI3_Init();
+  MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
+  MX_USB_OTG_FS_PCD_Init();
+  MX_RTC_Init();
+
+  /* Arranque RX por interrupción */
+  HAL_UART_Receive_IT(&huart3, &uart_rx_ch, 1);
+
+  /* USER CODE BEGIN 2 */
+  printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
+  HAL_Delay(1000);
+  printf("--- [BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
+  /* USER CODE END 2 */
+
+  osKernelInitialize();
+
+  /* Queues */
+  qMqttTxHandle = osMessageQueueNew(16, QUEUE_TX_ITEM_SIZE, NULL);
+  qCmdRxHandle  = osMessageQueueNew(8, sizeof(SystemCommand_t), NULL);
+
+  /* Threads */
+  WifiTaskHandle     = osThreadNew(StartWifiTask, NULL, NULL);
+  MQTT_TaskHandle    = osThreadNew(MQTT_TaskFun, NULL, NULL);
+  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, NULL);
+  Accel_TaskHandle   = osThreadNew(Accel_Task_fun, NULL, NULL);
+  Uart_TaskHandle    = osThreadNew(Uart_Task_Fun, NULL, NULL);
+
+  osKernelStart();
+
+  while (1) {}
+}
+
+/* USER CODE BEGIN 4 */
+
+/* UART RX Callback: arma línea y notifica a la tarea UART */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART3)
+  {
+    char c = (char)uart_rx_ch;
+
+    if (c == '\r' || c == '\n')
+    {
+      if (uart_line_len > 0)
+      {
+        uart_line_build[uart_line_len] = '\0';
+
+        if (!uart_has_line)
+        {
+          strncpy(uart_line_ready, uart_line_build, UART_LINE_MAX);
+          uart_line_ready[UART_LINE_MAX - 1] = '\0';
+          uart_has_line = 1;
+
+          if (Uart_TaskHandle != NULL)
+          {
+            (void)osThreadFlagsSet(Uart_TaskHandle, NOTE_UART_LINE_READY);
+          }
+        }
+
+        uart_line_len = 0;
+      }
+    }
+    else
+    {
+      if (uart_line_len < (UART_LINE_MAX - 1))
+      {
+        uart_line_build[uart_line_len++] = c;
+      }
+      else
+      {
+        uart_line_len = 0; /* overflow */
+      }
+    }
+
+    (void)HAL_UART_Receive_IT(&huart3, &uart_rx_ch, 1);
+  }
+}
+
+int _write(int file, char *ptr, int len)
+{
+  (void)file;
+  for (int i = 0; i < len; i++)
+  {
+    ITM_SendChar(*ptr++);
+  }
+  return len;
+}
+
+void SPI3_IRQHandler(void)
+{
+  HAL_SPI_IRQHandler(&hspi);
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin)
+  {
+    case GPIO_PIN_1:
+      SPI_WIFI_ISR();
+      break;
+
+    case LSM6DSL_INT1_EXTI11_Pin:
+      (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_ACCEL_FIFO);
+      break;
+
+    case BOTON_Pin:
+      (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      /* Si también quieres despertar env por botón:
+         (void)osThreadFlagsSet(task_envReadHandle, FLAG_BTN_EVENT);
+      */
+      break;
+
+    default:
+      break;
+  }
+}
+
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc_)
+{
+  (void)hrtc_;
+  (void)osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY);
+}
+
+/* USER CODE END 4 */
+
+/* ====================== TASKS ====================== */
+
+void StartWifiTask(void *argument)
+{
+  (void)argument;
+  int ret;
+
+  LOG(("--- [WIFI] Tarea iniciada ---\r\n"));
+
+  for (;;)
+  {
+    if (WIFI_IS_CONNECTED == 0)
+    {
+      ret = wifi_connect();
+      if (ret == 0)
+      {
+        WIFI_IS_CONNECTED = 1;
+        LOG(("[WIFI] Conexion Exitosa.\r\n"));
+      }
+      else
+      {
+        LOG(("[WIFI] Fallo al conectar. Reintentando en 5s...\r\n"));
+        osDelay(5000);
+      }
+    }
+    else
+    {
+      osDelay(1000);
+    }
+  }
+}
+
+void MQTT_TaskFun(void *argument)
+{
+  (void)argument;
+
+  NetworkContext_t xNetworkContext = {0};
+  MQTTContext_t xMQTTContext;
+  TransportStatus_t xTransportStatus;
+
+  MqttMsg_t msg_out;
+  osStatus_t qStatus;
+
+  LOG(("--- [MQTT] Tarea Iniciada ---\r\n"));
+
+  for (;;)
+  {
+    while (WIFI_IS_CONNECTED == 0)
+      osDelay(500);
+
+    LOG(("[MQTT] Conectando al Broker...\r\n"));
+    xTransportStatus = prvConnectToServer(&xNetworkContext);
+
+    if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS)
+    {
+      LOG(("[MQTT] Error TCP. Reintentando...\r\n"));
+      osDelay(2000);
+      continue;
+    }
+
+    prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
+
+    LOG(("[MQTT] Loop de transmision activo.\r\n"));
+    NET_MQTT_OK = 1;
+
+    while (WIFI_IS_CONNECTED == 1)
+    {
+      qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, 100);
+
+      if (qStatus == osOK)
+      {
+        LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
+        prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
+      }
+
+      MQTTStatus_t xStat = MQTT_ProcessLoop(&xMQTTContext);
+      if (xStat != MQTTSuccess)
+      {
+        LOG(("[MQTT] Error KeepAlive. Desconectando...\r\n"));
+        break;
+      }
+    }
+
+    NET_MQTT_OK = 0;
+    LOG(("[MQTT] Reiniciando ciclo de conexion...\r\n"));
+    osDelay(1000);
+  }
+}
+
+void task_envReadFunc(void *argument)
+{
+  (void)argument;
+
+  uint32_t id_msg = 0;
+  uint8_t reason;
+  float temp;
+  int16_t temp_int;
+  uint8_t hum;
+  uint32_t flag;
+  MqttMsg_t msg;
+
+  if (BSP_TSENSOR_Init() == TSENSOR_OK)
+    printf("Sensor de temperatura inicializado correctamente.\r\n");
+  else
+    printf("Error en la inicialización del sensor de temperatura.\r\n");
+
+  if (BSP_HSENSOR_Init() == HSENSOR_OK)
+    printf("Sensor de humedad inicializado correctamente.\r\n");
+  else
+    printf("Error en la inicialización del sensor de humedad.\r\n");
+
+  program_alarm_RTC();
+
+  for (;;)
+  {
+    flag = osThreadFlagsWait(FLAG_BTN_EVENT | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
+
+    if (flag == FLAG_DATA_READY)
+    {
+      reason = 0;
+      program_alarm_RTC();
+    }
+    else if (flag == FLAG_BTN_EVENT)
+    {
+      reason = 1;
+    }
+    else
+    {
+      reason = 2;
+    }
+
+    temp = BSP_TSENSOR_ReadTemp();
+    temp_int = (int16_t)(temp * 10);
+    hum = (uint8_t)BSP_HSENSOR_ReadHumidity();
+
+    if ((temp_int >= 200) && (Alert_Flag == 0))
+    {
+      Alert_Flag = 1;
+      snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
+      snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
+      osMessageQueuePut(qMqttTxHandle, &msg, 0, 100);
+    }
+
+    if ((temp_int < 200) && (Alert_Flag == 1))
+    {
+      Alert_Flag = 0;
+      snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
+      snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
+      osMessageQueuePut(qMqttTxHandle, &msg, 0, 100);
+    }
+
+    snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
+    snprintf(msg.payload, sizeof(msg.payload),
+             "{\"id\":1,\"msg_id\":%lu,\"origen\":\"%u\",\"temp\":%d,\"hum\":%u}",
+             (unsigned long)id_msg, (unsigned)reason, (int)temp_int, (unsigned)hum);
+
+    osMessageQueuePut(qMqttTxHandle, &msg, 0, 100);
+    id_msg++;
+  }
+}
+
+/* ===== ACCEL TASK (te dejo tu estructura, pegando tu FIFO dentro) ===== */
+void Accel_Task_fun(void *argument)
+{
+  (void)argument;
+
+  printf("[ACC] Task start (FIFO)\r\n");
+
+  if (BSP_ACCELERO_Init() != ACCELERO_OK)
+  {
+    printf("[ACC] Init FAIL\r\n");
+    for (;;) osDelay(1000);
+  }
+  printf("[ACC] After Init\r\n");
+
+  uint8_t continuous = 0;
+
+  for (;;)
+  {
+    uint32_t flags = osThreadFlagsWait(NOTE_RTC_WAKEUP | NOTE_CMD_RX,
+                                       osFlagsWaitAny,
+                                       osWaitForever);
+
+    if (flags & NOTE_CMD_RX)
+    {
+      SystemCommand_t cmd;
+      while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
+      {
+        if (cmd == CMD_START_CONTINUOUS) continuous = 1;
+        if (cmd == CMD_STOP_CONTINUOUS)  continuous = 0;
+        if (cmd == CMD_FORCE_READ) (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      }
+    }
+
+    if (!(flags & NOTE_RTC_WAKEUP))
+      continue;
+
+    /* <<< AQUÍ PEGA TU BUCLE FIFO COMPLETO EXACTO (el que ya tenías bien) >>> */
+    printf("[ACC] Trigger capture mode=%s\r\n", continuous ? "CONT" : "NORMAL");
+  }
+}
+
+/* ===== UART TASK: espera flag y parsea comandos ===== */
+void Uart_Task_Fun(void *argument)
+{
+  (void)argument;
+
+  uart_send_str("\r\n[UART] Ready. Type 'help'\r\n");
+
+  for (;;)
+  {
+    (void)osThreadFlagsWait(NOTE_UART_LINE_READY, osFlagsWaitAny, osWaitForever);
+
+    if (!uart_has_line)
+      continue;
+
+    char line[UART_LINE_MAX];
+    strncpy(line, uart_line_ready, UART_LINE_MAX);
+    line[UART_LINE_MAX - 1] = '\0';
+    uart_has_line = 0;
+
+    if (strcmp(line, "help") == 0)
+    {
+      uart_send_str("Commands:\r\n  cont on\r\n  cont off\r\n  read\r\n");
+    }
+    else if (strcmp(line, "cont on") == 0)
+    {
+      push_cmd(CMD_START_CONTINUOUS);
+      uart_send_str("[OK] continuous ON\r\n");
+    }
+    else if (strcmp(line, "cont off") == 0)
+    {
+      push_cmd(CMD_STOP_CONTINUOUS);
+      uart_send_str("[OK] continuous OFF\r\n");
+    }
+    else if (strcmp(line, "read") == 0)
+    {
+      push_cmd(CMD_FORCE_READ);
+      uart_send_str("[OK] force read\r\n");
+    }
+    else
+    {
+      uart_send_str("[ERR] unknown cmd. Type 'help'\r\n");
+    }
+  }
+}
+
+/* ============================================================
+   >>> PEGA AQUÍ TU CÓDIGO GENERADO POR CUBEMX <<<
+   - SystemClock_Config
+   - MX_GPIO_Init
+   - MX_USARTx_UART_Init
+   - MX_RTC_Init
+   - etc…
+   NO metas lógica fuera de USER CODE, porque CubeMX te la borra.
+   ============================================================ */
