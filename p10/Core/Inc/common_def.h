@@ -72,8 +72,8 @@ typedef enum {
  * 5. DEFINICIÓN DE TOPICS MQTT (JERARQUÍA)
  * ============================================================================== */
 // Identificadores de los Nodos
-#define NODE_ID_ACCEL  "1"
-#define NODE_ID_ENV    "2"
+#define NODE_ID_ACCEL  1
+#define NODE_ID_ENV    2
 
 // Prefijos para construir los topics
 // Uso: sprintf(msg.topic, "%s%s", TOPIC_PUB_ACCEL_PREFIX, NODE_ID_ACCEL);

@@ -169,3 +169,453 @@ Finished building: default.size.stdout
  
 Finished building: p10.list
  
+20:01:11 **** Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/croutine.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/croutine.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/croutine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/croutine.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/event_groups.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/event_groups.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/event_groups.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/list.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/list.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/list.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/list.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/queue.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/queue.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/queue.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/queue.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/tasks.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/tasks.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/timers.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/timers.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/timers.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/timers.o"
+arm-none-eabi-gcc "../Core/Src/freertos.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/freertos.d" -MT"Core/Src/freertos.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/freertos.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/mqtt_priv.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mqtt_priv.d" -MT"Core/Src/mqtt_priv.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mqtt_priv.o"
+../Core/Src/mqtt_priv.c: In function 'prvCreateMQTTConnectionWithBroker':
+../Core/Src/mqtt_priv.c:107:33: warning: argument 1 null where non-null expected [-Wnonnull]
+  107 |     xConnectInfo.userNameLength=strlen(mqttUserName);
+      |                                 ^~~~~~
+In file included from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:28,
+                 from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:26,
+                 from ../Core/Inc/mqtt_priv.h:13,
+                 from ../Core/Src/mqtt_priv.c:4:
+C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
+   41 | size_t   strlen (const char *);
+      |          ^~~~~~
+../Core/Src/mqtt_priv.c:109:33: warning: argument 1 null where non-null expected [-Wnonnull]
+  109 |     xConnectInfo.passwordLength=strlen(mqttPass);
+      |                                 ^~~~~~
+C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
+   41 | size_t   strlen (const char *);
+      |          ^~~~~~
+../Core/Src/mqtt_priv.c: In function 'prvMQTTPublishToTopic':
+../Core/Src/mqtt_priv.c:149:35: warning: format '%s' expects argument of type 'char *', but argument 3 has type 'void *' [-Wformat=]
+  149 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~       ~~~~~~~
+      |                                                                       |
+      |                                                                       void *
+../Core/Inc/mqtt_priv.h:29:23: note: in definition of macro 'LOG'
+   29 | #define LOG(a) printf a
+      |                       ^
+../Core/Src/mqtt_priv.c:149:60: note: format string is defined here
+  149 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
+      |                                                           ~^
+      |                                                            |
+      |                                                            char *
+      |                                                           %p
+../Core/Src/mqtt_priv.c: In function 'prvMQTTProcessIncomingPublish':
+../Core/Src/mqtt_priv.c:220:18: warning: unused variable 'pTopicName' [-Wunused-variable]
+  220 |     const char * pTopicName;
+      |                  ^~~~~~~~~~
+../Core/Src/mqtt_priv.c: At top level:
+../Core/Src/mqtt_priv.c:276:13: warning: 'prvMQTTProcessResponse' defined but not used [-Wunused-function]
+  276 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  30396	 115476	  1c314	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:05:03 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  30396	 115476	  1c314	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:09:50 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-size  p10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  30396	 115476	  1c314	p10.elf
+Finished building: default.size.stdout
+ 
+20:15:42 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/croutine.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/croutine.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/croutine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/croutine.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/event_groups.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/event_groups.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/event_groups.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/list.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/list.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/list.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/list.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/queue.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/queue.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/queue.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/queue.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/tasks.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/tasks.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/tasks.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/tasks.o"
+arm-none-eabi-gcc "../Middlewares/Third_Party/FreeRTOS/Source/timers.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Middlewares/Third_Party/FreeRTOS/Source/timers.d" -MT"Middlewares/Third_Party/FreeRTOS/Source/timers.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Middlewares/Third_Party/FreeRTOS/Source/timers.o"
+arm-none-eabi-gcc "../Core/Src/freertos.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/freertos.d" -MT"Core/Src/freertos.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/freertos.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/mqtt_priv.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mqtt_priv.d" -MT"Core/Src/mqtt_priv.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mqtt_priv.o"
+../Core/Src/mqtt_priv.c: In function 'prvCreateMQTTConnectionWithBroker':
+../Core/Src/mqtt_priv.c:107:33: warning: argument 1 null where non-null expected [-Wnonnull]
+  107 |     xConnectInfo.userNameLength=strlen(mqttUserName);
+      |                                 ^~~~~~
+In file included from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:28,
+                 from C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:26,
+                 from ../Core/Inc/mqtt_priv.h:13,
+                 from ../Core/Src/mqtt_priv.c:4:
+C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
+   41 | size_t   strlen (const char *);
+      |          ^~~~~~
+../Core/Src/mqtt_priv.c:109:33: warning: argument 1 null where non-null expected [-Wnonnull]
+  109 |     xConnectInfo.passwordLength=strlen(mqttPass);
+      |                                 ^~~~~~
+C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/include/string.h:41:10: note: in a call to function 'strlen' declared 'nonnull'
+   41 | size_t   strlen (const char *);
+      |          ^~~~~~
+../Core/Src/mqtt_priv.c: In function 'prvMQTTPublishToTopic':
+../Core/Src/mqtt_priv.c:149:35: warning: format '%s' expects argument of type 'char *', but argument 3 has type 'void *' [-Wformat=]
+  149 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~       ~~~~~~~
+      |                                                                       |
+      |                                                                       void *
+../Core/Inc/mqtt_priv.h:29:23: note: in definition of macro 'LOG'
+   29 | #define LOG(a) printf a
+      |                       ^
+../Core/Src/mqtt_priv.c:149:60: note: format string is defined here
+  149 |     if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
+      |                                                           ~^
+      |                                                            |
+      |                                                            char *
+      |                                                           %p
+../Core/Src/mqtt_priv.c: In function 'prvMQTTProcessIncomingPublish':
+../Core/Src/mqtt_priv.c:220:18: warning: unused variable 'pTopicName' [-Wunused-variable]
+  220 |     const char * pTopicName;
+      |                  ^~~~~~~~~~
+../Core/Src/mqtt_priv.c: At top level:
+../Core/Src/mqtt_priv.c:276:13: warning: 'prvMQTTProcessResponse' defined but not used [-Wunused-function]
+  276 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  34396	 119476	  1d2b4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:18:18 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84924	    172	  34396	 119492	  1d2c4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:21:45 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84924	    172	  34396	 119492	  1d2c4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:23:39 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84924	    172	  34396	 119492	  1d2c4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+20:30:25 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84924	    172	  34396	 119492	  1d2c4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+22:05:14 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  34396	 119476	  1d2b4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+22:07:46 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:168:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  168 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:166:17: warning: 'http' defined but not used [-Wunused-variable]
+  166 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  34396	 119476	  1d2b4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+22:38:28 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'HAL_RTC_AlarmAEventCallback':
+../Core/Src/main.c:1065:22: error: 'task_envReadHandle' undeclared (first use in this function)
+ 1065 |     osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY);
+      |                      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1065:22: note: each undeclared identifier is reported only once for each function it appears in
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h: At top level:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:191:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  191 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:189:17: warning: 'http' defined but not used [-Wunused-variable]
+  189 | static  uint8_t http[1024];
+      |                 ^~~~
+make: *** [Core/Src/subdir.mk:43: Core/Src/main.o] Error 1
+"make -j20 all" terminated with exit code 2. Build might be incomplete.
+22:41:02 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:191:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  191 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:189:17: warning: 'http' defined but not used [-Wunused-variable]
+  189 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  34396	 119476	  1d2b4	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 
+22:41:08 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-size  p10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  84908	    172	  34396	 119476	  1d2b4	p10.elf
+Finished building: default.size.stdout
+ 
+22:42:54 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'HAL_GPIO_EXTI_Callback':
+../Core/Src/main.c:1057:24: error: 'Accel_TaskHandle' undeclared (first use in this function); did you mean 'MQTT_TaskHandle'?
+ 1057 |       osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      |                        ^~~~~~~~~~~~~~~~
+      |                        MQTT_TaskHandle
+../Core/Src/main.c:1057:24: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c: In function 'task_envReadFunc':
+../Core/Src/main.c:1335:84: warning: format '%ld' expects argument of type 'long int', but argument 7 has type 'int' [-Wformat=]
+ 1335 |                  "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
+      |                                                                                  ~~^
+      |                                                                                    |
+      |                                                                                    long int
+      |                                                                                  %d
+......
+ 1339 |                  hum);
+      |                  ~~~                                                                
+      |                  |
+      |                  int
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h: At top level:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:196:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  196 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:194:17: warning: 'http' defined but not used [-Wunused-variable]
+  194 | static  uint8_t http[1024];
+      |                 ^~~~
+make: *** [Core/Src/subdir.mk:43: Core/Src/main.o] Error 1
+"make -j20 all" terminated with exit code 2. Build might be incomplete.
+22:44:57 **** Incremental Build of configuration Debug for project p10 ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L475xx -c -I../Core/Inc -I"C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc" -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'task_envReadFunc':
+../Core/Src/main.c:1340:84: warning: format '%ld' expects argument of type 'long int', but argument 7 has type 'int' [-Wformat=]
+ 1340 |                  "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
+      |                                                                                  ~~^
+      |                                                                                    |
+      |                                                                                    long int
+      |                                                                                  %d
+......
+ 1344 |                  hum);
+      |                  ~~~                                                                
+      |                  |
+      |                  int
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/mqtt_priv.h: At top level:
+../Core/Inc/mqtt_priv.h:45:13: warning: 'prvMQTTProcessResponse' declared 'static' but never defined [-Wunused-function]
+   45 | static void prvMQTTProcessResponse( MQTTPacketInfo_t * pxIncomingPacket,
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:196:17: warning: 'LedState' defined but not used [-Wunused-variable]
+  196 | static  int     LedState = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:194:17: warning: 'http' defined but not used [-Wunused-variable]
+  194 | static  uint8_t http[1024];
+      |                 ^~~~
+arm-none-eabi-gcc -o "p10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\repos\SistemasCiberYSegHard\SCYSH_proyecto\p10\STM32L475VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="p10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: p10.elf
+ 
+arm-none-eabi-size  p10.elf 
+arm-none-eabi-objdump -h -S p10.elf  > "p10.list"
+   text	   data	    bss	    dec	    hex	filename
+  84588	    148	  34396	 119132	  1d15c	p10.elf
+Finished building: default.size.stdout
+ 
+Finished building: p10.list
+ 

@@ -49,6 +49,16 @@
 #define FLAG_DATA_READY 0x00000001U
 #define FLAG_BTN_EVENT 0x00000002U
 
+
+/*
+ * Vasriable para el tipo de nodo
+ * 1 == ACELEROMETRO
+ * 2 == ENVIRONMENT
+ * */
+#define NODE_ID 2
+
+
+
 //#define PROJECT_TYPE 0
 /* USER CODE END PD */
 
@@ -73,6 +83,7 @@ UART_HandleTypeDef huart3;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
+/*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
 /* Definitions for WifiTask */
 osThreadId_t WifiTaskHandle;
 const osThreadAttr_t WifiTask_attributes = {
@@ -84,25 +95,35 @@ const osThreadAttr_t WifiTask_attributes = {
 osThreadId_t MQTT_TaskHandle;
 const osThreadAttr_t MQTT_Task_attributes = {
   .name = "MQTT_Task",
-  .stack_size = 512 * 4,
+  .stack_size = 1280 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+
+
+/*--------------------------------------------- TAREA ACELEROMETRO --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ACCEL
+/* Definitions for Accel_Task */
+osThreadId_t Accel_TaskHandle;
+const osThreadAttr_t Accel_Task_attributes = {
+  .name = "Accel_Task",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+#endif
+
+
+/*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ENV
 /* Definitions for task_envRead */
-/*
 osThreadId_t task_envReadHandle;
 const osThreadAttr_t task_envRead_attributes = {
   .name = "task_envRead",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-*/
-/* Definitions for Accel_Task */
-osThreadId_t Accel_TaskHandle;
-const osThreadAttr_t Accel_Task_attributes = {
-  .name = "Accel_Task",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
+#endif
+
+/*--------------------------------------------- COLAS --------------------------------------------------------*/
 /* Definitions for qMqttTx */
 osMessageQueueId_t qMqttTxHandle;
 const osMessageQueueAttr_t qMqttTx_attributes = {
@@ -135,9 +156,6 @@ uint8_t Alert_Flag = 0;
 #else
 #define LOG(a)
 #endif*/
-
-
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -151,10 +169,20 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_RTC_Init(void);
+
+/*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
-//void task_envReadFunc(void *argument);
+
+/*--------------------------------------------- TAREA ACCEL --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ACCEL
 void Accel_Task_Func(void *argument);
+#endif
+
+/*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ENV
+void task_envReadFunc(void *argument);
+#endif
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -338,7 +366,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (16, sizeof(MqttMsg_t), &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (8, 1060, &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
@@ -348,17 +376,25 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
+  /*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
   /* creation of WifiTask */
   WifiTaskHandle = osThreadNew(StartWifiTask, NULL, &WifiTask_attributes);
 
   /* creation of MQTT_Task */
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
-  /* creation of task_envRead */
-  //task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
-
+  /*--------------------------------------------- TAREA ACCEL --------------------------------------------------------*/
+  #if NODE_ID == NODE_ID_ACCEL
   /* creation of Accel_Task */
   Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
+  #endif
+
+  /*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
+  #if NODE_ID == NODE_ID_ENV
+  /* creation of task_envRead */
+  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
+  #endif
+
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -1018,7 +1054,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
     case (BOTON_Pin):
     {
-      osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+      #if NODE_ID == NODE_ID_ACCEL
+      osThreadFlagsSet(TaskHandle, NOTE_RTC_WAKEUP);
+      #elif NODE_ID == NODE_ID_ENV
+      osThreadFlagsSet(task_envReadHandle, NOTE_RTC_WAKEUP);
+      #endif
+
       break;
     }
     default:
@@ -1028,14 +1069,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
-/*
+/*--------------------------------------------- FUNCIONES TEMP-HUMEDAD --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ENV
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
     // 1. Avisar a la tarea principal (Igual que con el botón)
     // Usamos la misma bandera o una distinta ("FLAG_RTC_WAKEUP")
     osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY); 
 }
-*/
+#endif
 
+/*--------------------------------------------- FUNCIONES ACCE --------------------------------------------------------*/
+#if NODE_ID == NODE_ID_ACCEL
 
 /* Timestamp simple (ms desde arranque) */
 static uint32_t now_ms(void)
@@ -1052,7 +1096,7 @@ static void send_mqtt_msg(const char *topic, const char *payload)
 
   strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
   m.payload[MSG_PAYLOAD_SIZE - 1] = '\0';
-  (void)osMessageQueuePut(qMqttTxHandle, &m, 0, 0);
+  osMessageQueuePut(qMqttTxHandle, &m, 0, pdMS_TO_TICKS(100));
 }
 
 static void build_payload_block(char *dst, size_t dst_sz,
@@ -1075,7 +1119,7 @@ static void build_payload_block(char *dst, size_t dst_sz,
 
   (void)snprintf(dst + off, (off < dst_sz) ? (dst_sz - off) : 0, "]}");
 }
-
+#endif
 
 
 /* USER CODE END 4 */
@@ -1217,11 +1261,11 @@ void MQTT_TaskFun(void *argument)
 * @retval None
 */
 /* USER CODE END Header_task_envReadFunc */
-/*
+#if NODE_ID == NODE_ID_ENV
 void task_envReadFunc(void *argument)
 {
   /* USER CODE BEGIN task_envReadFunc */
-/*
+
   uint32_t id_msg = 0;    //Id del mensaje
   uint8_t reason;     //Motivo del mensaje
   float temp;         //Temperatura
@@ -1249,9 +1293,9 @@ void task_envReadFunc(void *argument)
   }
 
   program_alarm_RTC();
-*/
+
   /* Infinite loop */
-/*
+
   for(;;)
   {
     
@@ -1303,9 +1347,9 @@ void task_envReadFunc(void *argument)
     id_msg++;
 
   }
-  */
   /* USER CODE END task_envReadFunc */
-//}
+}
+#endif
 
 /* USER CODE BEGIN Header_Accel_Task_Func */
 /**
@@ -1314,6 +1358,8 @@ void task_envReadFunc(void *argument)
 * @retval None
 */
 /* USER CODE END Header_Accel_Task_Func */
+#if NODE_ID == NODE_ID_ACCEL
+
 void Accel_Task_Func(void *argument)
 {
   /* USER CODE BEGIN Accel_Task_Func */
@@ -1431,6 +1477,8 @@ void Accel_Task_Func(void *argument)
   }
   /* USER CODE END Accel_Task_Func */
 }
+
+#endif
 
 /**
   * @brief  Period elapsed callback in non blocking mode
