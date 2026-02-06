@@ -3,11 +3,12 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="task_envReadFunc"/>
+		<item value="[wifi"/>
 		<item value="boton_pin"/>
 		<item value="qmqtttx"/>
 		<item value="main"/>
 		<item value="MQTT_ProcessLoop"/>
-		<item value="task_envReadFunc"/>
 		<item value="Accel_Task_Func"/>
 		<item value="qAlert"/>
 		<item value="SCF/"/>
@@ -17,6 +18,5 @@
 		<item value="mqtt_task"/>
 		<item value="hardcoded"/>
 		<item value="socket abier"/>
-		<item value="error in opening"/>
 	</list>
 </section>
