@@ -1,7 +1,7 @@
 Drivers/BSP/src/stm32l475e_iot01_tsensor.o: \
  ../Drivers/BSP/src/stm32l475e_iot01_tsensor.c \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -42,11 +42,11 @@ Drivers/BSP/src/stm32l475e_iot01_tsensor.o: \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:
@@ -87,6 +87,6 @@ C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h:

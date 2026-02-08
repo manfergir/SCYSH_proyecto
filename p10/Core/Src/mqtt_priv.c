@@ -5,6 +5,12 @@
 
 #include "../../Libraries/coreMQTT/source/core_mqtt.h"
 #include "stm32l475e_iot01.h"
+#include "common_def.h"
+
+
+#if NODE_ID == NODE_ID_ACCEL
+extern osThreadId_t Accel_TaskHandle;
+#endif
 
 static uint8_t ucSharedBuffer[ NETWORK_BUFFER_SIZE ];
 /** @brief Static buffer used to hold MQTT messages being sent and received. */
@@ -213,25 +219,74 @@ void prvMQTTSubscribeToTopic( MQTTContext_t * pxMQTTContext, char * topic )
     } while( xFailedSubscribeToTopic == true  );
 }
 
+//void prvMQTTProcessIncomingPublish( MQTTPublishInfo_t *pxPublishInfo )
+//{
+//	char buffer1[128];
+//	char buffer2[128];
+//    const char * pTopicName;
+//
+//	// pPayload no termina en \0, hay que copiarlo en un buffer para imprimirlo. Lo mismo con pTopicName
+//	memcpy(buffer1,pxPublishInfo->pPayload,min(127,pxPublishInfo->payloadLength));
+//	buffer1[min(1023,pxPublishInfo->payloadLength)]='\0';
+//	memcpy(buffer2,pxPublishInfo->pTopicName,min(127,pxPublishInfo->topicNameLength));
+//	buffer2[min(1023,pxPublishInfo->topicNameLength)]='\0';
+//
+//	LOG(("Topic \"%s\": publicado \"%s\"\n",buffer2,buffer1));
+//
+//  // Actuar localmente sobre los LEDs o alguna otra cosa
+//	if(buffer1[0]=='1') BSP_LED_On(LED2);
+//	if(buffer1[0]=='0') BSP_LED_Off(LED2);
+//
+//}
+
 void prvMQTTProcessIncomingPublish( MQTTPublishInfo_t *pxPublishInfo )
 {
-	char buffer1[128];
-	char buffer2[128];
-    const char * pTopicName;
+    char buffer1[128];
+    char buffer2[128];
 
-	// pPayload no termina en \0, hay que copiarlo en un buffer para imprimirlo. Lo mismo con pTopicName
-	memcpy(buffer1,pxPublishInfo->pPayload,min(127,pxPublishInfo->payloadLength));
-	buffer1[min(1023,pxPublishInfo->payloadLength)]='\0';
-	memcpy(buffer2,pxPublishInfo->pTopicName,min(127,pxPublishInfo->topicNameLength));
-	buffer2[min(1023,pxPublishInfo->topicNameLength)]='\0';
+    size_t nPayload = ( pxPublishInfo->payloadLength < ( sizeof(buffer1) - 1 ) )
+                        ? pxPublishInfo->payloadLength
+                        : ( sizeof(buffer1) - 1 );
 
-	LOG(("Topic \"%s\": publicado \"%s\"\n",buffer2,buffer1));
+    size_t nTopic = ( pxPublishInfo->topicNameLength < ( sizeof(buffer2) - 1 ) )
+                        ? pxPublishInfo->topicNameLength
+                        : ( sizeof(buffer2) - 1 );
 
-  // Actuar localmente sobre los LEDs o alguna otra cosa
-	if(buffer1[0]=='1') BSP_LED_On(LED2);
-	if(buffer1[0]=='0') BSP_LED_Off(LED2);
+    memcpy( buffer1, pxPublishInfo->pPayload, nPayload );
+    buffer1[nPayload] = '\0';
 
+    memcpy( buffer2, pxPublishInfo->pTopicName, nTopic );
+    buffer2[nTopic] = '\0';
+
+    LOG(("Topic \"%s\": publicado \"%s\"\n", buffer2, buffer1));
+
+    /* LED opcional */
+    if( buffer1[0] == '1' ) BSP_LED_On(LED2);
+    if( buffer1[0] == '0' ) BSP_LED_Off(LED2);
+
+    /* ===== Control por MQTT: SCF/control => comandos a qCmdRx ===== */
+    if (strcmp(buffer2, pcAlertTopic) == 0)   /* pcAlertTopic = "SCF/control" */
+    {
+#if NODE_ID == NODE_ID_ACCEL
+        SystemCommand_t cmd = CMD_NOP;
+
+        if (strstr(buffer1, "MODO::CONTINUO") != NULL)
+            cmd = CMD_START_CONTINUOUS;
+        else if (strstr(buffer1, "MODO::NORMAL") != NULL)
+            cmd = CMD_STOP_CONTINUOUS;
+        else if (strstr(buffer1, "ACC::READ") != NULL)
+            cmd = CMD_FORCE_READ;
+
+        if (cmd != CMD_NOP)
+        {
+            (void)osMessageQueuePut(qCmdRxHandle, &cmd, 0, 0);     /* no bloquear */
+            (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX); /* despertar ACCEL */
+            LOG(("[CTRL] CMD encolado: %d\r\n", (int)cmd));
+        }
+#endif
+    }
 }
+
 
 uint32_t prvGetTimeMs( void )
 {

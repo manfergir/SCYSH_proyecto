@@ -1,8 +1,8 @@
 Drivers/BSP/src/wifi.o: ../Drivers/BSP/src/wifi.c \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -43,10 +43,10 @@ Drivers/BSP/src/wifi.o: ../Drivers/BSP/src/wifi.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:

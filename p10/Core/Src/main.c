@@ -47,7 +47,6 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define FLAG_DATA_READY 0x00000001U
-#define FLAG_BTN_EVENT 0x00000002U
 
 
 /*
@@ -55,7 +54,7 @@
  * 1 == ACELEROMETRO
  * 2 == ENVIRONMENT
  * */
-#define NODE_ID 2
+#define NODE_ID 1
 
 
 
@@ -83,7 +82,6 @@ UART_HandleTypeDef huart3;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
-/*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
 /* Definitions for WifiTask */
 osThreadId_t WifiTaskHandle;
 const osThreadAttr_t WifiTask_attributes = {
@@ -98,22 +96,6 @@ const osThreadAttr_t MQTT_Task_attributes = {
   .stack_size = 1280 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-
-
-/*--------------------------------------------- TAREA ACELEROMETRO --------------------------------------------------------*/
-#if NODE_ID == NODE_ID_ACCEL
-/* Definitions for Accel_Task */
-osThreadId_t Accel_TaskHandle;
-const osThreadAttr_t Accel_Task_attributes = {
-  .name = "Accel_Task",
-  .stack_size = 1024 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-#endif
-
-
-/*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
-#if NODE_ID == NODE_ID_ENV
 /* Definitions for task_envRead */
 osThreadId_t task_envReadHandle;
 const osThreadAttr_t task_envRead_attributes = {
@@ -121,9 +103,20 @@ const osThreadAttr_t task_envRead_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-#endif
-
-/*--------------------------------------------- COLAS --------------------------------------------------------*/
+/* Definitions for Accel_Task */
+osThreadId_t Accel_TaskHandle;
+const osThreadAttr_t Accel_Task_attributes = {
+  .name = "Accel_Task",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for UartCfgTask */
+osThreadId_t UartCfgTaskHandle;
+const osThreadAttr_t UartCfgTask_attributes = {
+  .name = "UartCfgTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* Definitions for qMqttTx */
 osMessageQueueId_t qMqttTxHandle;
 const osMessageQueueAttr_t qMqttTx_attributes = {
@@ -136,13 +129,29 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
+char g_wifi_ssid[WIFI_SSID_MAX] = "Nuria";
+char g_wifi_pass[WIFI_PASS_MAX] = "12345678";
+#define WIFISECURITY WIFI_ECN_WPA2_PSK
+
+
+volatile uint16_t g_acc_odr_hz = 52;
+volatile uint8_t  g_acc_fs_g   = 2;
+
+static osMutexId_t uartTxMutexHandle;
+static const osMutexAttr_t uartTxMutex_attributes = { .name = "uartTxMutex" };
+
+static uint8_t  uart_rx_ch;
+static char     uart_line[UART_LINE_MAX];
+static volatile uint16_t uart_line_len = 0;
+static char uart_line_ready[UART_LINE_MAX];
+static volatile uint8_t uart_line_has_ready = 0;
+
+
 // Variables globales de estado
 volatile uint8_t WIFI_IS_CONNECTED = 0;
 volatile uint8_t NET_MQTT_OK = 0;
 
-#define SSID     "manolo"
-#define PASSWORD "123456789"
-#define WIFISECURITY WIFI_ECN_WPA2_PSK
+
 
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
@@ -169,20 +178,11 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_RTC_Init(void);
-
-/*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
 void StartWifiTask(void *argument);
 void MQTT_TaskFun(void *argument);
-
-/*--------------------------------------------- TAREA ACCEL --------------------------------------------------------*/
-#if NODE_ID == NODE_ID_ACCEL
-void Accel_Task_Func(void *argument);
-#endif
-
-/*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
-#if NODE_ID == NODE_ID_ENV
 void task_envReadFunc(void *argument);
-#endif
+void Accel_Task_Func(void *argument);
+void UartCfgTask_Func(void *argument);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -191,9 +191,8 @@ static  uint8_t  IP_Addr[4];
 extern UART_HandleTypeDef hDiscoUart;
 #endif /* TERMINAL_USE */
 
-static  uint8_t http[1024];
-static  uint8_t  IP_Addr[4];
-static  int     LedState = 0;
+
+
 extern ES_WIFIObject_t    EsWifiObj;
 
 /* USER CODE END PFP */
@@ -201,37 +200,74 @@ extern ES_WIFIObject_t    EsWifiObj;
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+//void program_alarm_RTC(void)
+//{
+//  RTC_AlarmTypeDef sAlarm = {0};
+//  RTC_TimeTypeDef sTime = {0};
+//  RTC_DateTypeDef sDate = {0};
+//
+//  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+//  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // Necesario para desbloquear registros
+//
+//  sAlarm.AlarmTime.Seconds = sTime.Seconds;
+//  sAlarm.AlarmTime.Minutes = sTime.Minutes + 1; // +1 Minutos
+//  sAlarm.AlarmTime.Hours = sTime.Hours;
+//
+//  if (sAlarm.AlarmTime.Minutes >= 60) {
+//    sAlarm.AlarmTime.Minutes -= 60;
+//    sAlarm.AlarmTime.Hours += 1;
+//  }
+//  if (sAlarm.AlarmTime.Hours >= 24) {
+//    sAlarm.AlarmTime.Hours -= 24;
+//  }
+//
+//  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
+//  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+//  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+//  sAlarm.AlarmDateWeekDay = 1;
+//  sAlarm.Alarm = RTC_ALARM_A;
+//
+//  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
+//    Error_Handler();
+//  }
+//}
+
 void program_alarm_RTC(void)
 {
   RTC_AlarmTypeDef sAlarm = {0};
-  RTC_TimeTypeDef sTime = {0};
-  RTC_DateTypeDef sDate = {0};
+  RTC_TimeTypeDef  sTime  = {0};
+  RTC_DateTypeDef  sDate  = {0};
 
   HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // Necesario para desbloquear registros
+  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // obligatorio
 
-  sAlarm.AlarmTime.Seconds = sTime.Seconds;
-  sAlarm.AlarmTime.Minutes = sTime.Minutes + 1; // +1 Minutos
-  sAlarm.AlarmTime.Hours = sTime.Hours;
+  // Desactivar y limpiar por seguridad (evita retriggers)
+  HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
+  __HAL_RTC_ALARM_CLEAR_FLAG(&hrtc, RTC_FLAG_ALRAF);
+  __HAL_RTC_ALARM_EXTI_CLEAR_FLAG();
 
-  if (sAlarm.AlarmTime.Minutes >= 60) {
-    sAlarm.AlarmTime.Minutes -= 60;
-    sAlarm.AlarmTime.Hours += 1;
-  }
-  if (sAlarm.AlarmTime.Hours >= 24) {
-    sAlarm.AlarmTime.Hours -= 24;
-  }
+  // Próximo minuto a segundo 00
+  uint8_t nextMin = sTime.Minutes + 1;
+  uint8_t nextHr  = sTime.Hours;
 
-  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY; 
+  if (nextMin >= 60) { nextMin = 0; nextHr = (nextHr + 1) % 24; }
+
+  sAlarm.AlarmTime.Hours   = nextHr;
+  sAlarm.AlarmTime.Minutes = nextMin;
+  sAlarm.AlarmTime.Seconds = 0;
+
+  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;  // NO enmascares seconds/minutes
   sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
   sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
   sAlarm.AlarmDateWeekDay = 1;
   sAlarm.Alarm = RTC_ALARM_A;
 
-  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+  {
     Error_Handler();
   }
 }
+
 
 static int wifi_start(void)
 {
@@ -270,8 +306,8 @@ int wifi_connect(void)
 
   wifi_start();
 
-  LOG(("\nConnecting to %s, %s\r\n",SSID,PASSWORD));
-  if( WIFI_Connect(SSID, PASSWORD, WIFISECURITY) == WIFI_STATUS_OK)
+  LOG(("\nConnecting to %s, %s\r\n", g_wifi_ssid, g_wifi_pass));
+  if( WIFI_Connect(g_wifi_ssid, g_wifi_pass, WIFISECURITY) == WIFI_STATUS_OK)
   {
     if(WIFI_GetIP_Address(IP_Addr) == WIFI_STATUS_OK)
     {
@@ -333,6 +369,8 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_RTC_Init();
+
+
   /* USER CODE BEGIN 2 */
 
 	printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
@@ -347,6 +385,8 @@ int main(void)
 
 	printf("--- [BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
 
+	  HAL_UART_Receive_IT(&huart1, &uart_rx_ch, 1);
+	  printf("[UART] RX listo\r\n");
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -354,6 +394,8 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+  uartTxMutexHandle = osMutexNew(&uartTxMutex_attributes);
+
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -369,31 +411,29 @@ int main(void)
   qMqttTxHandle = osMessageQueueNew (8, 1060, &qMqttTx_attributes);
 
   /* creation of qCmdRx */
-  qCmdRxHandle = osMessageQueueNew (5, sizeof(uint8_t), &qCmdRx_attributes);
+  qCmdRxHandle = osMessageQueueNew (5, sizeof(SystemCommandMsg_t), &qCmdRx_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /*--------------------------------------------- TAREAS COMUNES --------------------------------------------------------*/
   /* creation of WifiTask */
   WifiTaskHandle = osThreadNew(StartWifiTask, NULL, &WifiTask_attributes);
 
   /* creation of MQTT_Task */
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
-  /*--------------------------------------------- TAREA ACCEL --------------------------------------------------------*/
-  #if NODE_ID == NODE_ID_ACCEL
-  /* creation of Accel_Task */
-  Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
-  #endif
-
-  /*--------------------------------------------- TAREA TEMP-HUMEDAD --------------------------------------------------------*/
-  #if NODE_ID == NODE_ID_ENV
   /* creation of task_envRead */
   task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
-  #endif
+
+  /* creation of Accel_Task */
+  Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
+
+  /* creation of UartCfgTask */
+  UartCfgTaskHandle = osThreadNew(UartCfgTask_Func, NULL, &UartCfgTask_attributes);
+
+
 
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -755,6 +795,10 @@ static void MX_USART1_UART_Init(void)
   }
   /* USER CODE BEGIN USART1_Init 2 */
 
+  HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(USART1_IRQn);
+
+
   /* USER CODE END USART1_Init 2 */
 
 }
@@ -1027,15 +1071,69 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+//int _write(int file, char *ptr, int len)
+//{
+//	int DataIdx;
+//	for(DataIdx=0; DataIdx<len; DataIdx++)
+//	{
+//		ITM_SendChar(*ptr++);
+//	}
+//	return len;
+//}
+//
+
+
+
 int _write(int file, char *ptr, int len)
 {
-	int DataIdx;
-	for(DataIdx=0; DataIdx<len; DataIdx++)
-	{
-		ITM_SendChar(*ptr++);
-	}
-	return len;
+  (void)file;
+
+  // Siempre a SWV
+  for (int i = 0; i < len; i++)
+    ITM_SendChar(ptr[i]);
+
+  // UART solo si NO estamos en interrupción
+  if (__get_IPSR() == 0)   // 0 = thread mode
+  {
+    if (uartTxMutexHandle) osMutexAcquire(uartTxMutexHandle, osWaitForever);
+    HAL_UART_Transmit(&huart1, (uint8_t*)ptr, (uint16_t)len, 1000);
+    if (uartTxMutexHandle) osMutexRelease(uartTxMutexHandle);
+  }
+
+  return len;
 }
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART1)
+  {
+    char c = (char)uart_rx_ch;
+
+    if (c == '\r' || c == '\n')
+    {
+      if (uart_line_len > 0)
+      {
+    	  uart_line[uart_line_len] = '\0';
+    	  strncpy(uart_line_ready, uart_line, UART_LINE_MAX);
+    	  uart_line_ready[UART_LINE_MAX-1] = '\0';
+    	  uart_line_has_ready = 1;
+    	  uart_line_len = 0;
+    	  osThreadFlagsSet(UartCfgTaskHandle, NOTE_UART_LINE);
+
+      }
+    }
+    else
+    {
+      if (uart_line_len < (UART_LINE_MAX - 1))
+        uart_line[uart_line_len++] = c;
+      else
+        uart_line_len = 0;
+    }
+
+    HAL_UART_Receive_IT(&huart1, &uart_rx_ch, 1);
+  }
+}
+
 
 
 void SPI3_IRQHandler(void)
@@ -1055,13 +1153,21 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     case (BOTON_Pin):
     {
       #if NODE_ID == NODE_ID_ACCEL
-      osThreadFlagsSet(TaskHandle, NOTE_RTC_WAKEUP);
+      osThreadFlagsSet(Accel_TaskHandle,  NOTE_BUTTON_IRQ);
       #elif NODE_ID == NODE_ID_ENV
-      osThreadFlagsSet(task_envReadHandle, NOTE_RTC_WAKEUP);
+      osThreadFlagsSet(task_envReadHandle,  NOTE_BUTTON_IRQ);
       #endif
 
       break;
     }
+    case (LSM6DSL_INT1_EXTI11_Pin):
+    {
+      #if NODE_ID == NODE_ID_ACCEL
+      osThreadFlagsSet(Accel_TaskHandle, NOTE_ACCEL_FIFO);
+      #endif
+      break;
+    }
+
     default:
     {
       break;
@@ -1070,13 +1176,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 }
 
 /*--------------------------------------------- FUNCIONES TEMP-HUMEDAD --------------------------------------------------------*/
-#if NODE_ID == NODE_ID_ENV
+
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
-    // 1. Avisar a la tarea principal (Igual que con el botón)
-    // Usamos la misma bandera o una distinta ("FLAG_RTC_WAKEUP")
-    osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY); 
+
+
+	#if NODE_ID == NODE_ID_ENV
+	  osThreadFlagsSet(task_envReadHandle, FLAG_DATA_READY);
+
+	#elif NODE_ID == NODE_ID_ACCEL
+	  osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+
+	#endif
 }
-#endif
+
 
 /*--------------------------------------------- FUNCIONES ACCE --------------------------------------------------------*/
 #if NODE_ID == NODE_ID_ACCEL
@@ -1225,6 +1337,9 @@ void MQTT_TaskFun(void *argument)
 		  LOG(("[MQTT] Loop de transmision activo.\r\n"));
 		  NET_MQTT_OK = 1;
 
+		  /* Suscripción al topic de control */
+		  prvMQTTSubscribeToTopic(&xMQTTContext, pcAlertTopic);   // pcAlertTopic = "SCF/control"
+
 		  // 4. BUCLE DE TRANSMISIÓN
 		  while (WIFI_IS_CONNECTED == 1)
 		  {
@@ -1261,7 +1376,6 @@ void MQTT_TaskFun(void *argument)
 * @retval None
 */
 /* USER CODE END Header_task_envReadFunc */
-#if NODE_ID == NODE_ID_ENV
 void task_envReadFunc(void *argument)
 {
   /* USER CODE BEGIN task_envReadFunc */
@@ -1299,14 +1413,14 @@ void task_envReadFunc(void *argument)
   for(;;)
   {
     
-    flag = osThreadFlagsWait( FLAG_BTN_EVENT | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
+    flag = osThreadFlagsWait(  NOTE_BUTTON_IRQ | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
 
     if ( flag == FLAG_DATA_READY )
     {
       reason = 0;   //El mensaje se envía por timeout
       program_alarm_RTC(); //Reinicio del temporizador
     }
-    else if ( flag == FLAG_BTN_EVENT )
+    else if ( flag ==  NOTE_BUTTON_IRQ )
     {
       reason = 1;   //El mensaje se envía por solicitud directa (botón)
     }
@@ -1349,7 +1463,6 @@ void task_envReadFunc(void *argument)
   }
   /* USER CODE END task_envReadFunc */
 }
-#endif
 
 /* USER CODE BEGIN Header_Accel_Task_Func */
 /**
@@ -1358,8 +1471,6 @@ void task_envReadFunc(void *argument)
 * @retval None
 */
 /* USER CODE END Header_Accel_Task_Func */
-#if NODE_ID == NODE_ID_ACCEL
-
 void Accel_Task_Func(void *argument)
 {
   /* USER CODE BEGIN Accel_Task_Func */
@@ -1371,29 +1482,49 @@ void Accel_Task_Func(void *argument)
     for(;;) osDelay(1000);
   }
   printf("[ACC] After Init\r\n");
+  program_alarm_RTC();
+
 
   uint8_t continuous = 0;
 
   /* Infinite loop */
   for (;;)
   {
-    uint32_t flags = osThreadFlagsWait(NOTE_RTC_WAKEUP | NOTE_CMD_RX,
+    uint32_t flags = osThreadFlagsWait( NOTE_BUTTON_IRQ | NOTE_RTC_WAKEUP | NOTE_CMD_RX,
                                        osFlagsWaitAny,
                                        osWaitForever);
 
     if (flags & NOTE_CMD_RX)
     {
-      uint8_t cmd;
-      while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
-      {
-        if (cmd == CMD_START_CONTINUOUS) continuous = 1;
-        if (cmd == CMD_STOP_CONTINUOUS)  continuous = 0;
-        if (cmd == CMD_FORCE_READ) osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
-      }
+    	SystemCommandMsg_t cmd;
+    	while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
+    	{
+    	  if (cmd.type == CMD_START_CONTINUOUS) continuous = 1;
+    	  if (cmd.type == CMD_STOP_CONTINUOUS)  continuous = 0;
+    	  if (cmd.type == CMD_FORCE_READ) osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
+
+    	  if (cmd.type == CMD_SET_WIFI) {
+    	     strncpy(g_wifi_ssid, cmd.u.wifi.ssid, WIFI_SSID_MAX);
+    	     strncpy(g_wifi_pass, cmd.u.wifi.pass, WIFI_PASS_MAX);
+    	     WIFI_IS_CONNECTED = 0;
+    	     NET_MQTT_OK = 0;
+    	  }
+    	  // CMD_SET_RTC lo puedes aplicar en UartCfgTask directamente o aquí.
+    	}
+
+    }
+
+    if (flags &  NOTE_BUTTON_IRQ) {
+        /* Forzar una captura igual que RTC */
+        flags |= NOTE_RTC_WAKEUP;
     }
 
     if (!(flags & NOTE_RTC_WAKEUP))
-      continue;
+        continue;
+
+    if (flags & NOTE_RTC_WAKEUP) {
+        program_alarm_RTC();
+    }
 
     const uint16_t target       = continuous ? ACC_CONT_SAMPLES : ACC_BLOCK_SAMPLES; // 1024 o 64
     const uint16_t total_chunks = (uint16_t)(target / ACC_BLOCK_SAMPLES);            // 16 o 1
@@ -1478,7 +1609,55 @@ void Accel_Task_Func(void *argument)
   /* USER CODE END Accel_Task_Func */
 }
 
-#endif
+/* USER CODE BEGIN Header_UartCfgTask_Func */
+/**
+* @brief Function implementing the UartCgfTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_UartCfgTask_Func */
+void UartCfgTask_Func(void *argument)
+{
+  for (;;)
+  {
+    osThreadFlagsWait(NOTE_UART_LINE, osFlagsWaitAny, osWaitForever);
+
+    if (!uart_line_has_ready) continue;
+    uart_line_has_ready = 0;
+
+    printf("[UART] LINE: '%s'\r\n", uart_line_ready);
+    // ejemplo: "CONT ON" / "CONT OFF" / "READ"
+    SystemCommandMsg_t cmd;
+    memset(&cmd, 0, sizeof(cmd));
+
+    if (strcmp(uart_line_ready, "CONT ON") == 0) {
+      cmd.type = CMD_START_CONTINUOUS;
+    } else if (strcmp(uart_line_ready, "CONT OFF") == 0) {
+      cmd.type = CMD_STOP_CONTINUOUS;
+    } else if (strcmp(uart_line_ready, "READ") == 0) {
+      cmd.type = CMD_FORCE_READ;
+    } else if (strncmp(uart_line_ready, "WIFI ", 5) == 0) {
+      // WIFI <ssid> <pass>
+      cmd.type = CMD_SET_WIFI;
+      char ssid[WIFI_SSID_MAX] = {0};
+      char pass[WIFI_PASS_MAX] = {0};
+      if (sscanf(uart_line_ready + 5, "%31s %63s", ssid, pass) == 2) {
+        strncpy(cmd.u.wifi.ssid, ssid, WIFI_SSID_MAX);
+        strncpy(cmd.u.wifi.pass, pass, WIFI_PASS_MAX);
+      } else {
+        printf("[UART] uso: WIFI <ssid> <pass>\r\n");
+        continue;
+      }
+    } else {
+      printf("[UART] cmd desconocido: %s\r\n", uart_line_ready);
+      continue;
+    }
+
+    osMessageQueuePut(qCmdRxHandle, &cmd, 0, pdMS_TO_TICKS(50));
+    osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX);
+  }
+}
+
 
 /**
   * @brief  Period elapsed callback in non blocking mode

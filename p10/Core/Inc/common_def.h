@@ -25,7 +25,11 @@
 #define ACC_BLOCK_SAMPLES    64U
 #define ACC_CONT_SAMPLES     1024U
 
+// ---------- UART RX (líneas) ----------
+#define UART_LINE_MAX  128
 
+#define WIFI_SSID_MAX   32
+#define WIFI_PASS_MAX   64
 /* ==============================================================================
  * 2. ESTRUCTURA DE DATOS (COLA DE ENVÍO)
  * ============================================================================== */
@@ -37,6 +41,7 @@ typedef struct {
     char topic[MSG_TOPIC_SIZE];      // Canal MQTT de destino
     char payload[MSG_PAYLOAD_SIZE];  // Datos formateados (JSON o Raw bytes)
 } MqttMsg_t;
+
 
 
 /* ==============================================================================
@@ -56,6 +61,23 @@ typedef enum {
     CMD_SET_RTC     // nuevo: configurar fecha/hora rtc
 } SystemCommand_t;
 
+typedef struct {
+    SystemCommand_t type;
+    union {
+        struct {
+            char ssid[WIFI_SSID_MAX];
+            char pass[WIFI_PASS_MAX];
+        } wifi;
+
+        struct {
+            uint8_t hh, mm, ss;
+            uint8_t day, month;
+            uint16_t year;
+        } rtc;
+    } u;
+} SystemCommandMsg_t;
+
+
 /* ==============================================================================
  * 4. NOTIFICACIONES DE TAREAS (BIT FLAGS)
  * ============================================================================== */
@@ -67,6 +89,7 @@ typedef enum {
 #define NOTE_CMD_RX      (1 << 2)  // (0x04) Ha llegado una orden por la cola qCmdRx
 #define NOTE_BUTTON_IRQ  (1 << 3)  // (0x08) Pulsación del botón de usuario
 
+#define NOTE_UART_LINE (1U << 4)  // usa bit libre (0..3 ya usados)
 
 /* ==============================================================================
  * 5. DEFINICIÓN DE TOPICS MQTT (JERARQUÍA)
@@ -74,6 +97,7 @@ typedef enum {
 // Identificadores de los Nodos
 #define NODE_ID_ACCEL  1
 #define NODE_ID_ENV    2
+
 
 // Prefijos para construir los topics
 // Uso: sprintf(msg.topic, "%s%s", TOPIC_PUB_ACCEL_PREFIX, NODE_ID_ACCEL);
@@ -95,6 +119,16 @@ extern volatile uint8_t WIFI_IS_CONNECTED;
 extern volatile uint8_t NET_MQTT_OK;
 
 #define DEBUG 1
+
+/* ====== CONFIG POR UART (GLOBALS) ====== */
+
+
+extern char g_wifi_ssid[WIFI_SSID_MAX];
+extern char g_wifi_pass[WIFI_PASS_MAX];
+
+/* (opcional) accel config */
+extern volatile uint16_t g_acc_odr_hz;  // ej 52
+extern volatile uint8_t  g_acc_fs_g;    // ej 2
 
 
 #endif /* INC_COMMON_DEF_H_ */

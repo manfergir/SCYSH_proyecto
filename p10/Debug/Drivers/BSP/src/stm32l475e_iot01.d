@@ -1,5 +1,5 @@
 Drivers/BSP/src/stm32l475e_iot01.o: ../Drivers/BSP/src/stm32l475e_iot01.c \
- C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
+ C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -40,7 +40,7 @@ Drivers/BSP/src/stm32l475e_iot01.o: ../Drivers/BSP/src/stm32l475e_iot01.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
-C:/repos/SistemasCiberYSegHard/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
+C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:

@@ -14,6 +14,9 @@ extern "C" {
 #include "../../Libraries/coreMQTT/source/core_mqtt.h"
 #include <mqtt_priv_config.h>
 
+extern osMessageQueueId_t qCmdRxHandle;
+
+
 #ifndef min
 #define min(a,b) ((a) < (b) ? (a) : (b))
 #endif
