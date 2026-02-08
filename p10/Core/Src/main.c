@@ -137,6 +137,7 @@ char g_wifi_pass[WIFI_PASS_MAX] = "12345678";
 volatile uint16_t g_acc_odr_hz = 52;
 volatile uint8_t  g_acc_fs_g   = 2;
 
+extern UART_HandleTypeDef huart1;
 static osMutexId_t uartTxMutexHandle;
 static const osMutexAttr_t uartTxMutex_attributes = { .name = "uartTxMutex" };
 
@@ -329,6 +330,11 @@ int wifi_connect(void)
      return -1;
   }
   return 0;
+}
+
+void USART1_IRQHandler(void)
+{
+  HAL_UART_IRQHandler(&huart1);
 }
 /* USER CODE END 0 */
 
