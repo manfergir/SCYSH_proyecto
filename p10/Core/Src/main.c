@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "common_def.h"
+#include "cmd_parser.h"
 #include "es_wifi.h"
 #include "wifi.h"
 #include "stm32l4xx_hal_uart.h"
@@ -36,6 +37,7 @@
 #include "lsm6dsl.h"
 #include"stm32l475e_iot01_accelero.h"
 #include <string.h>
+#include <stdarg.h>
 
 /* USER CODE END Includes */
 
@@ -47,6 +49,12 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define FLAG_DATA_READY 0x00000001U
+/* ===== DEBUG MENU ===== */
+#ifdef DEBUG
+  #define DEBUG_MENU 1
+#else
+  #define DEBUG_MENU 0
+#endif
 
 
 /*
@@ -152,12 +160,14 @@ static volatile uint8_t uart_line_has_ready = 0;
 volatile uint8_t WIFI_IS_CONNECTED = 0;
 volatile uint8_t NET_MQTT_OK = 0;
 
+volatile uint8_t WIFI_STATE = 0;
+// 0=DISCONNECTED, 1=CONNECTING, 2=CONNECTED
 
 
 #define PORT 	80
 #define WIFI_WRITE_TIMEOUT 10000
 #define WIFI_READ_TIMEOUT 10000
-#define LOG(a) printf a
+
 
 uint8_t Alert_Flag = 0;
 
@@ -184,6 +194,8 @@ void MQTT_TaskFun(void *argument);
 void task_envReadFunc(void *argument);
 void Accel_Task_Func(void *argument);
 void UartCfgTask_Func(void *argument);
+static void ApplyRTC(const typeof(((SystemCommandMsg_t*)0)->u.rtc) *rtc);
+static void send_mqtt_msg(const char *topic, const char *payload);
 
 /* USER CODE BEGIN PFP */
 extern  SPI_HandleTypeDef hspi;
@@ -196,42 +208,116 @@ extern UART_HandleTypeDef hDiscoUart;
 
 extern ES_WIFIObject_t    EsWifiObj;
 
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-//void program_alarm_RTC(void)
-//{
-//  RTC_AlarmTypeDef sAlarm = {0};
-//  RTC_TimeTypeDef sTime = {0};
-//  RTC_DateTypeDef sDate = {0};
-//
-//  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-//  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // Necesario para desbloquear registros
-//
-//  sAlarm.AlarmTime.Seconds = sTime.Seconds;
-//  sAlarm.AlarmTime.Minutes = sTime.Minutes + 1; // +1 Minutos
-//  sAlarm.AlarmTime.Hours = sTime.Hours;
-//
-//  if (sAlarm.AlarmTime.Minutes >= 60) {
-//    sAlarm.AlarmTime.Minutes -= 60;
-//    sAlarm.AlarmTime.Hours += 1;
-//  }
-//  if (sAlarm.AlarmTime.Hours >= 24) {
-//    sAlarm.AlarmTime.Hours -= 24;
-//  }
-//
-//  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
-//  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
-//  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
-//  sAlarm.AlarmDateWeekDay = 1;
-//  sAlarm.Alarm = RTC_ALARM_A;
-//
-//  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
-//    Error_Handler();
-//  }
-//}
+static osMutexId_t printMutexHandle;
+static const osMutexAttr_t printMutex_attributes = { .name = "printMutex" };
+
+static void dbg_printf(const char *fmt, ...)
+{
+  if (__get_IPSR() != 0) return; // en ISR no imprimir (o solo SWV)
+
+  if (printMutexHandle) osMutexAcquire(printMutexHandle, osWaitForever);
+
+  va_list ap;
+  va_start(ap, fmt);
+  vprintf(fmt, ap);
+  va_end(ap);
+
+  if (printMutexHandle) osMutexRelease(printMutexHandle);
+}
+
+static void log_printf(const char *fmt, ...)
+{
+  char line[256];
+  va_list ap;
+  va_start(ap, fmt);
+  vsnprintf(line, sizeof(line), fmt, ap);
+  va_end(ap);
+
+  // 1) siempre al UART/SWV
+  dbg_printf("%s", line);
+
+  // 2) Evita feedback: si el mensaje YA es un log de MQTT, no lo republíques
+  // (también evita logs mientras MQTT no está estable)
+  if (!NET_MQTT_OK || !WIFI_IS_CONNECTED) return;
+
+  // Si este log proviene del propio loop de MQTT/log topic, corta.
+  // (esto vale si estás llamando log_printf desde prints del MQTT task)
+  if (strstr(line, "bridge/log/") != NULL) return;
+  if (strstr(line, "[MQTT] Enviando Topic: bridge/log/") != NULL) return;
+
+  char topic[MSG_TOPIC_SIZE];
+  snprintf(topic, sizeof(topic), "bridge/log/%d", NODE_ID);
+  send_mqtt_msg(topic, line);
+}
+
+
+static void PrintDebugMenu(void)
+{
+#if DEBUG_MENU
+  dbg_printf("\r\n");
+  dbg_printf("========================================\r\n");
+  dbg_printf("   MENU DEBUG - COMANDOS DISPONIBLES\r\n");
+  dbg_printf("========================================\r\n");
+  dbg_printf("UART (terminal) y MQTT (bridge/cmd/<id>)\r\n");
+  dbg_printf("\r\n");
+  dbg_printf("Acelerometro:\r\n");
+  dbg_printf("  CONT ON              -> modo continuo\r\n");
+  dbg_printf("  CONT OFF             -> modo normal\r\n");
+  dbg_printf("  READ                 -> forzar lectura\r\n");
+  dbg_printf("\r\n");
+  dbg_printf("WiFi:\r\n");
+  dbg_printf("  WIFI <ssid> <pass>   -> cambiar credenciales\r\n");
+  dbg_printf("     ej: WIFI MiRed 12345678\r\n");
+  dbg_printf("\r\n");
+  dbg_printf("RTC:\r\n");
+  dbg_printf("  RTC 2026-02-08 19:30:00\r\n");
+  dbg_printf("  RTC 2026 2 8 19 30 0\r\n");
+  dbg_printf("\r\n");
+  dbg_printf("MQTT topic de control:\r\n");
+  dbg_printf("  bridge/cmd/1  (nodo 1)\r\n");
+  dbg_printf("  bridge/cmd/2  (nodo 2)\r\n");
+  dbg_printf("========================================\r\n\r\n");
+#endif
+}
+
+
+static void DispatchCommand(const SystemCommandMsg_t *cmd);
+
+void OnMqttControlMessage(const char *topic, const char *payload)
+{
+  (void)topic; // luego lo usas si quieres filtrar por /1 /2
+  SystemCommandMsg_t cmd;
+  if (!Cmd_ParseLine(payload, CMD_SRC_MQTT, &cmd)) {
+    dbg_printf("[MQTT][CTRL] cmd invalido: %s\r\n", payload);
+    return;
+  }
+  DispatchCommand(&cmd);
+}
+
+
+
+static void DispatchCommand(const SystemCommandMsg_t *cmd)
+{
+  // mete en cola
+  osMessageQueuePut(qCmdRxHandle, cmd, 0, pdMS_TO_TICKS(50));
+
+  // despierta la tarea correcta (según nodo compilado)
+  #if NODE_ID == NODE_ID_ACCEL
+    osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX);
+  #elif NODE_ID == NODE_ID_ENV
+    osThreadFlagsSet(task_envReadHandle, NOTE_CMD_RX);
+  #endif
+}
+
+
+
+
 
 void program_alarm_RTC(void)
 {
@@ -269,6 +355,42 @@ void program_alarm_RTC(void)
   }
 }
 
+static void ApplyRTC(const typeof(((SystemCommandMsg_t*)0)->u.rtc) *rtc)
+{
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  sTime.Hours   = rtc->hour;
+  sTime.Minutes = rtc->min;
+  sTime.Seconds = rtc->sec;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+  uint16_t y = rtc->year;
+  if (y >= 2000) y -= 2000; // STM32 Year suele ser 0..99
+
+  sDate.Year  = (uint8_t)y;
+  sDate.Month = rtc->month;
+  sDate.Date  = rtc->day;
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY; // puedes mejorar luego
+
+  HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
+
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
+    log_printf("[RTC] Error SetTime\r\n");
+    return;
+  }
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
+    log_printf("[RTC] Error SetDate\r\n");
+    return;
+  }
+
+  log_printf("[RTC] Ajustado: %04u-%02u-%02u %02u:%02u:%02u\r\n",
+         (unsigned)rtc->year, rtc->month, rtc->day,
+         rtc->hour, rtc->min, rtc->sec);
+}
+
+
 
 static int wifi_start(void)
 {
@@ -276,20 +398,20 @@ static int wifi_start(void)
  /*Initialize and use WIFI module */
   if(WIFI_Init() ==  WIFI_STATUS_OK)
   {
-    LOG(("ES-WIFI Initialized.\r\n"));
+    log_printf("ES-WIFI Initialized.\r\n");
     if(WIFI_GetMAC_Address(MAC_Addr) == WIFI_STATUS_OK)
     {
-      LOG(("> eS-WiFi module MAC Address : %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+    	dbg_printf("> eS-WiFi module MAC Address : %02X:%02X:%02X:%02X:%02X:%02X\r\n",
                MAC_Addr[0],
                MAC_Addr[1],
                MAC_Addr[2],
                MAC_Addr[3],
                MAC_Addr[4],
-               MAC_Addr[5]));
+               MAC_Addr[5]);
     }
     else
     {
-      LOG(("> ERROR : CANNOT get MAC address\r\n"));
+    	log_printf("> ERROR : CANNOT get MAC address\r\n");
       return -1;
     }
   }
@@ -307,26 +429,26 @@ int wifi_connect(void)
 
   wifi_start();
 
-  LOG(("\nConnecting to %s, %s\r\n", g_wifi_ssid, g_wifi_pass));
+  log_printf("\nConnecting to %s, %s\r\n", g_wifi_ssid, g_wifi_pass);
   if( WIFI_Connect(g_wifi_ssid, g_wifi_pass, WIFISECURITY) == WIFI_STATUS_OK)
   {
     if(WIFI_GetIP_Address(IP_Addr) == WIFI_STATUS_OK)
     {
-      LOG(("> es-wifi module connected: got IP Address : %d.%d.%d.%d\r\n",
+    	dbg_printf("> es-wifi module connected: got IP Address : %d.%d.%d.%d\r\n",
                IP_Addr[0],
                IP_Addr[1],
                IP_Addr[2],
-               IP_Addr[3]));
+               IP_Addr[3]);
     }
     else
     {
-		  LOG((" ERROR : es-wifi module CANNOT get IP address\r\n"));
+    	log_printf(" ERROR : es-wifi module CANNOT get IP address\r\n");
       return -1;
     }
   }
   else
   {
-		 LOG(("ERROR : es-wifi module NOT connected\r\n"));
+	  dbg_printf("ERROR : es-wifi module NOT connected\r\n");
      return -1;
   }
   return 0;
@@ -379,7 +501,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
-	printf("--- [BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
+	log_printf("[BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
 
 	// Bajar el pin de Reset (Apagar módulo)
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
@@ -389,10 +511,13 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
 	HAL_Delay(1000); // Esperar 1s a que arranque su sistema interno
 
-	printf("--- [BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
+	log_printf("[BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
 
 	  HAL_UART_Receive_IT(&huart1, &uart_rx_ch, 1);
-	  printf("[UART] RX listo\r\n");
+	  log_printf("[UART] RX listo\r\n");
+
+	  PrintDebugMenu();
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -401,6 +526,8 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   uartTxMutexHandle = osMutexNew(&uartTxMutex_attributes);
+  printMutexHandle = osMutexNew(&printMutex_attributes);
+
 
   /* USER CODE END RTOS_MUTEX */
 
@@ -430,11 +557,11 @@ int main(void)
   /* creation of MQTT_Task */
   MQTT_TaskHandle = osThreadNew(MQTT_TaskFun, NULL, &MQTT_Task_attributes);
 
-  /* creation of task_envRead */
-  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
-
-  /* creation of Accel_Task */
+#if NODE_ID == 1   // ACC
   Accel_TaskHandle = osThreadNew(Accel_Task_Func, NULL, &Accel_Task_attributes);
+#elif NODE_ID == 2 // ENV
+  task_envReadHandle = osThreadNew(task_envReadFunc, NULL, &task_envRead_attributes);
+#endif
 
   /* creation of UartCfgTask */
   UartCfgTaskHandle = osThreadNew(UartCfgTask_Func, NULL, &UartCfgTask_attributes);
@@ -1094,20 +1221,29 @@ int _write(int file, char *ptr, int len)
 {
   (void)file;
 
-  // Siempre a SWV
-  for (int i = 0; i < len; i++)
-    ITM_SendChar(ptr[i]);
-
-  // UART solo si NO estamos en interrupción
-  if (__get_IPSR() == 0)   // 0 = thread mode
+  if (__get_IPSR() == 0) // thread mode
   {
     if (uartTxMutexHandle) osMutexAcquire(uartTxMutexHandle, osWaitForever);
+
+    // 1) SWV
+    for (int i = 0; i < len; i++)
+      ITM_SendChar(ptr[i]);
+
+    // 2) UART
     HAL_UART_Transmit(&huart1, (uint8_t*)ptr, (uint16_t)len, 1000);
+
     if (uartTxMutexHandle) osMutexRelease(uartTxMutexHandle);
+  }
+  else
+  {
+    // En interrupción: NO UART, y tampoco bloquear con mutex
+    for (int i = 0; i < len; i++)
+      ITM_SendChar(ptr[i]);
   }
 
   return len;
 }
+
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -1251,41 +1387,38 @@ static void build_payload_block(char *dst, size_t dst_sz,
 /* USER CODE END Header_StartWifiTask */
 void StartWifiTask(void *argument)
 {
-  /* USER CODE BEGIN 5 */
-	int ret;
-	LOG(("--- [WIFI] Tarea iniciada --- \r\n"));
 
-  /* Infinite loop */
-  for(;;)
-  {
-	  if (WIFI_IS_CONNECTED == 0)
+	  int ret;
+	  log_printf("--- [WIFI] Tarea iniciada --- \r\n");
+
+	  for(;;)
 	  {
-		  LOG(("[WIFI] Llamando a wifi_connect()...\r\n"));
+	    if (WIFI_STATE == 0) // DISCONNECTED
+	    {
+	      WIFI_STATE = 1; // CONNECTING
+	      dbg_printf("[WIFI] Llamando a wifi_connect()...\r\n");
 
-		  // LLAMADA A TU FUNCIÓN (Línea 142 del main.c)
-		  // Esta función ya usa el SSID "Manolo" definido arriba.
-		  ret = wifi_connect();
+	      ret = wifi_connect();
 
-		  if (ret == 0)
-		  {
-			  LOG(("[WIFI] Conexion Exitosa.\r\n"));
-			  WIFI_IS_CONNECTED = 1; // Bandera global para MQTT
-		  }
-		  else
-		  {
-			  	LOG(("[WIFI] Fallo al conectar. Reintentando en 5s...\r\n"));
-			  osDelay(pdMS_TO_TICKS(5000));
-		  }
-
+	      if (ret == 0)
+	      {
+	    	log_printf("[WIFI] Conexion Exitosa.\r\n");
+	        WIFI_STATE = 2;          // CONNECTED
+	        WIFI_IS_CONNECTED = 1;   // si quieres mantener tu flag
+	      }
+	      else
+	      {
+	    	log_printf("[WIFI] Fallo al conectar. Reintentando en 5s...\r\n");
+	        WIFI_STATE = 0;
+	        WIFI_IS_CONNECTED = 0;
+	        osDelay(pdMS_TO_TICKS(5000));
+	      }
+	    }
+	    else
+	    {
+	      osDelay(pdMS_TO_TICKS(500));
+	    }
 	  }
-	  else
-	  {
-		 // Ya estamos conectados. Dormimos para no saturar la CPU.
-		 osDelay(pdMS_TO_TICKS(1000));
-	  }
-
-  }
-  /* USER CODE END 5 */
 }
 
 /* USER CODE BEGIN Header_MQTT_TaskFun */
@@ -1306,7 +1439,7 @@ void MQTT_TaskFun(void *argument)
 	MqttMsg_t msg_out;
 	osStatus_t qStatus;
 
-	LOG(("--- [MQTT] Tarea Iniciada ---\r\n"));
+	 log_printf("--- [MQTT] Tarea Iniciada ---\r\n");
 
   /* Infinite loop */
 	for(;;)
@@ -1317,7 +1450,7 @@ void MQTT_TaskFun(void *argument)
 		  }
 
 		  // 2. CONECTAR AL BROKER
-		  LOG(("[MQTT] Conectando al Broker...\r\n"));
+		  dbg_printf("[MQTT] Conectando al Broker...\r\n");
 
 		  // Llamada original. Devuelve TransportStatus_t
 		  xTransportStatus = prvConnectToServer(&xNetworkContext);
@@ -1325,7 +1458,7 @@ void MQTT_TaskFun(void *argument)
 		  if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS) {
 			// NOTA: Si prvConnectToServer falla, el codigo original tiene un osDelay de 10s dentro
 			// así que tardará en volver aquí.
-			LOG(("[MQTT] Error TCP. Reintentando...\r\n"));
+			  dbg_printf("[MQTT] Error TCP. Reintentando...\r\n");
 			osDelay(pdMS_TO_TICKS(2000));
 			continue;
 		  }
@@ -1340,11 +1473,13 @@ void MQTT_TaskFun(void *argument)
 		  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
 
 		  // Si llegamos aquí, asumimos que estamos conectados
-		  LOG(("[MQTT] Loop de transmision activo.\r\n"));
+		  dbg_printf("[MQTT] Loop de transmision activo.\r\n");
 		  NET_MQTT_OK = 1;
 
-		  /* Suscripción al topic de control */
-		  prvMQTTSubscribeToTopic(&xMQTTContext, pcAlertTopic);   // pcAlertTopic = "SCF/control"
+		  char subTopic[64];
+		  snprintf(subTopic, sizeof(subTopic), "%s%d", TOPIC_SUB_CMD_PREFIX, NODE_ID);
+		  prvMQTTSubscribeToTopic(&xMQTTContext, subTopic);
+		  log_printf("[MQTT] Subscrito a: %s\r\n", subTopic);
 
 		  // 4. BUCLE DE TRANSMISIÓN
 		  while (WIFI_IS_CONNECTED == 1)
@@ -1353,7 +1488,7 @@ void MQTT_TaskFun(void *argument)
 
 			if (qStatus == osOK)
 			{
-			  LOG(("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic));
+			  log_printf("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic);
 			  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
 			}
 
@@ -1362,14 +1497,14 @@ void MQTT_TaskFun(void *argument)
 
 			if (xStat != MQTTSuccess)
 			{
-				 LOG(("[MQTT] Error KeepAlive. Desconectando...\r\n"));
+				 dbg_printf("[MQTT] Error KeepAlive. Desconectando...\r\n");
 				 break;
 			}
 		  }
 
 		  // 5. LIMPIEZA
 		  NET_MQTT_OK = 0;
-		  LOG(("[MQTT] Reiniciando ciclo de conexion...\r\n"));
+		  dbg_printf("[MQTT] Reiniciando ciclo de conexion...\r\n");
 		  osDelay(pdMS_TO_TICKS(1000));
 	  }
   /* USER CODE END MQTT_TaskFun */
@@ -1396,20 +1531,20 @@ void task_envReadFunc(void *argument)
 
   if ( BSP_TSENSOR_Init() == TSENSOR_OK )
   {
-    printf("Sensor de temperatura inicializado correctamente.\r\n");
+    log_printf("[ENV]Sensor de temperatura inicializado correctamente.\r\n");
   }
   else
   {
-    printf("Error en la inicialización del sensor de temperatura.\r\n");
+	  log_printf("[ENV]Error en la inicialización del sensor de temperatura.\r\n");
   }
 
   if ( BSP_HSENSOR_Init() == HSENSOR_OK )
   {
-    printf("Sensor de humedad inicializado correctamente.\r\n");
+	  log_printf("[ENV]Sensor de humedad inicializado correctamente.\r\n");
   }
   else
   {
-    printf("Error en la inicialización del sensor de humedad.\r\n");
+	  log_printf("[ENV]Error en la inicialización del sensor de humedad.\r\n");
   }
 
   program_alarm_RTC();
@@ -1419,21 +1554,50 @@ void task_envReadFunc(void *argument)
   for(;;)
   {
     
-    flag = osThreadFlagsWait(  NOTE_BUTTON_IRQ | FLAG_DATA_READY, osFlagsWaitAny, osWaitForever);
+	  flag = osThreadFlagsWait(NOTE_BUTTON_IRQ | FLAG_DATA_READY | NOTE_CMD_RX,
+	                           osFlagsWaitAny, osWaitForever);
 
-    if ( flag == FLAG_DATA_READY )
-    {
-      reason = 0;   //El mensaje se envía por timeout
-      program_alarm_RTC(); //Reinicio del temporizador
-    }
-    else if ( flag ==  NOTE_BUTTON_IRQ )
-    {
-      reason = 1;   //El mensaje se envía por solicitud directa (botón)
-    }
-    else
-    {
-      reason = 2;   //El mensaje no debería haberse enviado. Aquí no se debería entrar nunca
-    }
+	  if (flag & NOTE_CMD_RX)
+	  {
+	    SystemCommandMsg_t cmd;
+	    while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
+	    {
+	      if (cmd.type == CMD_FORCE_READ)
+	      {
+	        // fuerza una lectura inmediata
+	        flag |= FLAG_DATA_READY;
+	      }
+	      else if (cmd.type == CMD_SET_WIFI)
+	      {
+	        strncpy(g_wifi_ssid, cmd.u.wifi.ssid, WIFI_SSID_MAX);
+	        strncpy(g_wifi_pass, cmd.u.wifi.pass, WIFI_PASS_MAX);
+	        WIFI_STATE = 0;
+	        WIFI_IS_CONNECTED = 0;
+	        NET_MQTT_OK = 0;
+	        dbg_printf("[ENV] WIFI cambiado, reconectando...\r\n");
+	      }
+	      else if (cmd.type == CMD_SET_RTC)
+	      {
+	        ApplyRTC(&cmd.u.rtc);
+	        program_alarm_RTC();
+	      }
+	    }
+	  }
+
+	  if (flag & FLAG_DATA_READY)
+	  {
+	    reason = 0;
+	    program_alarm_RTC();
+	  }
+	  else if (flag & NOTE_BUTTON_IRQ)
+	  {
+	    reason = 1;
+	  }
+	  else
+	  {
+	    // aquí puedes dejarlo como "2" o directamente continuar
+	    reason = 2;
+	  }
 
     temp = BSP_TSENSOR_ReadTemp();
     temp_int = (int16_t) (temp*10);
@@ -1442,17 +1606,20 @@ void task_envReadFunc(void *argument)
     if( (temp_int >= 200) && (Alert_Flag == 0) )
     {
     	Alert_Flag = 1;
-    	snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
-    	snprintf(msg.payload, sizeof(msg.payload), "MODO::CONTINUO");
+    	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
+    	snprintf(msg.payload, sizeof(msg.payload), "CONT ON");               // o "CONT OFF"
     	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+
     }
 
     if( (temp_int < 200) && (Alert_Flag == 1) )
     {
     	Alert_Flag = 0;
-        snprintf(msg.topic, sizeof(msg.topic), pcAlertTopic);
-        snprintf(msg.payload, sizeof(msg.payload), "MODO::NORMAL");
-        osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
+    	snprintf(msg.payload, sizeof(msg.payload), "CONT OFF");
+    	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+
+
     }
 
     snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
@@ -1480,14 +1647,14 @@ void task_envReadFunc(void *argument)
 void Accel_Task_Func(void *argument)
 {
   /* USER CODE BEGIN Accel_Task_Func */
-  printf("[ACC] Task start (FIFO)\r\n");
+  log_printf("[ACC] Task start (FIFO)\r\n");
 
   if (BSP_ACCELERO_Init() != ACCELERO_OK)
   {
-    printf("[ACC] Init FAIL\r\n");
+    dbg_printf("[ACC] Init FAIL\r\n");
     for(;;) osDelay(1000);
   }
-  printf("[ACC] After Init\r\n");
+
   program_alarm_RTC();
 
 
@@ -1505,6 +1672,10 @@ void Accel_Task_Func(void *argument)
     	SystemCommandMsg_t cmd;
     	while (osMessageQueueGet(qCmdRxHandle, &cmd, NULL, 0) == osOK)
     	{
+    	  if (cmd.type == CMD_SET_RTC) {
+    		  ApplyRTC(&cmd.u.rtc);
+    		  program_alarm_RTC();
+    		}
     	  if (cmd.type == CMD_START_CONTINUOUS) continuous = 1;
     	  if (cmd.type == CMD_STOP_CONTINUOUS)  continuous = 0;
     	  if (cmd.type == CMD_FORCE_READ) osThreadFlagsSet(Accel_TaskHandle, NOTE_RTC_WAKEUP);
@@ -1512,6 +1683,7 @@ void Accel_Task_Func(void *argument)
     	  if (cmd.type == CMD_SET_WIFI) {
     	     strncpy(g_wifi_ssid, cmd.u.wifi.ssid, WIFI_SSID_MAX);
     	     strncpy(g_wifi_pass, cmd.u.wifi.pass, WIFI_PASS_MAX);
+    	     WIFI_STATE = 0;
     	     WIFI_IS_CONNECTED = 0;
     	     NET_MQTT_OK = 0;
     	  }
@@ -1537,7 +1709,7 @@ void Accel_Task_Func(void *argument)
     const uint16_t watermark_samples = ACC_BLOCK_SAMPLES;                            // 64
     const uint16_t watermark_words   = watermark_samples * 3;                        // 192 words
 
-    printf("[ACC] Capture start FIFO mode=%s target=%u\r\n",
+    log_printf("[ACC] Capture start FIFO mode=%s target=%u\r\n",
            continuous ? "CONT" : "NORMAL", target);
 
     // Reconfig FIFO
@@ -1567,12 +1739,12 @@ void Accel_Task_Func(void *argument)
       {
         if (level_words < watermark_words)
         {
-          printf("[ACC] TIMEOUT FIFO event, level_words=%u (<%u)\r\n",
+          log_printf("[ACC] TIMEOUT FIFO event, level_words=%u (<%u)\r\n",
                  (unsigned)level_words, (unsigned)watermark_words);
           continue; // seguimos esperando (sin polling agresivo)
         }
         // si >= watermark: procesamos aunque no entró ISR
-        printf("[ACC] Missed INT? level_words=%u (>= watermark)\r\n",
+        log_printf("[ACC] Missed INT? level_words=%u (>= watermark)\r\n",
                (unsigned)level_words);
       }
 
@@ -1598,9 +1770,12 @@ void Accel_Task_Func(void *argument)
                               seq, total_chunks,
                               z_block_mg, ACC_BLOCK_SAMPLES);
 
-          printf("[ACC][JSON] %s\r\n", payload);
+          log_printf("[ACC][JSON] %s\r\n", payload);
 
-          send_mqtt_msg(TOPIC_PUB_ACCEL_PREFIX, payload);
+          char topic[MSG_TOPIC_SIZE];
+          snprintf(topic, sizeof(topic), "%s%d", TOPIC_PUB_ACCEL_PREFIX, NODE_ID);
+          send_mqtt_msg(topic, payload);
+
 
           seq++;
           block_fill = 0;
@@ -1609,7 +1784,7 @@ void Accel_Task_Func(void *argument)
     }
 
     LSM6DSL_FifoReset();
-    printf("[ACC] Done FIFO. collected=%u chunks=%u\r\n",
+    log_printf("[ACC] Done FIFO. collected=%u chunks=%u\r\n",
            (unsigned)collected, (unsigned)seq);
   }
   /* USER CODE END Accel_Task_Func */
@@ -1627,43 +1802,18 @@ void UartCfgTask_Func(void *argument)
   for (;;)
   {
     osThreadFlagsWait(NOTE_UART_LINE, osFlagsWaitAny, osWaitForever);
-
     if (!uart_line_has_ready) continue;
     uart_line_has_ready = 0;
 
-    printf("[UART] LINE: '%s'\r\n", uart_line_ready);
-    // ejemplo: "CONT ON" / "CONT OFF" / "READ"
     SystemCommandMsg_t cmd;
-    memset(&cmd, 0, sizeof(cmd));
-
-    if (strcmp(uart_line_ready, "CONT ON") == 0) {
-      cmd.type = CMD_START_CONTINUOUS;
-    } else if (strcmp(uart_line_ready, "CONT OFF") == 0) {
-      cmd.type = CMD_STOP_CONTINUOUS;
-    } else if (strcmp(uart_line_ready, "READ") == 0) {
-      cmd.type = CMD_FORCE_READ;
-    } else if (strncmp(uart_line_ready, "WIFI ", 5) == 0) {
-      // WIFI <ssid> <pass>
-      cmd.type = CMD_SET_WIFI;
-      char ssid[WIFI_SSID_MAX] = {0};
-      char pass[WIFI_PASS_MAX] = {0};
-      if (sscanf(uart_line_ready + 5, "%31s %63s", ssid, pass) == 2) {
-        strncpy(cmd.u.wifi.ssid, ssid, WIFI_SSID_MAX);
-        strncpy(cmd.u.wifi.pass, pass, WIFI_PASS_MAX);
-      } else {
-        printf("[UART] uso: WIFI <ssid> <pass>\r\n");
-        continue;
-      }
-    } else {
-      printf("[UART] cmd desconocido: %s\r\n", uart_line_ready);
+    if (!Cmd_ParseLine(uart_line_ready, CMD_SRC_UART, &cmd)) {
+      log_printf("[UART] cmd desconocido o formato invalido: %s\r\n", uart_line_ready);
       continue;
     }
 
-    osMessageQueuePut(qCmdRxHandle, &cmd, 0, pdMS_TO_TICKS(50));
-    osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX);
+    DispatchCommand(&cmd);
   }
 }
-
 
 /**
   * @brief  Period elapsed callback in non blocking mode
@@ -1713,7 +1863,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     ex: dbg_printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

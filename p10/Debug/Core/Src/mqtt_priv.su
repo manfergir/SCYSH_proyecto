@@ -1,8 +1,8 @@
-../Core/Src/mqtt_priv.c:43:19:prvConnectToServer	32	static
-../Core/Src/mqtt_priv.c:74:6:prvCreateMQTTConnectionWithBroker	88	static,ignoring_inline_asm
-../Core/Src/mqtt_priv.c:136:6:prvMQTTPublishToTopic	48	static
-../Core/Src/mqtt_priv.c:159:6:prvMQTTSubscribeToTopic	32	static
-../Core/Src/mqtt_priv.c:242:6:prvMQTTProcessIncomingPublish	288	static
-../Core/Src/mqtt_priv.c:291:10:prvGetTimeMs	16	static
-../Core/Src/mqtt_priv.c:310:6:prvEventCallback	24	static
-../Core/Src/mqtt_priv.c:331:13:prvMQTTProcessResponse	40	static,ignoring_inline_asm
+../Core/Src/mqtt_priv.c:47:19:prvConnectToServer	32	static
+../Core/Src/mqtt_priv.c:78:6:prvCreateMQTTConnectionWithBroker	88	static,ignoring_inline_asm
+../Core/Src/mqtt_priv.c:140:6:prvMQTTPublishToTopic	48	static
+../Core/Src/mqtt_priv.c:171:6:prvMQTTSubscribeToTopic	32	static
+../Core/Src/mqtt_priv.c:261:6:prvMQTTProcessIncomingPublish	280	static
+../Core/Src/mqtt_priv.c:296:10:prvGetTimeMs	16	static
+../Core/Src/mqtt_priv.c:315:6:prvEventCallback	24	static
+../Core/Src/mqtt_priv.c:336:13:prvMQTTProcessResponse	40	static,ignoring_inline_asm

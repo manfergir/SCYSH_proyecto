@@ -18,7 +18,7 @@
 
 // Tamaño total del elemento de la cola (Debe coincidir con "Item Size" en el .ioc)
 // 32 + 128 = 160 bytes.
-#define QUEUE_TX_ITEM_SIZE 160
+
 
 // Tamaño accelero
 #define ACC_FS_HZ            52U
@@ -42,7 +42,7 @@ typedef struct {
     char payload[MSG_PAYLOAD_SIZE];  // Datos formateados (JSON o Raw bytes)
 } MqttMsg_t;
 
-
+#define QUEUE_TX_ITEM_SIZE (sizeof(MqttMsg_t))
 
 /* ==============================================================================
  * 3. COMANDOS DEL SISTEMA (COLA DE RECEPCIÓN)
@@ -51,6 +51,12 @@ typedef struct {
  * @brief Órdenes que pueden llegar desde el PC (MQTT) o Consola (UART)
  * hacia las tareas de control de sensores.
  */
+
+typedef enum {
+    CMD_SRC_UART = 0,
+    CMD_SRC_MQTT = 1
+} SystemCommandSource_t;
+
 typedef enum {
     CMD_NOP = 0,
     CMD_START_CONTINUOUS,
@@ -63,6 +69,7 @@ typedef enum {
 
 typedef struct {
     SystemCommand_t type;
+    SystemCommandSource_t src;
     union {
         struct {
             char ssid[WIFI_SSID_MAX];
@@ -70,11 +77,15 @@ typedef struct {
         } wifi;
 
         struct {
-            uint8_t hh, mm, ss;
-            uint8_t day, month;
             uint16_t year;
+            uint8_t month;
+            uint8_t day;
+            uint8_t hour;
+            uint8_t min;
+            uint8_t sec;
         } rtc;
     } u;
+
 } SystemCommandMsg_t;
 
 
@@ -98,14 +109,18 @@ typedef struct {
 #define NODE_ID_ACCEL  1
 #define NODE_ID_ENV    2
 
+#ifndef NODE_ID
+#define NODE_ID NODE_ID_ACCEL
+#endif
+
+
 
 // Prefijos para construir los topics
 // Uso: sprintf(msg.topic, "%s%s", TOPIC_PUB_ACCEL_PREFIX, NODE_ID_ACCEL);
 #define TOPIC_PUB_ACCEL_PREFIX  "bridge/accel/"  // + ID -> "bridge/accel/1"
 #define TOPIC_PUB_ENV_PREFIX    "bridge/env/"    // + ID -> "bridge/env/2"
 #define TOPIC_SUB_CMD_PREFIX    "bridge/cmd/"    // + ID -> "bridge/cmd/1" o "bridge/cmd/+"
-
-
+#define TOPIC_PUB_LOG_PREFIX  "bridge/log/"
 /* ==============================================================================
  * 6. VARIABLES GLOBALES COMPARTIDAS (EXTERN)
  * ============================================================================== */
@@ -118,7 +133,10 @@ extern volatile uint8_t WIFI_IS_CONNECTED;
 // Si es 0, las tareas de sensor no deberían intentar escribir en la cola.
 extern volatile uint8_t NET_MQTT_OK;
 
+#ifndef DEBUG
 #define DEBUG 1
+#endif
+
 
 /* ====== CONFIG POR UART (GLOBALS) ====== */
 

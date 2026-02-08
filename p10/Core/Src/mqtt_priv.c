@@ -7,10 +7,13 @@
 #include "stm32l475e_iot01.h"
 #include "common_def.h"
 
+static char g_subscribedTopic[64];
 
-#if NODE_ID == NODE_ID_ACCEL
-extern osThreadId_t Accel_TaskHandle;
-#endif
+
+
+/* Función definida en main.c: recibe payload de control MQTT */
+extern void OnMqttControlMessage( const char * topic, const char * payload );
+
 
 static uint8_t ucSharedBuffer[ NETWORK_BUFFER_SIZE ];
 /** @brief Static buffer used to hold MQTT messages being sent and received. */
@@ -28,8 +31,9 @@ typedef struct topicFilterContext
 
 static topicFilterContext_t xTopicFilterContext[ TOPIC_COUNT ] =
 {
-    { pcTempTopic, MQTTSubAckFailure }
+    { NULL, MQTTSubAckFailure }
 };
+
 static uint16_t usSubscribePacketIdentifier;
 /**
  * @brief Global entry time into the application to use as a reference timestamp
@@ -152,7 +156,15 @@ void prvMQTTPublishToTopic( MQTTContext_t * pxMQTTContext, char * topic, void * 
 
     /* Send PUBLISH packet. Packet ID is not used for a QoS0 publish. */
     xResult = MQTT_Publish( pxMQTTContext, &xMQTTPublishInfo, 0U );
-    if(xResult==MQTTSuccess) LOG(("Published to topic %s: %s\n",topic,payload));
+    if (xResult == MQTTSuccess)
+    {
+        // Evita bucle infinito: publicar un log no debe generar otro log
+        if (strncmp((const char*)topic, "bridge/log/", 11) != 0)
+        {
+            LOG(("Published to topic %s: %s\r\n", (const char*)topic, (const char*)payload));
+        }
+    }
+
     //configASSERT( xResult == MQTTSuccess );
 }
 
@@ -173,6 +185,13 @@ void prvMQTTSubscribeToTopic( MQTTContext_t * pxMQTTContext, char * topic )
     xMQTTSubscription[ 0 ].qos = MQTTQoS0;
     xMQTTSubscription[ 0 ].pTopicFilter = topic;
     xMQTTSubscription[ 0 ].topicFilterLength = strlen( topic );
+
+    /* Guardamos el topic real al que nos estamos suscribiendo (para SUBACK check) */
+    strncpy(g_subscribedTopic, topic, sizeof(g_subscribedTopic) - 1);
+    g_subscribedTopic[sizeof(g_subscribedTopic) - 1] = '\0';
+    xTopicFilterContext[0].pcTopicFilter = g_subscribedTopic;
+    xTopicFilterContext[0].xSubAckStatus = MQTTSubAckFailure;
+
 
     do
     {
@@ -264,27 +283,13 @@ void prvMQTTProcessIncomingPublish( MQTTPublishInfo_t *pxPublishInfo )
     if( buffer1[0] == '1' ) BSP_LED_On(LED2);
     if( buffer1[0] == '0' ) BSP_LED_Off(LED2);
 
-    /* ===== Control por MQTT: SCF/control => comandos a qCmdRx ===== */
-    if (strcmp(buffer2, pcAlertTopic) == 0)   /* pcAlertTopic = "SCF/control" */
+    /* ===== Control por MQTT: si llega al topic de control, lo delegamos a main.c ===== */
+    if (strncmp(buffer2, TOPIC_SUB_CMD_PREFIX, strlen(TOPIC_SUB_CMD_PREFIX)) == 0)
     {
-#if NODE_ID == NODE_ID_ACCEL
-        SystemCommand_t cmd = CMD_NOP;
-
-        if (strstr(buffer1, "MODO::CONTINUO") != NULL)
-            cmd = CMD_START_CONTINUOUS;
-        else if (strstr(buffer1, "MODO::NORMAL") != NULL)
-            cmd = CMD_STOP_CONTINUOUS;
-        else if (strstr(buffer1, "ACC::READ") != NULL)
-            cmd = CMD_FORCE_READ;
-
-        if (cmd != CMD_NOP)
-        {
-            (void)osMessageQueuePut(qCmdRxHandle, &cmd, 0, 0);     /* no bloquear */
-            (void)osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX); /* despertar ACCEL */
-            LOG(("[CTRL] CMD encolado: %d\r\n", (int)cmd));
-        }
-#endif
+        OnMqttControlMessage(buffer2, buffer1);
     }
+
+
 }
 
 

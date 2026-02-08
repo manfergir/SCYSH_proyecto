@@ -2,9 +2,9 @@ import paho.mqtt.client as mqtt
 
 BROKER = "test.mosquitto.org"
 PORT = 1883
-TOPIC = "SCF/control"
+TOPIC = "bridge/cmd/1"
 
-payload = "MODO::CONTINUO"   # o "MODO::NORMAL" o "ACC::READ"
+payload = "READ"   # o "MODO::NORMAL" o "ACC::READ"
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.connect(BROKER, PORT, 60)

@@ -50,6 +50,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ ../Core/Inc/common_def.h ../Core/Inc/cmd_parser.h \
  ../Core/Inc/common_def.h \
  C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
  C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
@@ -125,6 +126,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+../Core/Inc/common_def.h:
+../Core/Inc/cmd_parser.h:
 ../Core/Inc/common_def.h:
 C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
 C:/practicas_sist/trabajo/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:

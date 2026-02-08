@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 # --- CONFIGURACIÓN ---
 BROKER = "test.mosquitto.org"
 PORT = 1883
-TOPIC = "SCF/env"
+TOPIC = "bridge/log/1"
 
 # --- FUNCIONES CALLBACK ---
 
