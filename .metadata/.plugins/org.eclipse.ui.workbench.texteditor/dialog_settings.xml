@@ -3,6 +3,10 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="NODE_ID"/>
+		<item value="send_mqtt_msg"/>
+		<item value="vsnprintf"/>
+		<item value="log_printf"/>
 		<item value="TaskHandle"/>
 		<item value="MODO"/>
 		<item value="osThreadFlagsSet"/>
@@ -14,9 +18,5 @@
 		<item value="task_envRead"/>
 		<item value="task_envReadFunc"/>
 		<item value="osMessageQueuePut(qMqttTxHandle"/>
-		<item value="task_envRead_attributes"/>
-		<item value="task_envReadHandle"/>
-		<item value="qMqttTx"/>
-		<item value="[wifi"/>
 	</list>
 </section>
