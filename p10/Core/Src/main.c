@@ -62,7 +62,7 @@
  * 1 == ACELEROMETRO
  * 2 == ENVIRONMENT
  * */
-#define NODE_ID 1
+#define NODE_ID 2
 
 
 
@@ -137,8 +137,8 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
-char g_wifi_ssid[WIFI_SSID_MAX] = "Nuria";
-char g_wifi_pass[WIFI_PASS_MAX] = "12345678";
+char g_wifi_ssid[WIFI_SSID_MAX] = "manolo";
+char g_wifi_pass[WIFI_PASS_MAX] = "123456789";
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 
@@ -230,6 +230,7 @@ static void dbg_printf(const char *fmt, ...)
 
   if (printMutexHandle) osMutexRelease(printMutexHandle);
 }
+
 
 static void log_printf(const char *fmt, ...)
 {
@@ -1244,6 +1245,17 @@ int _write(int file, char *ptr, int len)
   return len;
 }
 
+static void send_mqtt_msg(const char *topic, const char *payload)
+{
+  MqttMsg_t m;
+  memset(&m, 0, sizeof(m));
+  strncpy(m.topic, topic, MSG_TOPIC_SIZE - 1);
+  m.topic[MSG_TOPIC_SIZE - 1] = '\0';
+
+  strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
+  m.payload[MSG_PAYLOAD_SIZE - 1] = '\0';
+  osMessageQueuePut(qMqttTxHandle, &m, 0, pdMS_TO_TICKS(100));
+}
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -1339,18 +1351,6 @@ void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
 static uint32_t now_ms(void)
 {
   return (uint32_t)HAL_GetTick();
-}
-
-static void send_mqtt_msg(const char *topic, const char *payload)
-{
-  MqttMsg_t m;
-  memset(&m, 0, sizeof(m));
-  strncpy(m.topic, topic, MSG_TOPIC_SIZE - 1);
-  m.topic[MSG_TOPIC_SIZE - 1] = '\0';
-
-  strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
-  m.payload[MSG_PAYLOAD_SIZE - 1] = '\0';
-  osMessageQueuePut(qMqttTxHandle, &m, 0, pdMS_TO_TICKS(100));
 }
 
 static void build_payload_block(char *dst, size_t dst_sz,

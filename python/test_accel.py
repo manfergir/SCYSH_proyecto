@@ -9,7 +9,7 @@ PORT = 1883
 # En tu código C veo: TOPIC_PUB_ACCEL_PREFIX. 
 # Si en tu common_def.h es "SCF/Accel", pon eso aquí.
 # Voy a asumir uno genérico basado en tu ejemplo, CAMBIALO si es distinto.
-TOPIC = "bridge/accel/" 
+TOPIC = "bridge/log/1" 
 
 # --- VARIABLES GLOBALES PARA RECONSTRUCCIÓN (Opcional) ---
 current_buffer = []

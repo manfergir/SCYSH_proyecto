@@ -120,7 +120,7 @@ typedef struct {
 #define TOPIC_PUB_ACCEL_PREFIX  "bridge/accel/"  // + ID -> "bridge/accel/1"
 #define TOPIC_PUB_ENV_PREFIX    "bridge/env/"    // + ID -> "bridge/env/2"
 #define TOPIC_SUB_CMD_PREFIX    "bridge/cmd/"    // + ID -> "bridge/cmd/1" o "bridge/cmd/+"
-#define TOPIC_PUB_LOG_PREFIX  "bridge/log/"
+#define TOPIC_PUB_LOG_PREFIX    "bridge/log/"
 /* ==============================================================================
  * 6. VARIABLES GLOBALES COMPARTIDAS (EXTERN)
  * ============================================================================== */
