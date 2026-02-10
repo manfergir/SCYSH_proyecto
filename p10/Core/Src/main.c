@@ -1622,7 +1622,7 @@ void task_envReadFunc(void *argument)
 
     }
 
-    snprintf(msg.topic, sizeof(msg.topic), pcTempTopic);
+    snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_PUB_ENV_PREFIX); // "bridge/cmd/1"
     snprintf(msg.payload, sizeof(msg.payload),
                  "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
                  id_msg,

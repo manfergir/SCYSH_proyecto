@@ -3,6 +3,10 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="TOPIC_PUB_ENV_PREFIX"/>
+		<item value="TOPIC_SUB_CMD_PREFIX"/>
+		<item value="ç"/>
+		<item value="pctempo"/>
 		<item value="NODE_ID"/>
 		<item value="send_mqtt_msg"/>
 		<item value="vsnprintf"/>
@@ -14,9 +18,5 @@
 		<item value="now_ms"/>
 		<item value="HAL_RTC_AlarmAEventCallback"/>
 		<item value="TERMINAL_USE"/>
-		<item value="Accel_TaskHandle"/>
-		<item value="task_envRead"/>
-		<item value="task_envReadFunc"/>
-		<item value="osMessageQueuePut(qMqttTxHandle"/>
 	</list>
 </section>

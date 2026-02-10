@@ -14,8 +14,8 @@ extern "C" {
 #define MQTT_BROKER_PORT (1883)
 #define MQTTCLIENT_IDENTIFIER "Manolo2507200074559383Y"
 #define TOPIC_COUNT (1)
-#define pcTempTopic "SCF/env"
-#define pcAlertTopic "SCF/control"
+// #define pcTempTopic "SCF/env"
+// #define pcAlertTopic "SCF/control"
 
 // Define strings for these parameters or set them to NULL. Do not use empty string ("")
 #define mqttUserName NULL

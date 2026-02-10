@@ -712,7 +712,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 ./Core/Src/mqtt_priv.o
  .debug_macro   0x00000000       0x5e ./Core/Src/mqtt_priv.o
  .debug_macro   0x00000000       0x10 ./Core/Src/mqtt_priv.o
- .debug_macro   0x00000000       0x46 ./Core/Src/mqtt_priv.o
+ .debug_macro   0x00000000       0x3a ./Core/Src/mqtt_priv.o
  .debug_macro   0x00000000       0x22 ./Core/Src/mqtt_priv.o
  .debug_macro   0x00000000      0x1c0 ./Core/Src/mqtt_priv.o
  .debug_macro   0x00000000       0x82 ./Core/Src/mqtt_priv.o
@@ -10354,239 +10354,239 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 .iplt           0x08016108        0x0
  .iplt          0x08016108        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x08016108     0x2208
+.rodata         0x08016108     0x220c
                 0x08016108                        . = ALIGN (0x4)
  *(.rodata)
  .rodata        0x08016108       0x5e ./Core/Src/cmd_parser.o
  *fill*         0x08016166        0x2 
- .rodata        0x08016168      0x99c ./Core/Src/main.o
- .rodata        0x08016b04      0x20d ./Core/Src/mqtt_priv.o
- *fill*         0x08016d11        0x3 
- .rodata        0x08016d14      0x4ba ./Drivers/BSP/src/es_wifi.o
- *fill*         0x080171ce        0x2 
- .rodata        0x080171d0      0x511 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x080176e1        0x3 
- .rodata        0x080176e4      0x3f1 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08017ad5        0x3 
- .rodata        0x08017ad8      0x1d7 ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x08017caf        0x1 
- .rodata        0x08017cb0       0x2f ./Libraries/coreMQTT/source/transport_interface.o
- *fill*         0x08017cdf        0x1 
- .rodata        0x08017ce0        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- *fill*         0x08017ce5        0x3 
- .rodata        0x08017ce8        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- *fill*         0x08017cf5        0x3 
- .rodata        0x08017cf8        0xc C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
+ .rodata        0x08016168      0x9a0 ./Core/Src/main.o
+ .rodata        0x08016b08      0x20d ./Core/Src/mqtt_priv.o
+ *fill*         0x08016d15        0x3 
+ .rodata        0x08016d18      0x4ba ./Drivers/BSP/src/es_wifi.o
+ *fill*         0x080171d2        0x2 
+ .rodata        0x080171d4      0x511 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x080176e5        0x3 
+ .rodata        0x080176e8      0x3f1 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08017ad9        0x3 
+ .rodata        0x08017adc      0x1d7 ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x08017cb3        0x1 
+ .rodata        0x08017cb4       0x2f ./Libraries/coreMQTT/source/transport_interface.o
+ *fill*         0x08017ce3        0x1 
+ .rodata        0x08017ce4        0x5 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ *fill*         0x08017ce9        0x3 
+ .rodata        0x08017cec        0xd ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ *fill*         0x08017cf9        0x3 
+ .rodata        0x08017cfc        0xc C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
  *(.rodata*)
  .rodata.WifiTask_attributes
-                0x08017d04       0x24 ./Core/Src/main.o
-                0x08017d04                WifiTask_attributes
+                0x08017d08       0x24 ./Core/Src/main.o
+                0x08017d08                WifiTask_attributes
  .rodata.MQTT_Task_attributes
-                0x08017d28       0x24 ./Core/Src/main.o
-                0x08017d28                MQTT_Task_attributes
+                0x08017d2c       0x24 ./Core/Src/main.o
+                0x08017d2c                MQTT_Task_attributes
  .rodata.task_envRead_attributes
-                0x08017d4c       0x24 ./Core/Src/main.o
-                0x08017d4c                task_envRead_attributes
+                0x08017d50       0x24 ./Core/Src/main.o
+                0x08017d50                task_envRead_attributes
  .rodata.UartCfgTask_attributes
-                0x08017d70       0x24 ./Core/Src/main.o
-                0x08017d70                UartCfgTask_attributes
+                0x08017d74       0x24 ./Core/Src/main.o
+                0x08017d74                UartCfgTask_attributes
  .rodata.qMqttTx_attributes
-                0x08017d94       0x18 ./Core/Src/main.o
-                0x08017d94                qMqttTx_attributes
+                0x08017d98       0x18 ./Core/Src/main.o
+                0x08017d98                qMqttTx_attributes
  .rodata.qCmdRx_attributes
-                0x08017dac       0x18 ./Core/Src/main.o
-                0x08017dac                qCmdRx_attributes
+                0x08017db0       0x18 ./Core/Src/main.o
+                0x08017db0                qCmdRx_attributes
  .rodata.uartTxMutex_attributes
-                0x08017dc4       0x10 ./Core/Src/main.o
+                0x08017dc8       0x10 ./Core/Src/main.o
  .rodata.printMutex_attributes
-                0x08017dd4       0x10 ./Core/Src/main.o
+                0x08017dd8       0x10 ./Core/Src/main.o
  .rodata.AHBPrescTable
-                0x08017de4       0x10 ./Core/Src/system_stm32l4xx.o
-                0x08017de4                AHBPrescTable
+                0x08017de8       0x10 ./Core/Src/system_stm32l4xx.o
+                0x08017de8                AHBPrescTable
  .rodata.APBPrescTable
-                0x08017df4        0x8 ./Core/Src/system_stm32l4xx.o
-                0x08017df4                APBPrescTable
+                0x08017df8        0x8 ./Core/Src/system_stm32l4xx.o
+                0x08017df8                APBPrescTable
  .rodata.MSIRangeTable
-                0x08017dfc       0x30 ./Core/Src/system_stm32l4xx.o
-                0x08017dfc                MSIRangeTable
+                0x08017e00       0x30 ./Core/Src/system_stm32l4xx.o
+                0x08017e00                MSIRangeTable
  .rodata.__func__.18
-                0x08017e2c       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017e3e        0x2 
+                0x08017e30       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017e42        0x2 
  .rodata.__func__.17
-                0x08017e40        0xb ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017e4b        0x1 
+                0x08017e44        0xb ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017e4f        0x1 
  .rodata.__func__.16
-                0x08017e4c       0x15 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017e61        0x3 
+                0x08017e50       0x15 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017e65        0x3 
  .rodata.__func__.15
-                0x08017e64        0xa ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017e6e        0x2 
+                0x08017e68        0xa ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017e72        0x2 
  .rodata.__func__.14
-                0x08017e70        0xe ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017e7e        0x2 
+                0x08017e74        0xe ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017e82        0x2 
  .rodata.__func__.13
-                0x08017e80       0x14 ./Libraries/coreMQTT/source/core_mqtt.o
+                0x08017e84       0x14 ./Libraries/coreMQTT/source/core_mqtt.o
  .rodata.__func__.12
-                0x08017e94        0xe ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017ea2        0x2 
+                0x08017e98        0xe ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017ea6        0x2 
  .rodata.__func__.11
-                0x08017ea4       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
+                0x08017ea8       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
  .rodata.__func__.10
-                0x08017eb4       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
+                0x08017eb8       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
  .rodata.__func__.9
-                0x08017ec4       0x16 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017eda        0x2 
+                0x08017ec8       0x16 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017ede        0x2 
  .rodata.__func__.8
-                0x08017edc       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017eee        0x2 
+                0x08017ee0       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017ef2        0x2 
  .rodata.__func__.7
-                0x08017ef0       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f02        0x2 
+                0x08017ef4       0x12 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f06        0x2 
  .rodata.__func__.6
-                0x08017f04       0x17 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f1b        0x1 
+                0x08017f08       0x17 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f1f        0x1 
  .rodata.__func__.5
-                0x08017f1c       0x19 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f35        0x3 
+                0x08017f20       0x19 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f39        0x3 
  .rodata.__func__.4
-                0x08017f38       0x17 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f4f        0x1 
+                0x08017f3c       0x17 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f53        0x1 
  .rodata.__func__.3
-                0x08017f50        0xf ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f5f        0x1 
+                0x08017f54        0xf ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f63        0x1 
  .rodata.__func__.2
-                0x08017f60       0x1f ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f7f        0x1 
+                0x08017f64       0x1f ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f83        0x1 
  .rodata.__func__.1
-                0x08017f80       0x13 ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f93        0x1 
+                0x08017f84       0x13 ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017f97        0x1 
  .rodata.__func__.0
-                0x08017f94        0xa ./Libraries/coreMQTT/source/core_mqtt.o
- *fill*         0x08017f9e        0x2 
+                0x08017f98        0xa ./Libraries/coreMQTT/source/core_mqtt.o
+ *fill*         0x08017fa2        0x2 
  .rodata.__func__.13
-                0x08017fa0       0x16 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08017fb6        0x2 
+                0x08017fa4       0x16 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08017fba        0x2 
  .rodata.__func__.12
-                0x08017fb8        0xd ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08017fc5        0x3 
+                0x08017fbc        0xd ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08017fc9        0x3 
  .rodata.__func__.11
-                0x08017fc8       0x1b ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08017fe3        0x1 
+                0x08017fcc       0x1b ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08017fe7        0x1 
  .rodata.__func__.9
-                0x08017fe4       0x14 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+                0x08017fe8       0x14 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
  .rodata.__func__.8
-                0x08017ff8       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x0801800b        0x1 
+                0x08017ffc       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x0801800f        0x1 
  .rodata.__func__.7
-                0x0801800c       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x0801801f        0x1 
+                0x08018010       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08018023        0x1 
  .rodata.__func__.6
-                0x08018020       0x20 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+                0x08018024       0x20 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
  .rodata.__func__.5
-                0x08018040       0x11 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08018051        0x3 
+                0x08018044       0x11 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08018055        0x3 
  .rodata.__func__.4
-                0x08018054       0x12 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08018066        0x2 
+                0x08018058       0x12 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x0801806a        0x2 
  .rodata.__func__.3
-                0x08018068       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x0801807b        0x1 
+                0x0801806c       0x13 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x0801807f        0x1 
  .rodata.__func__.2
-                0x0801807c       0x15 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- *fill*         0x08018091        0x3 
+                0x08018080       0x15 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ *fill*         0x08018095        0x3 
  .rodata.__func__.1
-                0x08018094       0x14 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+                0x08018098       0x14 ./Libraries/coreMQTT/source/core_mqtt_serializer.o
  .rodata.__func__.6
-                0x080180a8        0xd ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x080180b5        0x3 
+                0x080180ac        0xd ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x080180b9        0x3 
  .rodata.__func__.5
-                0x080180b8        0xf ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x080180c7        0x1 
+                0x080180bc        0xf ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x080180cb        0x1 
  .rodata.__func__.4
-                0x080180c8        0xa ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x080180d2        0x2 
+                0x080180cc        0xa ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x080180d6        0x2 
  .rodata.__func__.3
-                0x080180d4        0xd ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x080180e1        0x3 
+                0x080180d8        0xd ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x080180e5        0x3 
  .rodata.__func__.2
-                0x080180e4        0xc ./Libraries/coreMQTT/source/core_mqtt_state.o
+                0x080180e8        0xc ./Libraries/coreMQTT/source/core_mqtt_state.o
  .rodata.__func__.1
-                0x080180f0        0xf ./Libraries/coreMQTT/source/core_mqtt_state.o
- *fill*         0x080180ff        0x1 
+                0x080180f4        0xf ./Libraries/coreMQTT/source/core_mqtt_state.o
+ *fill*         0x08018103        0x1 
  .rodata.__func__.0
-                0x08018100       0x13 ./Libraries/coreMQTT/source/core_mqtt_state.o
+                0x08018104       0x13 ./Libraries/coreMQTT/source/core_mqtt_state.o
  .rodata.__assert_func.str1.1
-                0x08018113       0xfb C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-assert.o)
+                0x08018117       0xfb C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-assert.o)
                                  0x3d (size before relaxing)
  .rodata.strtok.str1.1
-                0x0801820e       0x71 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strtok.o)
+                0x08018212       0x71 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strtok.o)
  .rodata._svfprintf_r.str1.1
-                0x0801820e       0x11 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-svfprintf.o)
+                0x08018212       0x11 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-svfprintf.o)
  .rodata.__ssvfscanf_r.str1.1
-                0x0801820e        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-svfscanf.o)
+                0x08018212        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-svfscanf.o)
  .rodata._vfprintf_r.str1.1
-                0x0801820e       0x11 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08018212       0x11 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf.o)
  .rodata._printf_i.str1.1
-                0x0801820e       0x22 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08018212       0x22 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfprintf_i.o)
  .rodata._scanf_i.str1.1
-                0x0801820e       0x12 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
+                0x08018212       0x12 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
  .rodata.str1.1
-                0x0801820e        0x9 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
+                0x08018212        0x9 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-nano-vfscanf_i.o)
  .rodata._ctype_
-                0x0801820e      0x101 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-ctype_.o)
-                0x0801820e                _ctype_
-                0x08018310                        . = ALIGN (0x4)
- *fill*         0x0801830f        0x1 
+                0x08018212      0x101 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-ctype_.o)
+                0x08018212                _ctype_
+                0x08018314                        . = ALIGN (0x4)
+ *fill*         0x08018313        0x1 
 
-.ARM.extab      0x08018310        0x0
-                0x08018310                        . = ALIGN (0x4)
+.ARM.extab      0x08018314        0x0
+                0x08018314                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08018310                        . = ALIGN (0x4)
+                0x08018314                        . = ALIGN (0x4)
 
-.ARM            0x08018310        0x8
-                0x08018310                        . = ALIGN (0x4)
-                0x08018310                        __exidx_start = .
+.ARM            0x08018314        0x8
+                0x08018314                        . = ALIGN (0x4)
+                0x08018314                        __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x08018310        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strcmp.o)
- .ARM.exidx     0x08018318        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strlen.o)
+ .ARM.exidx     0x08018314        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strcmp.o)
+ .ARM.exidx     0x0801831c        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-strlen.o)
                                   0x8 (size before relaxing)
- .ARM.exidx     0x08018318        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
+ .ARM.exidx     0x0801831c        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memchr.o)
                                   0x8 (size before relaxing)
- .ARM.exidx     0x08018318        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x0801831c        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
                                   0x8 (size before relaxing)
-                0x08018318                        __exidx_end = .
-                0x08018318                        . = ALIGN (0x4)
+                0x0801831c                        __exidx_end = .
+                0x0801831c                        . = ALIGN (0x4)
 
-.preinit_array  0x08018318        0x0
-                0x08018318                        . = ALIGN (0x4)
-                0x08018318                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x0801831c        0x0
+                0x0801831c                        . = ALIGN (0x4)
+                0x0801831c                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x08018318                        PROVIDE (__preinit_array_end = .)
-                0x08018318                        . = ALIGN (0x4)
+                0x0801831c                        PROVIDE (__preinit_array_end = .)
+                0x0801831c                        . = ALIGN (0x4)
 
-.init_array     0x08018318        0x4
-                0x08018318                        . = ALIGN (0x4)
-                0x08018318                        PROVIDE (__init_array_start = .)
+.init_array     0x0801831c        0x4
+                0x0801831c                        . = ALIGN (0x4)
+                0x0801831c                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x08018318        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0801831c                        PROVIDE (__init_array_end = .)
-                0x0801831c                        . = ALIGN (0x4)
+ .init_array    0x0801831c        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x08018320                        PROVIDE (__init_array_end = .)
+                0x08018320                        . = ALIGN (0x4)
 
-.fini_array     0x0801831c        0x4
-                0x0801831c                        . = ALIGN (0x4)
+.fini_array     0x08018320        0x4
+                0x08018320                        . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0801831c        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x08018320        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x08018320                        . = ALIGN (0x4)
-                0x08018320                        _sidata = LOADADDR (.data)
+                0x08018324                        . = ALIGN (0x4)
+                0x08018324                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x08018320        0x0
- .rel.iplt      0x08018320        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x08018324        0x0
+ .rel.iplt      0x08018324        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.data           0x20000000       0xfc load address 0x08018320
+.data           0x20000000       0xfc load address 0x08018324
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -10634,11 +10634,11 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x200000fc                        . = ALIGN (0x4)
                 0x200000fc                        _edata = .
 
-.igot.plt       0x200000fc        0x0 load address 0x0801841c
+.igot.plt       0x200000fc        0x0 load address 0x08018420
  .igot.plt      0x200000fc        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x200000fc                        . = ALIGN (0x4)
 
-.bss            0x200000fc     0x9158 load address 0x0801841c
+.bss            0x200000fc     0x9158 load address 0x08018420
                 0x200000fc                        _sbss = .
                 0x200000fc                        __bss_start__ = _sbss
  *(.bss)
@@ -10871,7 +10871,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x20009254                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20009254      0x604 load address 0x0801841c
+                0x20009254      0x604 load address 0x08018420
                 0x20009258                        . = ALIGN (0x8)
  *fill*         0x20009254        0x4 
                 [!provide]                        PROVIDE (end = .)
@@ -11435,7 +11435,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_rnglists
                 0x00002644       0x42 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
-.debug_macro    0x00000000     0xb3b0
+.debug_macro    0x00000000     0xb3a4
  .debug_macro   0x00000000      0x183 ./Core/Src/cmd_parser.o
  .debug_macro   0x00000183      0xade ./Core/Src/cmd_parser.o
  .debug_macro   0x00000c61       0x22 ./Core/Src/cmd_parser.o
@@ -11482,101 +11482,101 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x000026d0       0x34 ./Core/Src/main.o
  .debug_macro   0x00002704       0x5e ./Core/Src/main.o
  .debug_macro   0x00002762       0x10 ./Core/Src/main.o
- .debug_macro   0x00002772       0x46 ./Core/Src/main.o
- .debug_macro   0x000027b8       0x22 ./Core/Src/main.o
- .debug_macro   0x000027da      0x1c0 ./Core/Src/main.o
- .debug_macro   0x0000299a      0x15f ./Core/Src/main.o
- .debug_macro   0x00002af9      0x428 ./Core/Src/main.o
- .debug_macro   0x00002f21       0x4c ./Core/Src/main.o
- .debug_macro   0x00002f6d      0x495 ./Core/Src/mqtt_priv.o
- .debug_macro   0x00003402       0x10 ./Core/Src/mqtt_priv.o
- .debug_macro   0x00003412       0xf5 ./Core/Src/mqtt_priv.o
- .debug_macro   0x00003507       0x1c ./Core/Src/mqtt_priv.o
- .debug_macro   0x00003523      0x25d ./Core/Src/stm32l4xx_hal_msp.o
- .debug_macro   0x00003780      0x24e ./Core/Src/stm32l4xx_hal_timebase_tim.o
- .debug_macro   0x000039ce      0x267 ./Core/Src/stm32l4xx_it.o
- .debug_macro   0x00003c35      0x274 ./Core/Src/syscalls.o
- .debug_macro   0x00003ea9       0x5b ./Core/Src/syscalls.o
- .debug_macro   0x00003f04       0x94 ./Core/Src/syscalls.o
- .debug_macro   0x00003f98       0x57 ./Core/Src/syscalls.o
- .debug_macro   0x00003fef       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00003fff       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x0000400f       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x0000401f       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x0000402f       0x1c ./Core/Src/syscalls.o
- .debug_macro   0x0000404b       0x52 ./Core/Src/syscalls.o
- .debug_macro   0x0000409d       0x22 ./Core/Src/syscalls.o
- .debug_macro   0x000040bf       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x000040cf       0x52 ./Core/Src/syscalls.o
- .debug_macro   0x00004121       0xcf ./Core/Src/syscalls.o
- .debug_macro   0x000041f0       0x1c ./Core/Src/syscalls.o
- .debug_macro   0x0000420c       0x3d ./Core/Src/syscalls.o
- .debug_macro   0x00004249       0x35 ./Core/Src/syscalls.o
- .debug_macro   0x0000427e      0x12c ./Core/Src/syscalls.o
- .debug_macro   0x000043aa       0x16 ./Core/Src/syscalls.o
- .debug_macro   0x000043c0       0x16 ./Core/Src/syscalls.o
- .debug_macro   0x000043d6       0x29 ./Core/Src/syscalls.o
- .debug_macro   0x000043ff       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x0000440f      0x242 ./Core/Src/syscalls.o
- .debug_macro   0x00004651       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00004661      0x18a ./Core/Src/syscalls.o
- .debug_macro   0x000047eb       0x16 ./Core/Src/syscalls.o
- .debug_macro   0x00004801       0xce ./Core/Src/syscalls.o
- .debug_macro   0x000048cf      0x112 ./Core/Src/sysmem.o
- .debug_macro   0x000049e1      0x23c ./Core/Src/sysmem.o
- .debug_macro   0x00004c1d      0x24e ./Core/Src/system_stm32l4xx.o
- .debug_macro   0x00004e6b      0x1d3 ./Drivers/BSP/src/es_wifi.o
- .debug_macro   0x0000503e      0x38e ./Drivers/BSP/src/es_wifi_io.o
- .debug_macro   0x000053cc       0x86 ./Drivers/BSP/src/hts221.o
- .debug_macro   0x00005452      0x27b ./Drivers/BSP/src/stm32l475e_iot01.o
- .debug_macro   0x000056cd      0x1ba ./Drivers/BSP/src/stm32l475e_iot01.o
- .debug_macro   0x00005887      0x28a ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o
- .debug_macro   0x00005b11      0x28a ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o
- .debug_macro   0x00005d9b      0x38f ./Drivers/BSP/src/wifi.o
- .debug_macro   0x0000612a      0x29c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_macro   0x000063c6      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_macro   0x00006614      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
- .debug_macro   0x00006886      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
- .debug_macro   0x00006ad4      0x255 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_macro   0x00006d29      0x31a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_macro   0x00007043      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_macro   0x00007291      0x25a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
- .debug_macro   0x000074eb      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
- .debug_macro   0x00007739      0x266 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
- .debug_macro   0x0000799f      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_macro   0x00007c11      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
- .debug_macro   0x00007e83      0x290 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_macro   0x00008113      0x284 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_macro   0x00008397      0x24f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc.o
- .debug_macro   0x000085e6      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.o
- .debug_macro   0x00008834      0x256 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
- .debug_macro   0x00008a8a      0x24f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
- .debug_macro   0x00008cd9      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_macro   0x00008f27      0x279 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
- .debug_macro   0x000091a0      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.o
- .debug_macro   0x000093ee      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
- .debug_macro   0x0000963c      0x1be ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_macro   0x000097fa       0x16 ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_macro   0x00009810       0x4e ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_macro   0x0000985e       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_macro   0x0000986e      0x22d ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- .debug_macro   0x00009a9b      0x1b3 ./Libraries/coreMQTT/source/core_mqtt_state.o
- .debug_macro   0x00009c4e      0x3a7 ./Libraries/coreMQTT/source/transport_interface.o
- .debug_macro   0x00009ff5      0x457 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a44c       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a462       0x91 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a4f3       0x8d ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a580       0x9a ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a61a       0x22 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_macro   0x0000a63c      0x199 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_macro   0x0000a7d5      0x228 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_macro   0x0000a9fd       0x87 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_macro   0x0000aa84      0x291 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_macro   0x0000ad15       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_macro   0x0000ad25      0x1ee ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_macro   0x0000af13       0x97 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_macro   0x0000afaa      0x246 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_macro   0x0000b1f0      0x1c0 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_macro   0x00002772       0x3a ./Core/Src/main.o
+ .debug_macro   0x000027ac       0x22 ./Core/Src/main.o
+ .debug_macro   0x000027ce      0x1c0 ./Core/Src/main.o
+ .debug_macro   0x0000298e      0x15f ./Core/Src/main.o
+ .debug_macro   0x00002aed      0x428 ./Core/Src/main.o
+ .debug_macro   0x00002f15       0x4c ./Core/Src/main.o
+ .debug_macro   0x00002f61      0x495 ./Core/Src/mqtt_priv.o
+ .debug_macro   0x000033f6       0x10 ./Core/Src/mqtt_priv.o
+ .debug_macro   0x00003406       0xf5 ./Core/Src/mqtt_priv.o
+ .debug_macro   0x000034fb       0x1c ./Core/Src/mqtt_priv.o
+ .debug_macro   0x00003517      0x25d ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_macro   0x00003774      0x24e ./Core/Src/stm32l4xx_hal_timebase_tim.o
+ .debug_macro   0x000039c2      0x267 ./Core/Src/stm32l4xx_it.o
+ .debug_macro   0x00003c29      0x274 ./Core/Src/syscalls.o
+ .debug_macro   0x00003e9d       0x5b ./Core/Src/syscalls.o
+ .debug_macro   0x00003ef8       0x94 ./Core/Src/syscalls.o
+ .debug_macro   0x00003f8c       0x57 ./Core/Src/syscalls.o
+ .debug_macro   0x00003fe3       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00003ff3       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00004003       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00004013       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00004023       0x1c ./Core/Src/syscalls.o
+ .debug_macro   0x0000403f       0x52 ./Core/Src/syscalls.o
+ .debug_macro   0x00004091       0x22 ./Core/Src/syscalls.o
+ .debug_macro   0x000040b3       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x000040c3       0x52 ./Core/Src/syscalls.o
+ .debug_macro   0x00004115       0xcf ./Core/Src/syscalls.o
+ .debug_macro   0x000041e4       0x1c ./Core/Src/syscalls.o
+ .debug_macro   0x00004200       0x3d ./Core/Src/syscalls.o
+ .debug_macro   0x0000423d       0x35 ./Core/Src/syscalls.o
+ .debug_macro   0x00004272      0x12c ./Core/Src/syscalls.o
+ .debug_macro   0x0000439e       0x16 ./Core/Src/syscalls.o
+ .debug_macro   0x000043b4       0x16 ./Core/Src/syscalls.o
+ .debug_macro   0x000043ca       0x29 ./Core/Src/syscalls.o
+ .debug_macro   0x000043f3       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00004403      0x242 ./Core/Src/syscalls.o
+ .debug_macro   0x00004645       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00004655      0x18a ./Core/Src/syscalls.o
+ .debug_macro   0x000047df       0x16 ./Core/Src/syscalls.o
+ .debug_macro   0x000047f5       0xce ./Core/Src/syscalls.o
+ .debug_macro   0x000048c3      0x112 ./Core/Src/sysmem.o
+ .debug_macro   0x000049d5      0x23c ./Core/Src/sysmem.o
+ .debug_macro   0x00004c11      0x24e ./Core/Src/system_stm32l4xx.o
+ .debug_macro   0x00004e5f      0x1d3 ./Drivers/BSP/src/es_wifi.o
+ .debug_macro   0x00005032      0x38e ./Drivers/BSP/src/es_wifi_io.o
+ .debug_macro   0x000053c0       0x86 ./Drivers/BSP/src/hts221.o
+ .debug_macro   0x00005446      0x27b ./Drivers/BSP/src/stm32l475e_iot01.o
+ .debug_macro   0x000056c1      0x1ba ./Drivers/BSP/src/stm32l475e_iot01.o
+ .debug_macro   0x0000587b      0x28a ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o
+ .debug_macro   0x00005b05      0x28a ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o
+ .debug_macro   0x00005d8f      0x38f ./Drivers/BSP/src/wifi.o
+ .debug_macro   0x0000611e      0x29c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_macro   0x000063ba      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_macro   0x00006608      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
+ .debug_macro   0x0000687a      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
+ .debug_macro   0x00006ac8      0x255 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_macro   0x00006d1d      0x31a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_macro   0x00007037      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_macro   0x00007285      0x25a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
+ .debug_macro   0x000074df      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
+ .debug_macro   0x0000772d      0x266 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
+ .debug_macro   0x00007993      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_macro   0x00007c05      0x272 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
+ .debug_macro   0x00007e77      0x290 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_macro   0x00008107      0x284 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_macro   0x0000838b      0x24f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc.o
+ .debug_macro   0x000085da      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.o
+ .debug_macro   0x00008828      0x256 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
+ .debug_macro   0x00008a7e      0x24f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
+ .debug_macro   0x00008ccd      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
+ .debug_macro   0x00008f1b      0x279 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_macro   0x00009194      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.o
+ .debug_macro   0x000093e2      0x24e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
+ .debug_macro   0x00009630      0x1be ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_macro   0x000097ee       0x16 ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_macro   0x00009804       0x4e ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_macro   0x00009852       0x10 ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_macro   0x00009862      0x22d ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ .debug_macro   0x00009a8f      0x1b3 ./Libraries/coreMQTT/source/core_mqtt_state.o
+ .debug_macro   0x00009c42      0x3a7 ./Libraries/coreMQTT/source/transport_interface.o
+ .debug_macro   0x00009fe9      0x457 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a440       0x16 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a456       0x91 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a4e7       0x8d ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a574       0x9a ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a60e       0x22 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_macro   0x0000a630      0x199 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_macro   0x0000a7c9      0x228 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_macro   0x0000a9f1       0x87 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_macro   0x0000aa78      0x291 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_macro   0x0000ad09       0x10 ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_macro   0x0000ad19      0x1ee ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_macro   0x0000af07       0x97 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_macro   0x0000af9e      0x246 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_macro   0x0000b1e4      0x1c0 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
 .debug_line     0x00000000    0x39bef
  .debug_line    0x00000000      0x73b ./Core/Src/cmd_parser.o
@@ -11630,58 +11630,58 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x000388f6      0x94b ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
  .debug_line    0x00039241      0x9ae ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
-.debug_str      0x00000000   0x11b1f3
- .debug_str     0x00000000   0x11b1f3 ./Core/Src/cmd_parser.o
+.debug_str      0x00000000   0x11b1c2
+ .debug_str     0x00000000   0x11b1c2 ./Core/Src/cmd_parser.o
                                0x7c8a (size before relaxing)
- .debug_str     0x0011b1f3   0x1089b2 ./Core/Src/main.o
- .debug_str     0x0011b1f3   0x102cb4 ./Core/Src/mqtt_priv.o
- .debug_str     0x0011b1f3    0xfb43e ./Core/Src/stm32l4xx_hal_msp.o
- .debug_str     0x0011b1f3    0xf9008 ./Core/Src/stm32l4xx_hal_timebase_tim.o
- .debug_str     0x0011b1f3    0xfa1a8 ./Core/Src/stm32l4xx_it.o
- .debug_str     0x0011b1f3     0x99e6 ./Core/Src/syscalls.o
- .debug_str     0x0011b1f3     0x7784 ./Core/Src/sysmem.o
- .debug_str     0x0011b1f3    0xf854f ./Core/Src/system_stm32l4xx.o
- .debug_str     0x0011b1f3       0x77 ./Core/Startup/startup_stm32l475vgtx.o
- .debug_str     0x0011b1f3     0x8be4 ./Drivers/BSP/src/es_wifi.o
- .debug_str     0x0011b1f3    0xfce05 ./Drivers/BSP/src/es_wifi_io.o
- .debug_str     0x0011b1f3     0x468a ./Drivers/BSP/src/hts221.o
- .debug_str     0x0011b1f3    0xfa488 ./Drivers/BSP/src/stm32l475e_iot01.o
- .debug_str     0x0011b1f3    0xf975c ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o
- .debug_str     0x0011b1f3    0xf97e6 ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o
- .debug_str     0x0011b1f3    0xfcd43 ./Drivers/BSP/src/wifi.o
- .debug_str     0x0011b1f3    0xf90ee ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_str     0x0011b1f3    0xf8dbf ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_str     0x0011b1f3    0xf946d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
- .debug_str     0x0011b1f3    0xf87cb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
- .debug_str     0x0011b1f3    0xf86da ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_str     0x0011b1f3    0xf9750 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
- .debug_str     0x0011b1f3    0xf8a5c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
- .debug_str     0x0011b1f3    0xf8fd0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
- .debug_str     0x0011b1f3    0xf899e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
- .debug_str     0x0011b1f3    0xf88ba ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
- .debug_str     0x0011b1f3    0xf8a6f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_str     0x0011b1f3    0xf8e8a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
- .debug_str     0x0011b1f3    0xf8b95 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_str     0x0011b1f3    0xf8d20 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_str     0x0011b1f3    0xf89da ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc.o
- .debug_str     0x0011b1f3    0xf8cf5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.o
- .debug_str     0x0011b1f3    0xf8d6a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
- .debug_str     0x0011b1f3    0xf98a1 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
- .debug_str     0x0011b1f3    0xf91b5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
- .debug_str     0x0011b1f3    0xf92a7 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
- .debug_str     0x0011b1f3    0xf8aab ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.o
- .debug_str     0x0011b1f3    0xf8c8a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
- .debug_str     0x0011b1f3     0x9029 ./Libraries/coreMQTT/source/core_mqtt.o
- .debug_str     0x0011b1f3     0x887c ./Libraries/coreMQTT/source/core_mqtt_serializer.o
- .debug_str     0x0011b1f3     0x84cb ./Libraries/coreMQTT/source/core_mqtt_state.o
- .debug_str     0x0011b1f3    0xfc83e ./Libraries/coreMQTT/source/transport_interface.o
- .debug_str     0x0011b1f3   0x1034d0 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
- .debug_str     0x0011b1f3     0xac35 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
- .debug_str     0x0011b1f3     0xc775 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
- .debug_str     0x0011b1f3     0xd57a ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
- .debug_str     0x0011b1f3     0xcfc6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
- .debug_str     0x0011b1f3     0xb973 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
- .debug_str     0x0011b1f3     0xb577 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+ .debug_str     0x0011b1c2   0x108981 ./Core/Src/main.o
+ .debug_str     0x0011b1c2   0x102c83 ./Core/Src/mqtt_priv.o
+ .debug_str     0x0011b1c2    0xfb43e ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_str     0x0011b1c2    0xf9008 ./Core/Src/stm32l4xx_hal_timebase_tim.o
+ .debug_str     0x0011b1c2    0xfa1a8 ./Core/Src/stm32l4xx_it.o
+ .debug_str     0x0011b1c2     0x99e6 ./Core/Src/syscalls.o
+ .debug_str     0x0011b1c2     0x7784 ./Core/Src/sysmem.o
+ .debug_str     0x0011b1c2    0xf854f ./Core/Src/system_stm32l4xx.o
+ .debug_str     0x0011b1c2       0x77 ./Core/Startup/startup_stm32l475vgtx.o
+ .debug_str     0x0011b1c2     0x8be4 ./Drivers/BSP/src/es_wifi.o
+ .debug_str     0x0011b1c2    0xfce05 ./Drivers/BSP/src/es_wifi_io.o
+ .debug_str     0x0011b1c2     0x468a ./Drivers/BSP/src/hts221.o
+ .debug_str     0x0011b1c2    0xfa488 ./Drivers/BSP/src/stm32l475e_iot01.o
+ .debug_str     0x0011b1c2    0xf975c ./Drivers/BSP/src/stm32l475e_iot01_hsensor.o
+ .debug_str     0x0011b1c2    0xf97e6 ./Drivers/BSP/src/stm32l475e_iot01_tsensor.o
+ .debug_str     0x0011b1c2    0xfcd43 ./Drivers/BSP/src/wifi.o
+ .debug_str     0x0011b1c2    0xf90ee ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_str     0x0011b1c2    0xf8dbf ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_str     0x0011b1c2    0xf946d ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dfsdm.o
+ .debug_str     0x0011b1c2    0xf87cb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.o
+ .debug_str     0x0011b1c2    0xf86da ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_str     0x0011b1c2    0xf9750 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.o
+ .debug_str     0x0011b1c2    0xf8a5c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.o
+ .debug_str     0x0011b1c2    0xf8fd0 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.o
+ .debug_str     0x0011b1c2    0xf899e ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.o
+ .debug_str     0x0011b1c2    0xf88ba ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.o
+ .debug_str     0x0011b1c2    0xf8a6f ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_str     0x0011b1c2    0xf8e8a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.o
+ .debug_str     0x0011b1c2    0xf8b95 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_str     0x0011b1c2    0xf8d20 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_str     0x0011b1c2    0xf89da ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc.o
+ .debug_str     0x0011b1c2    0xf8cf5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.o
+ .debug_str     0x0011b1c2    0xf8d6a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.o
+ .debug_str     0x0011b1c2    0xf98a1 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.o
+ .debug_str     0x0011b1c2    0xf91b5 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.o
+ .debug_str     0x0011b1c2    0xf92a7 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_str     0x0011b1c2    0xf8aab ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.o
+ .debug_str     0x0011b1c2    0xf8c8a ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.o
+ .debug_str     0x0011b1c2     0x9029 ./Libraries/coreMQTT/source/core_mqtt.o
+ .debug_str     0x0011b1c2     0x887c ./Libraries/coreMQTT/source/core_mqtt_serializer.o
+ .debug_str     0x0011b1c2     0x84cb ./Libraries/coreMQTT/source/core_mqtt_state.o
+ .debug_str     0x0011b1c2    0xfc83e ./Libraries/coreMQTT/source/transport_interface.o
+ .debug_str     0x0011b1c2   0x1034d0 ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+ .debug_str     0x0011b1c2     0xac35 ./Middlewares/Third_Party/FreeRTOS/Source/list.o
+ .debug_str     0x0011b1c2     0xc775 ./Middlewares/Third_Party/FreeRTOS/Source/queue.o
+ .debug_str     0x0011b1c2     0xd57a ./Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+ .debug_str     0x0011b1c2     0xcfc6 ./Middlewares/Third_Party/FreeRTOS/Source/timers.o
+ .debug_str     0x0011b1c2     0xb973 ./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+ .debug_str     0x0011b1c2     0xb577 ./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/cmd_parser.o
