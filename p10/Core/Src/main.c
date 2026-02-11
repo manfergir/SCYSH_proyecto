@@ -62,7 +62,7 @@
  * 1 == ACELEROMETRO
  * 2 == ENVIRONMENT
  * */
-#define NODE_ID 1
+#define NODE_ID 2
 
 
 
