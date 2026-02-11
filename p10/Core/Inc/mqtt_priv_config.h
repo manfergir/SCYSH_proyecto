@@ -9,10 +9,10 @@
 extern "C" {
 #endif
 
-#define MQTT_BROKER_ENDPOINT "test.mosquitto.org"
-#define MQTT_BROKER_ENDPOINT_IP {54,36,178,49}
+#define MQTT_BROKER_ENDPOINT "broker.emqx.io"
+#define MQTT_BROKER_ENDPOINT_IP {34,243,217,54}
 #define MQTT_BROKER_PORT (1883)
-#define MQTTCLIENT_IDENTIFIER "Manolo2507200074559383Y"
+#define MQTTCLIENT_IDENTIFIER "Dani5615161165146"
 #define TOPIC_COUNT (1)
 // #define pcTempTopic "SCF/env"
 // #define pcAlertTopic "SCF/control"

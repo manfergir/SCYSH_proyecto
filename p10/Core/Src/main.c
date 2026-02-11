@@ -62,7 +62,7 @@
  * 1 == ACELEROMETRO
  * 2 == ENVIRONMENT
  * */
-#define NODE_ID 2
+#define NODE_ID 1
 
 
 
@@ -137,8 +137,8 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
-char g_wifi_ssid[WIFI_SSID_MAX] = "manolo";
-char g_wifi_pass[WIFI_PASS_MAX] = "123456789";
+char g_wifi_ssid[WIFI_SSID_MAX] = "DANI 4156";
+char g_wifi_pass[WIFI_PASS_MAX] = "1Uz664)5";
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 
