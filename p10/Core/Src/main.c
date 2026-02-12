@@ -137,8 +137,8 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
-char g_wifi_ssid[WIFI_SSID_MAX] = "DANI 4156";
-char g_wifi_pass[WIFI_PASS_MAX] = "1Uz664)5";
+char g_wifi_ssid[WIFI_SSID_MAX] = "manolo";
+char g_wifi_pass[WIFI_PASS_MAX] = "123456789";
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 
@@ -1517,6 +1517,7 @@ void MQTT_TaskFun(void *argument)
 * @retval None
 */
 /* USER CODE END Header_task_envReadFunc */
+#if NODE_ID == NODE_ID_ENV
 void task_envReadFunc(void *argument)
 {
   /* USER CODE BEGIN task_envReadFunc */
@@ -1636,6 +1637,7 @@ void task_envReadFunc(void *argument)
   }
   /* USER CODE END task_envReadFunc */
 }
+#endif
 
 /* USER CODE BEGIN Header_Accel_Task_Func */
 /**
@@ -1644,6 +1646,7 @@ void task_envReadFunc(void *argument)
 * @retval None
 */
 /* USER CODE END Header_Accel_Task_Func */
+#if NODE_ID == NODE_ID_ACCEL
 void Accel_Task_Func(void *argument)
 {
   /* USER CODE BEGIN Accel_Task_Func */
@@ -1789,6 +1792,7 @@ void Accel_Task_Func(void *argument)
   }
   /* USER CODE END Accel_Task_Func */
 }
+#endif
 
 /* USER CODE BEGIN Header_UartCfgTask_Func */
 /**
