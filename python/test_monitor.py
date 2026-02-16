@@ -4,11 +4,12 @@ import paho.mqtt.client as mqtt
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from collections import deque
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # --- CONFIGURACIÓN ---
 BROKER = "broker.emqx.io"
@@ -21,24 +22,29 @@ TOPIC_CMD_SUB   = "bridge/cmd/+"
 DESTINOS_CMD    = ["bridge/cmd/1", "bridge/cmd/2"]
 
 # Parámetros de Muestreo
-FS_ACCEL = 52.0  # Hz (Acelerómetro)
-FS_ENV   = 1.0   # Hz (Asumimos 1 muestra/seg para Temp/Hum para poder pintar su FFT)
-MAX_SAMPLES = 200
+FS_ACCEL = 52.0  # Hz
+MAX_SAMPLES_ACCEL = 200 # Ventana de visualización accel
 
 class BridgeCommanderApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Centro de Control - Puente Eduardo Torroja")
-        self.root.geometry("1500x950") # Un poco más ancho para que quepan las 3 columnas
+        self.root.geometry("1400x900")
         
-        # --- BUFFERS DE DATOS ---
-        # Temp y Hum necesitan historial suficiente para una FFT decente
-        self.temp_data = deque(maxlen=256) 
-        self.hum_data = deque(maxlen=256)
+        # --- BUFFERS DE DATOS (TIEMPO Y VALOR) ---
+        # Ahora guardamos tuplas o listas paralelas: Times y Values
+        self.temp_vals = deque(maxlen=100)
+        self.temp_times = deque(maxlen=100)
         
-        # Aceleración
-        self.accel_display = deque(maxlen=MAX_SAMPLES) # Solo para pintar tiempo real
-        self.accel_fft_buffer = deque(maxlen=1024)     # Buffer más largo para FFT precisa
+        self.hum_vals = deque(maxlen=100)
+        self.hum_times = deque(maxlen=100)
+        
+        # Aceleración (Visualización Tiempo)
+        self.accel_vals = deque(maxlen=MAX_SAMPLES_ACCEL)
+        self.accel_times = deque(maxlen=MAX_SAMPLES_ACCEL)
+        
+        # Aceleración (Buffer para FFT - Solo valores)
+        self.accel_fft_buffer = deque(maxlen=1024)
         
         self.alarm_active = False
 
@@ -58,24 +64,20 @@ class BridgeCommanderApp:
         # 1. HEADER
         header = tk.Frame(self.root, bg="#2c3e50", pady=15)
         header.pack(fill=tk.X)
-        tk.Label(header, text="MONITORIZACIÓN Y CONTROL ESTRUCTURAL", 
+        tk.Label(header, text="SISTEMA DE MONITORIZACIÓN ESTRUCTURAL", 
                  font=("Segoe UI", 20, "bold"), fg="white", bg="#2c3e50").pack()
 
         # 2. CONTENEDOR PRINCIPAL
         main_container = tk.Frame(self.root)
         main_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        # --- ZONA GRÁFICAS (Izquierda - Ocupa más espacio ahora) ---
-        # Usamos weight para que las gráficas se expandan más que el panel de control
-        main_container.columnconfigure(0, weight=4) 
-        main_container.columnconfigure(1, weight=1)
-        
+        # --- ZONA GRÁFICAS (Izquierda) ---
         plot_frame = tk.Frame(main_container)
         plot_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.setup_plots(plot_frame)
 
-        # --- ZONA CONTROL (Derecha - Panel lateral fijo) ---
-        ctrl_panel = tk.Frame(main_container, bg="#ecf0f1", width=280, relief=tk.RIDGE, bd=2)
+        # --- ZONA CONTROL (Derecha) ---
+        ctrl_panel = tk.Frame(main_container, bg="#ecf0f1", width=250, relief=tk.RIDGE, bd=2)
         ctrl_panel.pack(side=tk.RIGHT, fill=tk.Y, padx=(10, 0))
         ctrl_panel.pack_propagate(False)
 
@@ -88,58 +90,61 @@ class BridgeCommanderApp:
     def create_control_panel(self, parent):
         pad_opts = {'padx': 10, 'pady': 5, 'fill': tk.X}
         
-        tk.Label(parent, text="PANEL DE COMANDOS", font=("Arial", 14, "bold"), bg="#ecf0f1").pack(pady=10)
+        tk.Label(parent, text="COMANDOS", font=("Arial", 14, "bold"), bg="#ecf0f1").pack(pady=10)
         
-        # SECCIÓN 1: ALARMA
-        fr_alarm = tk.LabelFrame(parent, text="Estado Alarma", bg="#ecf0f1", font=("Arial", 10, "bold"))
+        # SECCIÓN ALARMA
+        fr_alarm = tk.LabelFrame(parent, text="Estado Alarma", bg="#ecf0f1")
         fr_alarm.pack(**pad_opts)
         
         self.canvas_sem = tk.Canvas(fr_alarm, height=60, bg="#ecf0f1", highlightthickness=0)
         self.canvas_sem.pack()
-        self.light = self.canvas_sem.create_oval(110, 10, 150, 50, fill="gray", outline="black")
+        self.light = self.canvas_sem.create_oval(105, 10, 145, 50, fill="gray", outline="black")
         self.lbl_alarm = tk.Label(fr_alarm, text="NORMAL", font=("Arial", 12, "bold"), fg="green", bg="#ecf0f1")
         self.lbl_alarm.pack()
 
-        # SECCIÓN 2: CONTROL GLOBAL
-        fr_acc = tk.LabelFrame(parent, text="Control Global", bg="#ecf0f1")
-        fr_acc.pack(**pad_opts)
+        # BOTONES
+        fr_btns = tk.LabelFrame(parent, text="Acciones", bg="#ecf0f1")
+        fr_btns.pack(**pad_opts)
         
-        tk.Button(fr_acc, text="▶ ACTIVAR ALARMA", bg="#27ae60", fg="white",
+        tk.Button(fr_btns, text="▶ ACTIVAR ALARMA", bg="#27ae60", fg="white",
                   command=lambda: self.send_global_command("CONT ON")).pack(pady=5, fill=tk.X, padx=5)
         
-        tk.Button(fr_acc, text="⏹ DESACTIVAR ALARMA", bg="#c0392b", fg="white",
+        tk.Button(fr_btns, text="⏹ DESACTIVAR ALARMA", bg="#c0392b", fg="white",
                   command=lambda: self.send_global_command("CONT OFF")).pack(pady=5, fill=tk.X, padx=5)
         
-        tk.Button(fr_acc, text="⚡ FORZAR LECTURA", bg="#f39c12",
+        tk.Button(fr_btns, text="⚡ FORZAR LECTURA", bg="#f39c12",
                   command=lambda: self.send_global_command("READ")).pack(pady=5, fill=tk.X, padx=5)
-
-        # SECCIÓN 3: RTC
-        fr_rtc = tk.LabelFrame(parent, text="Sincronización", bg="#ecf0f1")
-        fr_rtc.pack(**pad_opts)
         
-        tk.Button(fr_rtc, text="🕒 Sincronizar Relojes", 
+        tk.Button(fr_btns, text="🕒 Sincronizar Relojes", 
                   command=self.sync_rtc_global).pack(pady=5, padx=5, fill=tk.X)
 
     def setup_plots(self, parent):
-        # CREACIÓN DE LA CUADRÍCULA 2x3
-        # Fila 0: Tiempo (Temp, Hum, Accel)
-        # Fila 1: Frecuencia (FFT Temp, FFT Hum, FFT Accel)
-        self.fig, self.axs = plt.subplots(2, 3, figsize=(10, 8), dpi=100, constrained_layout=True)
+        # AHORA 2x2: 
+        # (0,0) Temp vs Time   | (0,1) Hum vs Time
+        # (1,0) Accel vs Time  | (1,1) Accel FFT
+        self.fig, self.axs = plt.subplots(2, 2, figsize=(10, 8), dpi=100, constrained_layout=True)
         self.fig.patch.set_facecolor('#f0f0f0') 
         
-        # Configuración inicial de títulos
-        titulos = ["Temperatura (ºC)", "Humedad (%)", "Aceleración Z (mg)"]
-        colores = ['r', 'b', 'g']
+        # Configuramos formateador de fecha para eje X
+        self.date_fmt = mdates.DateFormatter('%H:%M:%S')
+
+        # Estilos iniciales
+        # Temp
+        self.axs[0, 0].set_title("Temperatura (ºC)")
+        self.axs[0, 0].grid(True, linestyle='--', alpha=0.6)
         
-        for i in range(3):
-            # Fila Superior (Tiempo)
-            self.axs[0, i].set_title(titulos[i])
-            self.axs[0, i].grid(True, linestyle='--', alpha=0.6)
-            
-            # Fila Inferior (FFT)
-            self.axs[1, i].set_title(f"FFT - {titulos[i]}")
-            self.axs[1, i].set_xlabel("Hz")
-            self.axs[1, i].grid(True, linestyle='--', alpha=0.6)
+        # Hum
+        self.axs[0, 1].set_title("Humedad (%)")
+        self.axs[0, 1].grid(True, linestyle='--', alpha=0.6)
+        
+        # Accel Time
+        self.axs[1, 0].set_title("Aceleración Z (mg)")
+        self.axs[1, 0].grid(True, linestyle='--', alpha=0.6)
+
+        # Accel FFT (Este mantiene eje X en Hz, no Time)
+        self.axs[1, 1].set_title("Espectro Frecuencia Aceleración")
+        self.axs[1, 1].set_xlabel("Frecuencia (Hz)")
+        self.axs[1, 1].grid(True, linestyle='--', alpha=0.6)
 
         self.canvas_plot = FigureCanvasTkAgg(self.fig, master=parent)
         self.canvas_plot.draw()
@@ -151,7 +156,7 @@ class BridgeCommanderApp:
             return
         for topic in DESTINOS_CMD:
             self.client.publish(topic, cmd_str)
-        self.status_bar.config(text=f"Enviado global: {cmd_str}")
+        self.status_bar.config(text=f"Enviado: {cmd_str}")
 
     def sync_rtc_global(self):
         now = datetime.now()
@@ -178,14 +183,48 @@ class BridgeCommanderApp:
 
             if "bridge/env" in topic:
                 data = json.loads(payload)
-                self.temp_data.append(float(data.get("temp", 0))/10.0)
-                self.hum_data.append(float(data.get("hum", 0)))
+                
+                # 1. Parsear Valor
+                val_temp = float(data.get("temp", 0))/10.0
+                val_hum = float(data.get("hum", 0))
+                
+                # 2. Parsear Timestamp ("2026-02-16 12:35:00")
+                ts_str = data.get("ts")
+                if ts_str:
+                    try:
+                        dt = datetime.strptime(ts_str, "%Y-%m-%d %H:%M:%S")
+                    except ValueError:
+                        dt = datetime.now()
+                else:
+                    dt = datetime.now()
+
+                # 3. Guardar en Deques
+                self.temp_times.append(dt)
+                self.temp_vals.append(val_temp)
+                
+                self.hum_times.append(dt)
+                self.hum_vals.append(val_hum)
 
             elif "bridge/accel" in topic:
                 data = json.loads(payload)
                 vals = data.get("z", [])
-                self.accel_display.extend(vals)
+                
+                # Para la FFT guardamos todo
                 self.accel_fft_buffer.extend(vals)
+                
+                # Para la gráfica en tiempo, generamos timestamps simulados
+                # basados en la hora actual de llegada (aprox)
+                now = datetime.now()
+                # Retrocedemos en el tiempo para que el último punto sea 'now'
+                # dt entre muestras = 1 / FS
+                dt_sample = 1.0 / FS_ACCEL
+                
+                start_time = now - timedelta(seconds=len(vals)*dt_sample)
+                
+                for i, v in enumerate(vals):
+                    t = start_time + timedelta(seconds=i*dt_sample)
+                    self.accel_times.append(t)
+                    self.accel_vals.append(v)
 
             elif "bridge/cmd" in topic:
                 if "CONT ON" in payload:
@@ -194,7 +233,7 @@ class BridgeCommanderApp:
                     self.set_alarm_state(False)
 
         except Exception as e:
-            pass
+            print(f"Error parseando: {e}")
 
     def set_alarm_state(self, is_active):
         self.alarm_active = is_active
@@ -205,13 +244,9 @@ class BridgeCommanderApp:
 
     # --- CÁLCULO DE FFT ---
     def calculate_fft(self, data, fs):
-        """ Función auxiliar para calcular FFT de cualquier señal """
         if len(data) < 10: return [], []
-        
         sig = np.array(data)
-        # Eliminamos la media (Componente DC) para ver mejor las fluctuaciones
-        sig = sig - np.mean(sig)
-        
+        sig = sig - np.mean(sig) # Quitar DC
         n = len(sig)
         freqs = np.fft.rfftfreq(n, d=1/fs)
         mag = np.abs(np.fft.rfft(sig)) / n
@@ -219,63 +254,61 @@ class BridgeCommanderApp:
 
     def update_plots_loop(self):
         try:
-            # --- FILA 1: TIEMPO ---
-            # 1. Temperatura
-            self.axs[0, 0].cla()
-            self.axs[0, 0].set_title("Temperatura (ºC)")
-            self.axs[0, 0].grid(True)
-            if self.temp_data: self.axs[0, 0].plot(self.temp_data, 'r.-')
+            # 1. TEMPERATURA (Arriba Izq)
+            ax_t = self.axs[0, 0]
+            ax_t.cla()
+            ax_t.set_title("Temperatura (ºC)")
+            ax_t.grid(True)
+            if self.temp_times:
+                ax_t.plot(self.temp_times, self.temp_vals, 'r.-')
+                ax_t.xaxis.set_major_formatter(self.date_fmt)
 
-            # 2. Humedad
-            self.axs[0, 1].cla()
-            self.axs[0, 1].set_title("Humedad (%)")
-            self.axs[0, 1].grid(True)
-            if self.hum_data: self.axs[0, 1].plot(self.hum_data, 'b.-')
+            # 2. HUMEDAD (Arriba Der)
+            ax_h = self.axs[0, 1]
+            ax_h.cla()
+            ax_h.set_title("Humedad (%)")
+            ax_h.grid(True)
+            if self.hum_times:
+                ax_h.plot(self.hum_times, self.hum_vals, 'b.-')
+                ax_h.xaxis.set_major_formatter(self.date_fmt)
 
-            # 3. Aceleración
-            self.axs[0, 2].cla()
-            self.axs[0, 2].set_title("Aceleración Z (mg)")
-            # Fija el límite Y dinámico para que no baile demasiado
-            if self.accel_display: 
-                self.axs[0, 2].plot(self.accel_display, 'g-')
-                mini, maxi = min(self.accel_display), max(self.accel_display)
-                self.axs[0, 2].set_ylim(mini-50, maxi+50)
+            # 3. ACELERACIÓN TIME (Abajo Izq)
+            ax_a = self.axs[1, 0]
+            ax_a.cla()
+            ax_a.set_title("Aceleración Z (mg)")
+            ax_a.grid(True)
+            if self.accel_times:
+                ax_a.plot(self.accel_times, self.accel_vals, 'g-')
+                ax_a.xaxis.set_major_formatter(self.date_fmt)
+                # Escala dinámica suave
+                if len(self.accel_vals) > 0:
+                    mini, maxi = min(self.accel_vals), max(self.accel_vals)
+                    ax_a.set_ylim(mini-50, maxi+50)
 
-            # --- FILA 2: FRECUENCIA (FFTs) ---
-            # 4. FFT Temp
-            self.axs[1, 0].cla()
-            self.axs[1, 0].set_title("Espectro Temp")
-            self.axs[1, 0].grid(True)
-            f, m = self.calculate_fft(self.temp_data, FS_ENV)
-            if len(f)>0: self.axs[1, 0].plot(f, m, 'r-')
-
-            # 5. FFT Hum
-            self.axs[1, 1].cla()
-            self.axs[1, 1].set_title("Espectro Hum")
-            self.axs[1, 1].grid(True)
-            f, m = self.calculate_fft(self.hum_data, FS_ENV)
-            if len(f)>0: self.axs[1, 1].plot(f, m, 'b-')
-
-            # 6. FFT Aceleración
-            self.axs[1, 2].cla()
-            self.axs[1, 2].set_title("Espectro Accel")
-            self.axs[1, 2].set_xlabel("Hz")
-            self.axs[1, 2].grid(True)
-            self.axs[1, 2].set_xlim(0, FS_ACCEL/2)
+            # 4. ACELERACIÓN FFT (Abajo Der)
+            ax_f = self.axs[1, 1]
+            ax_f.cla()
+            ax_f.set_title("Espectro Aceleración")
+            ax_f.set_xlabel("Frecuencia (Hz)")
+            ax_f.grid(True)
+            ax_f.set_xlim(0, FS_ACCEL/2) # Nyquist
             
             f, m = self.calculate_fft(self.accel_fft_buffer, FS_ACCEL)
-            if len(f)>0: 
-                self.axs[1, 2].plot(f, m, 'k-')
-                # Marcar pico dominante si supera el ruido
+            if len(f) > 0: 
+                ax_f.plot(f, m, 'k-')
+                # Marcar pico máximo
                 idx = np.argmax(m)
-                if m[idx] > 5:
-                    self.axs[1, 2].annotate(f"{f[idx]:.1f}Hz", xy=(f[idx], m[idx]), 
-                                            xytext=(f[idx]+2, m[idx]), arrowprops=dict(facecolor='black', shrink=0.05))
+                if m[idx] > 5: # Umbral de ruido visual
+                    ax_f.annotate(f"{f[idx]:.1f}Hz", xy=(f[idx], m[idx]), 
+                                  xytext=(f[idx]+2, m[idx]), 
+                                  arrowprops=dict(facecolor='black', shrink=0.05))
 
+            # Auto-rotar las fechas para que no se pisen en las gráficas de tiempo
+            self.fig.autofmt_xdate()
             self.canvas_plot.draw()
+            
         except Exception as e:
-            # print(f"Plot error: {e}") # Descomentar para debug
-            pass
+            print(f"Error plot: {e}")
         
         self.root.after(500, self.update_plots_loop)
 

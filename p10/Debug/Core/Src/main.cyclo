@@ -29,6 +29,6 @@
 ../Core/Src/main.c:1388:6:StartWifiTask	3
 ../Core/Src/main.c:1431:6:MQTT_TaskFun	6
 ../Core/Src/main.c:1521:6:task_envReadFunc	14
-../Core/Src/main.c:1804:6:UartCfgTask_Func	3
-../Core/Src/main.c:1830:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:1848:6:Error_Handler	1
+../Core/Src/main.c:1808:6:UartCfgTask_Func	3
+../Core/Src/main.c:1834:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:1852:6:Error_Handler	1

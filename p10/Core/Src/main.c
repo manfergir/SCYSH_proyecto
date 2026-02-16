@@ -137,8 +137,8 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
-char g_wifi_ssid[WIFI_SSID_MAX] = "manolo";
-char g_wifi_pass[WIFI_PASS_MAX] = "123456789";
+char g_wifi_ssid[WIFI_SSID_MAX] = "DANI 2891";
+char g_wifi_pass[WIFI_PASS_MAX] = "26|4S63y";
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 
@@ -1528,6 +1528,8 @@ void task_envReadFunc(void *argument)
   int16_t temp_int;  //Temperatura en un entero
   uint8_t hum;         //Humedad
   uint32_t flag;      //Bandera activada
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
   MqttMsg_t msg;      //Mensaje MQTT
 
   if ( BSP_TSENSOR_Init() == TSENSOR_OK )
@@ -1604,13 +1606,15 @@ void task_envReadFunc(void *argument)
     temp_int = (int16_t) (temp*10);
     hum = (uint8_t) BSP_HSENSOR_ReadHumidity();
 
+    HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+    HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+
     if( (temp_int >= 200) && (Alert_Flag == 0) )
     {
     	Alert_Flag = 1;
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
     	snprintf(msg.payload, sizeof(msg.payload), "CONT ON");               // o "CONT OFF"
     	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
-
     }
 
     if( (temp_int < 200) && (Alert_Flag == 1) )
@@ -1619,17 +1623,17 @@ void task_envReadFunc(void *argument)
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
     	snprintf(msg.payload, sizeof(msg.payload), "CONT OFF");
     	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
-
-
     }
 
     snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_PUB_ENV_PREFIX); // "bridge/cmd/1"
     snprintf(msg.payload, sizeof(msg.payload),
-                 "{\"id\":1,\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
-                 id_msg,
-                 reason,
-                 temp_int,
-                 hum);
+                     "{\"id\":1,\"ts\":\"%04d-%02d-%02d %02d:%02d:%02d\",\"msg_id\":%ld,\"origen\":\"%d\",\"temp\":%d,\"hum\":%ld}",
+                     2000 + sDate.Year, sDate.Month, sDate.Date,
+                     sTime.Hours, sTime.Minutes, sTime.Seconds,
+                     id_msg,
+                     reason,
+                     temp_int,
+                     hum);
     
     osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
     id_msg++;

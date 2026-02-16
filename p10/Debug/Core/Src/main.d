@@ -52,28 +52,28 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Core/Inc/common_def.h ../Core/Inc/cmd_parser.h \
  ../Core/Inc/common_def.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h \
  ../Core/Inc/mqtt_priv.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h \
  ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h \
  ../Core/Inc/mqtt_priv_config.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_hsensor.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/accelero.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/gyro.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_accelero.h \
- C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_hsensor.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/accelero.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/gyro.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_accelero.h \
+ C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -129,25 +129,25 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/common_def.h:
 ../Core/Inc/cmd_parser.h:
 ../Core/Inc/common_def.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_conf.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/wifi.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/es_wifi_io.h:
 ../Core/Inc/mqtt_priv.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/core_mqtt_serializer.h:
 ../Core/Inc/../../Libraries/coreMQTT/source/transport_interface.h:
 ../Core/Inc/mqtt_priv_config.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_hsensor.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/accelero.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/gyro.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_accelero.h:
-C:/repos/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_tsensor.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/hts221.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/hsensor.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/tsensor.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_hsensor.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/accelero.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/gyro.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/stm32l475e_iot01_accelero.h:
+C:/Users/danig/STM32CubeIDE/workspace_1.19.0/SCYSH_proyecto/p10/Drivers/BSP/inc/lsm6dsl.h:
