@@ -100,7 +100,7 @@ const osThreadAttr_t WifiTask_attributes = {
 osThreadId_t MQTT_TaskHandle;
 const osThreadAttr_t MQTT_Task_attributes = {
   .name = "MQTT_Task",
-  .stack_size = 1280 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for task_envRead */
