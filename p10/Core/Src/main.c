@@ -218,7 +218,7 @@ static const osMutexAttr_t printMutex_attributes = { .name = "printMutex" };
 
 static void dbg_printf(const char *fmt, ...)
 {
-  if (__get_IPSR() != 0) return; // en ISR no imprimir (o solo SWV)
+  if (__get_IPSR() != 0) return;
 
   if (printMutexHandle) osMutexAcquire(printMutexHandle, osWaitForever);
 
@@ -239,15 +239,9 @@ static void log_printf(const char *fmt, ...)
   vsnprintf(line, sizeof(line), fmt, ap);
   va_end(ap);
 
-  // 1) siempre al UART/SWV
   dbg_printf("%s", line);
 
-  // 2) Evita feedback: si el mensaje YA es un log de MQTT, no lo republíques
-  // (también evita logs mientras MQTT no está estable)
   if (!NET_MQTT_OK || !WIFI_IS_CONNECTED) return;
-
-  // Si este log proviene del propio loop de MQTT/log topic, corta.
-  // (esto vale si estás llamando log_printf desde prints del MQTT task)
   if (strstr(line, "bridge/log/") != NULL) return;
   if (strstr(line, "[MQTT] Enviando Topic: bridge/log/") != NULL) return;
 
@@ -291,7 +285,7 @@ static void DispatchCommand(const SystemCommandMsg_t *cmd);
 
 void OnMqttControlMessage(const char *topic, const char *payload)
 {
-  (void)topic; // luego lo usas si quieres filtrar por /1 /2
+  (void)topic;
   SystemCommandMsg_t cmd;
   if (!Cmd_ParseLine(payload, CMD_SRC_MQTT, &cmd)) {
     dbg_printf("[MQTT][CTRL] cmd invalido: %s\r\n", payload);
@@ -304,20 +298,13 @@ void OnMqttControlMessage(const char *topic, const char *payload)
 
 static void DispatchCommand(const SystemCommandMsg_t *cmd)
 {
-  // mete en cola
   osMessageQueuePut(qCmdRxHandle, cmd, 0, pdMS_TO_TICKS(50));
-
-  // despierta la tarea correcta (según nodo compilado)
   #if NODE_ID == NODE_ID_ACCEL
     osThreadFlagsSet(Accel_TaskHandle, NOTE_CMD_RX);
   #elif NODE_ID == NODE_ID_ENV
     osThreadFlagsSet(task_envReadHandle, NOTE_CMD_RX);
   #endif
 }
-
-
-
-
 
 void program_alarm_RTC(void)
 {
@@ -326,14 +313,11 @@ void program_alarm_RTC(void)
   RTC_DateTypeDef  sDate  = {0};
 
   HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // obligatorio
-
-  // Desactivar y limpiar por seguridad (evita retriggers)
+  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
   HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
   __HAL_RTC_ALARM_CLEAR_FLAG(&hrtc, RTC_FLAG_ALRAF);
   __HAL_RTC_ALARM_EXTI_CLEAR_FLAG();
 
-  // Próximo minuto a segundo 00
   uint8_t nextMin = sTime.Minutes + 1;
   uint8_t nextHr  = sTime.Hours;
 
@@ -343,7 +327,7 @@ void program_alarm_RTC(void)
   sAlarm.AlarmTime.Minutes = nextMin;
   sAlarm.AlarmTime.Seconds = 0;
 
-  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;  // NO enmascares seconds/minutes
+  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
   sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
   sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
   sAlarm.AlarmDateWeekDay = 1;
@@ -367,12 +351,12 @@ static void ApplyRTC(const typeof(((SystemCommandMsg_t*)0)->u.rtc) *rtc)
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
 
   uint16_t y = rtc->year;
-  if (y >= 2000) y -= 2000; // STM32 Year suele ser 0..99
+  if (y >= 2000) y -= 2000;
 
   sDate.Year  = (uint8_t)y;
   sDate.Month = rtc->month;
   sDate.Date  = rtc->day;
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY; // puedes mejorar luego
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
 
   HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
 
@@ -421,8 +405,6 @@ static int wifi_start(void)
   }
   return 0;
 }
-
-
 
 int wifi_connect(void)
 {
@@ -503,20 +485,16 @@ int main(void)
 
 	log_printf("[BOOT] Forzando Reinicio Fisico del WiFi ---\r\n");
 
-	// Bajar el pin de Reset (Apagar módulo)
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
-	HAL_Delay(500); // Esperar medio segundo apagado
-
-	// Subir el pin de Reset (Encender módulo)
+	HAL_Delay(500);
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
-	HAL_Delay(1000); // Esperar 1s a que arranque su sistema interno
+	HAL_Delay(1000);
 
 	log_printf("[BOOT] WiFi Reiniciado. Iniciando Kernel... ---\r\n");
+    HAL_UART_Receive_IT(&huart1, &uart_rx_ch, 1);
+    log_printf("[UART] RX listo\r\n");
 
-	  HAL_UART_Receive_IT(&huart1, &uart_rx_ch, 1);
-	  log_printf("[UART] RX listo\r\n");
-
-	  PrintDebugMenu();
+	PrintDebugMenu();
 
   /* USER CODE END 2 */
 
@@ -1421,7 +1399,7 @@ void StartWifiTask(void *argument)
 	      {
 	    	log_printf("[WIFI] Conexion Exitosa.\r\n");
 	        WIFI_STATE = 2;          // CONNECTED
-	        WIFI_IS_CONNECTED = 1;   // si quieres mantener tu flag
+	        WIFI_IS_CONNECTED = 1;
 	      }
 	      else
 	      {
@@ -1472,23 +1450,14 @@ void MQTT_TaskFun(void *argument)
 		  xTransportStatus = prvConnectToServer(&xNetworkContext);
 
 		  if (xTransportStatus != PLAINTEXT_TRANSPORT_SUCCESS) {
-			// NOTA: Si prvConnectToServer falla, el codigo original tiene un osDelay de 10s dentro
-			// así que tardará en volver aquí.
-			  dbg_printf("[MQTT] Error TCP. Reintentando...\r\n");
+			dbg_printf("[MQTT] Error TCP. Reintentando...\r\n");
 			osDelay(pdMS_TO_TICKS(2000));
 			continue;
 		  }
 
-		  //LOG(("[MQTT] Esperando estabilizacion del hardware...\r\n"));
-		  //HAL_Delay(50);
-
 		  // 3. CONECTAR CAPA MQTT
-		  // ATENCION: Esta funcion devuelve VOID en la librería original.
-		  // Si falla internamente, ejecuta configASSERT() y resetea la placa.
-		  // Es el comportamiento esperado del codigo del profesor.
 		  prvCreateMQTTConnectionWithBroker(&xMQTTContext, &xNetworkContext);
 
-		  // Si llegamos aquí, asumimos que estamos conectados
 		  dbg_printf("[MQTT] Loop de transmision activo.\r\n");
 		  NET_MQTT_OK = 1;
 
@@ -1586,7 +1555,7 @@ void task_envReadFunc(void *argument)
 	    {
 	      if (cmd.type == CMD_FORCE_READ)
 	      {
-	        // fuerza una lectura inmediata
+
 	        flag |= FLAG_DATA_READY;
 	      }
 	      else if (cmd.type == CMD_SET_WIFI)
@@ -1617,7 +1586,6 @@ void task_envReadFunc(void *argument)
 	  }
 	  else
 	  {
-	    // aquí puedes dejarlo como "2" o directamente continuar
 	    reason = 2;
 	  }
 
@@ -1728,13 +1696,11 @@ void Accel_Task_Func(void *argument)
     	     WIFI_IS_CONNECTED = 0;
     	     NET_MQTT_OK = 0;
     	  }
-    	  // CMD_SET_RTC lo puedes aplicar en UartCfgTask directamente o aquí.
     	}
 
     }
 
     if (flags &  NOTE_BUTTON_IRQ) {
-        /* Forzar una captura igual que RTC */
         flags |= NOTE_RTC_WAKEUP;
     }
 
@@ -1757,7 +1723,6 @@ void Accel_Task_Func(void *argument)
     LSM6DSL_FifoReset();
     LSM6DSL_FifoConfig(watermark_samples);
 
-    // Limpia flag viejo por si hubo un INT justo al configurar
     (void)osThreadFlagsClear(NOTE_ACCEL_FIFO);
 
     const uint32_t t0_ms = now_ms();
@@ -1775,28 +1740,25 @@ void Accel_Task_Func(void *argument)
       // Lee nivel actual de FIFO
       uint16_t level_words = LSM6DSL_FifoGetLevelWords();
 
-      // Si no llegó interrupción, pero ya hay >= watermark, seguimos igual
       if (r == (uint32_t)osErrorTimeout)
       {
         if (level_words < watermark_words)
         {
           log_printf("[ACC] TIMEOUT FIFO event, level_words=%u (<%u)\r\n",
                  (unsigned)level_words, (unsigned)watermark_words);
-          continue; // seguimos esperando (sin polling agresivo)
+          continue;
         }
         // si >= watermark: procesamos aunque no entró ISR
         log_printf("[ACC] Missed INT? level_words=%u (>= watermark)\r\n",
                (unsigned)level_words);
       }
 
-      // Consumimos FIFO mientras haya al menos 1 muestra (3 words)
       while (level_words >= 3 && collected < target)
       {
         int16_t x_raw, y_raw, z_raw;
         LSM6DSL_FifoReadXYZRaw(&x_raw, &y_raw, &z_raw);
         level_words -= 3;
 
-        // FS=2G en tu FifoConfig -> mg = raw * 0.061
         int16_t z_mg = (int16_t)((float)z_raw * LSM6DSL_ACC_SENSITIVITY_2G);
 
         z_block_mg[block_fill++] = z_mg;

@@ -13,5 +13,5 @@ client.connect(BROKER, PORT, 60)
 result = client.publish(TOPIC, payload, qos=0, retain=False)
 result.wait_for_publish()
 
-print(f"✅ Publicado en {TOPIC}: {payload}")
+print(f"Publicado en {TOPIC}: {payload}")
 client.disconnect()

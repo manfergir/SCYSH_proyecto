@@ -3,6 +3,7 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="//"/>
 		<item value="modifica"/>
 		<item value="cambia"/>
 		<item value="añade"/>
@@ -17,6 +18,5 @@
 		<item value="log_printf"/>
 		<item value="TaskHandle"/>
 		<item value="MODO"/>
-		<item value="osThreadFlagsSet"/>
 	</list>
 </section>
