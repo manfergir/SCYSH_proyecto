@@ -1628,7 +1628,7 @@ void task_envReadFunc(void *argument)
     HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 
-    if( (temp_int >= 200) && (Alert_Flag == 0) )
+    if( (temp_int >= 360) && (Alert_Flag == 0) )
     {
     	Alert_Flag = 1;
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
@@ -1641,7 +1641,7 @@ void task_envReadFunc(void *argument)
     	}
     }
 
-    if( (temp_int < 200) && (Alert_Flag == 1) )
+    if( (temp_int < 360) && (Alert_Flag == 1) )
     {
     	Alert_Flag = 0;
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
