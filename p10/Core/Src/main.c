@@ -62,8 +62,7 @@
  * 1 == ACELEROMETRO
  * 2 == ENVIRONMENT
  * */
-#define NODE_ID 2
-
+#define NODE_ID 1
 
 
 //#define PROJECT_TYPE 0
@@ -137,8 +136,8 @@ const osMessageQueueAttr_t qCmdRx_attributes = {
 };
 /* USER CODE BEGIN PV */
 
-char g_wifi_ssid[WIFI_SSID_MAX] = "DANI 2891";
-char g_wifi_pass[WIFI_PASS_MAX] = "26|4S63y";
+char g_wifi_ssid[WIFI_SSID_MAX] = "manolo";
+char g_wifi_pass[WIFI_PASS_MAX] = "123456789";
 #define WIFISECURITY WIFI_ECN_WPA2_PSK
 
 
@@ -378,15 +377,15 @@ static void ApplyRTC(const typeof(((SystemCommandMsg_t*)0)->u.rtc) *rtc)
   HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
 
   if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
-    log_printf("[RTC] Error SetTime\r\n");
+	dbg_printf("[RTC] Error SetTime\r\n");
     return;
   }
   if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
-    log_printf("[RTC] Error SetDate\r\n");
+	dbg_printf("[RTC] Error SetDate\r\n");
     return;
   }
 
-  log_printf("[RTC] Ajustado: %04u-%02u-%02u %02u:%02u:%02u\r\n",
+  dbg_printf("[RTC] Ajustado: %04u-%02u-%02u %02u:%02u:%02u\r\n",
          (unsigned)rtc->year, rtc->month, rtc->day,
          rtc->hour, rtc->min, rtc->sec);
 }
@@ -542,7 +541,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of qMqttTx */
-  qMqttTxHandle = osMessageQueueNew (8, 1060, &qMqttTx_attributes);
+  qMqttTxHandle = osMessageQueueNew (8, sizeof(MqttMsg_t*), &qMqttTx_attributes);
 
   /* creation of qCmdRx */
   qCmdRxHandle = osMessageQueueNew (5, sizeof(SystemCommandMsg_t), &qCmdRx_attributes);
@@ -1247,14 +1246,32 @@ int _write(int file, char *ptr, int len)
 
 static void send_mqtt_msg(const char *topic, const char *payload)
 {
-  MqttMsg_t m;
-  memset(&m, 0, sizeof(m));
-  strncpy(m.topic, topic, MSG_TOPIC_SIZE - 1);
-  m.topic[MSG_TOPIC_SIZE - 1] = '\0';
+  // PROTECCIÓN: Solo enviar si MQTT está listo
+  if (!NET_MQTT_OK || !WIFI_IS_CONNECTED) {
+	return;  // Salir sin intentar malloc
+  }
+  MqttMsg_t *m = (MqttMsg_t*)pvPortMalloc(sizeof(MqttMsg_t));
 
-  strncpy(m.payload, payload, MSG_PAYLOAD_SIZE - 1);
-  m.payload[MSG_PAYLOAD_SIZE - 1] = '\0';
-  osMessageQueuePut(qMqttTxHandle, &m, 0, pdMS_TO_TICKS(100));
+  if (m == NULL) {
+    dbg_printf("[ERROR] send_mqtt_msg: Sin memoria\r\n");
+    return;
+  }
+  dbg_printf("[MALLOC] msg en heap = %p\r\n", (void*)m);
+
+  memset(m, 0, sizeof(MqttMsg_t));
+  strncpy(m->topic, topic, MSG_TOPIC_SIZE - 1);
+  m->topic[MSG_TOPIC_SIZE - 1] = '\0';
+
+  strncpy(m->payload, payload, MSG_PAYLOAD_SIZE - 1);
+  m->payload[MSG_PAYLOAD_SIZE - 1] = '\0';
+
+  osStatus_t status = osMessageQueuePut(qMqttTxHandle, &m, 0, pdMS_TO_TICKS(100));
+
+  if (status != osOK) {
+    dbg_printf("[ERROR] send_mqtt_msg: Cola llena\r\n");
+    vPortFree(m);
+  }
+
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -1436,7 +1453,6 @@ void MQTT_TaskFun(void *argument)
 	MQTTContext_t xMQTTContext;
 	TransportStatus_t xTransportStatus;
 
-	MqttMsg_t msg_out;
 	osStatus_t qStatus;
 
 	 log_printf("--- [MQTT] Tarea Iniciada ---\r\n");
@@ -1484,13 +1500,16 @@ void MQTT_TaskFun(void *argument)
 		  // 4. BUCLE DE TRANSMISIÓN
 		  while (WIFI_IS_CONNECTED == 1)
 		  {
-			qStatus = osMessageQueueGet(qMqttTxHandle, &msg_out, NULL, pdMS_TO_TICKS(100));
+		  MqttMsg_t *msg_ptr = NULL;
+				qStatus = osMessageQueueGet(qMqttTxHandle, &msg_ptr, NULL, pdMS_TO_TICKS(100));
+				if (qStatus == osOK && msg_ptr != NULL)
+				{
+				  log_printf("[MQTT] Enviando Topic: %s...\r\n", msg_ptr->topic);
+				  prvMQTTPublishToTopic(&xMQTTContext, msg_ptr->topic, msg_ptr->payload);
 
-			if (qStatus == osOK)
-			{
-			  log_printf("[MQTT] Enviando Topic: %s...\r\n", msg_out.topic);
-			  prvMQTTPublishToTopic(&xMQTTContext, msg_out.topic, msg_out.payload);
-			}
+				  vPortFree(msg_ptr);
+				  msg_ptr = NULL;
+				}
 
 			// KeepAlive
 			MQTTStatus_t xStat = MQTT_ProcessLoop(&xMQTTContext);
@@ -1534,20 +1553,20 @@ void task_envReadFunc(void *argument)
 
   if ( BSP_TSENSOR_Init() == TSENSOR_OK )
   {
-    log_printf("[ENV]Sensor de temperatura inicializado correctamente.\r\n");
+	  dbg_printf("[ENV]Sensor de temperatura inicializado correctamente.\r\n");
   }
   else
   {
-	  log_printf("[ENV]Error en la inicialización del sensor de temperatura.\r\n");
+	  dbg_printf("[ENV]Error en la inicialización del sensor de temperatura.\r\n");
   }
 
   if ( BSP_HSENSOR_Init() == HSENSOR_OK )
   {
-	  log_printf("[ENV]Sensor de humedad inicializado correctamente.\r\n");
+	  dbg_printf("[ENV]Sensor de humedad inicializado correctamente.\r\n");
   }
   else
   {
-	  log_printf("[ENV]Error en la inicialización del sensor de humedad.\r\n");
+	  dbg_printf("[ENV]Error en la inicialización del sensor de humedad.\r\n");
   }
 
   program_alarm_RTC();
@@ -1614,7 +1633,12 @@ void task_envReadFunc(void *argument)
     	Alert_Flag = 1;
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
     	snprintf(msg.payload, sizeof(msg.payload), "CONT ON");               // o "CONT OFF"
-    	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    	MqttMsg_t *msg_ptr = (MqttMsg_t*)pvPortMalloc(sizeof(MqttMsg_t));
+    	if (msg_ptr != NULL) {
+    	  memcpy(msg_ptr, &msg, sizeof(MqttMsg_t));
+    	  osStatus_t st = osMessageQueuePut(qMqttTxHandle, &msg_ptr, 0, pdMS_TO_TICKS(100));
+    	  if (st != osOK) vPortFree(msg_ptr);
+    	}
     }
 
     if( (temp_int < 200) && (Alert_Flag == 1) )
@@ -1622,7 +1646,12 @@ void task_envReadFunc(void *argument)
     	Alert_Flag = 0;
     	snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_SUB_CMD_PREFIX); // "bridge/cmd/1"
     	snprintf(msg.payload, sizeof(msg.payload), "CONT OFF");
-    	osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    	MqttMsg_t *msg_ptr = (MqttMsg_t*)pvPortMalloc(sizeof(MqttMsg_t));
+    	if (msg_ptr != NULL) {
+    	  memcpy(msg_ptr, &msg, sizeof(MqttMsg_t));
+    	  osStatus_t st = osMessageQueuePut(qMqttTxHandle, &msg_ptr, 0, pdMS_TO_TICKS(100));
+    	  if (st != osOK) vPortFree(msg_ptr);
+    	}
     }
 
     snprintf(msg.topic, sizeof(msg.topic), "%s1", TOPIC_PUB_ENV_PREFIX); // "bridge/cmd/1"
@@ -1635,7 +1664,12 @@ void task_envReadFunc(void *argument)
                      temp_int,
                      hum);
     
-    osMessageQueuePut(qMqttTxHandle, &msg, 0, pdMS_TO_TICKS(100));
+    MqttMsg_t *msg_ptr = (MqttMsg_t*)pvPortMalloc(sizeof(MqttMsg_t));
+    if (msg_ptr != NULL) {
+      memcpy(msg_ptr, &msg, sizeof(MqttMsg_t));
+      osStatus_t st = osMessageQueuePut(qMqttTxHandle, &msg_ptr, 0, pdMS_TO_TICKS(100));
+      if (st != osOK) vPortFree(msg_ptr);
+    }
     id_msg++;
 
   }

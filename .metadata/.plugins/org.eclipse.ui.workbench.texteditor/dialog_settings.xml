@@ -3,6 +3,10 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="modifica"/>
+		<item value="cambia"/>
+		<item value="añade"/>
+		<item value="osMessageQueuePut(qMqttTxHandle, &amp;msg, 0, pdMS_TO_TICKS(100));"/>
 		<item value="TOPIC_PUB_ENV_PREFIX"/>
 		<item value="TOPIC_SUB_CMD_PREFIX"/>
 		<item value="ç"/>
@@ -14,9 +18,5 @@
 		<item value="TaskHandle"/>
 		<item value="MODO"/>
 		<item value="osThreadFlagsSet"/>
-		<item value="program_alarm_RTC"/>
-		<item value="now_ms"/>
-		<item value="HAL_RTC_AlarmAEventCallback"/>
-		<item value="TERMINAL_USE"/>
 	</list>
 </section>
